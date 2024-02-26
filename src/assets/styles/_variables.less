@@ -1,0 +1,79 @@
+@import '_typography.less';
+@import '_colors.less';
+
+//
+//  Indents
+//  ---------------------------------------------
+@line-height__computed: 20px;
+
+@indent__base: @line-height__computed; // 20px
+@indent__xl: @indent__base * 2; // 40px
+@indent__l: @indent__base * 1.5; // 30px
+@indent__m: @indent__base * 1.25; // 25px
+@indent__s: (@indent__base / 2); // 10px
+@indent__xs: (@indent__base / 4); // 5px
+@indent__xxs: 8px;
+
+
+//
+//  Fonts
+//  ---------------------------------------------
+
+@font-size__base: 14px;
+
+@font-size__xxl: ceil(1.42 * @font-size__base); // 20px
+@font-size__xl: ceil(1.28 * @font-size__base); // 18px
+@font-size__l: ceil(1.14 * @font-size__base); // 16px
+@font-size__m: @font-size__base; // 14px
+@font-size__s: ceil(.85 * @font-size__base); // 12px
+@font-size__xs: floor(.75 * @font-size__base); // 11px
+@font-size__xxs: floor(.71429 * @font-size__base); // 10px
+
+//
+//  Headings
+//  ---------------------------------------------
+@heading__font-weight__base: @font-weight__bold;
+
+@h1__font-size: ceil((@font-size__base * 3.42)); // 48px
+
+@h2__font-size: ceil((@font-size__base * 2.85)); // 40px
+
+@h3__font-size: ceil((@font-size__base * 2.28)); // 32px
+@h3__font-weight: @heading__font-weight__base;
+
+@h4__font-size: ceil((@font-size__base * 1.71)); // 24px
+
+@h5__font-size: ceil((@font-size__base * 1.42)); // 20px
+
+@h6__font-size: ceil((@font-size__base * 1.28)); // 18px
+@h6__font-weight: @font-weight__heavier;
+
+@page-title-custom__font-size: 20px;
+@page-title-custom__font-weight: @font-weight__semibold;
+@page-title-custom__line-height: 24px;
+@page-title-custom__color: @color-gray1;
+@page-title-custom__text-transformation: uppercase;
+
+
+
+
+//  Primary button
+@button-primary__color: @color-white;
+@button-primary__background: @theme__color__black;
+@button-primary__border: 1px solid @theme__color__secondary;
+
+@button-primary__hover__color: @color-white;
+@button-primary__hover__background: @theme__color__primary;
+@button-primary__hover__border: 1px solid @theme__color__primary;
+
+@button-primary__active__color: @color-white;
+@button-primary__active__background: @button-primary__background;
+@button-primary__active__border: @button-primary__border;
+
+//  Display settings
+@button__border-radius: 0;
+@button__padding: 13px;
+@button__height: auto;
+@button-custom__line-height: 1;
+@button__disabled__opacity: .3;
+@button__padding__l: 12px 50px;

@@ -1,0 +1,126 @@
+
+
+//
+//  Flex layout
+//  ---------------------------------------------
+
+.mixin-display(
+    @_value: flex
+) {
+    display: ~"-webkit-@{_value}";
+    display: ~"-ms-@{_value}box";
+    display: @_value;
+}
+
+.lib-vendor-prefix-flex-grow(
+    @_value: 0
+) {
+    -webkit-flex-grow: @_value;
+            flex-grow: @_value;
+}
+
+.lib-vendor-prefix-flex-shrink (
+    @_value: 1
+) {
+    -webkit-flex-shrink: @_value;
+            flex-shrink: @_value;
+}
+
+.lib-vendor-prefix-flex-basis (
+    @_value: auto
+) {
+    -webkit-flex-basis: @_value;
+            flex-basis: @_value;
+}
+
+.lib-vendor-prefix-flex-wrap (
+    @_value: wrap
+) {
+    -webkit-flex-wrap: @_value;
+            flex-wrap: @_value;
+}
+
+.lib-vendor-prefix-flex-direction (
+    @_value: column
+) {
+    -webkit-flex-direction: @_value;
+        -ms-flex-direction: @_value;
+            flex-direction: @_value;
+}
+
+.lib-vendor-prefix-order (
+    @_value: 0
+) {
+    -ms-flex-order: @_value;
+     -webkit-order: @_value;
+             order: @_value;
+}
+
+.lib-vendor-box-align (
+    @_value: stretch
+) {
+    -webkit-align-items: @_value;
+        -ms-align-items: @_value;
+            align-items: @_value;
+}
+
+.lib-vendor-prefix-appearance (
+    @value: none
+) {
+    -webkit-appearance: @value;
+    -moz-appearance: @value;
+    appearance: @value;
+}
+
+.lib-vendor-prefix-column-count (
+    @_value
+) {
+    -webkit-column-count: @_value;
+       -moz-column-count: @_value;
+            column-count: @_value;
+}
+
+// Mixin para telas pequenas (telefones)
+.screen-small(@rules) {
+    @media screen and (max-width: 767px) {
+      @rules();
+    }
+  }
+  
+  // Mixin para tablets
+  .screen-medium(@rules) {
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      @rules();
+    }
+  }
+  
+  // Mixin para telas grandes (desktops)
+  .screen-large(@rules) {
+    @media screen and (min-width: 992px) {
+      @rules();
+    }
+  }
+  
+  // Mixin para telas extra grandes (grande desktops)
+  .screen-xlarge(@rules) {
+    @media screen and (min-width: 1200px) {
+      @rules();
+    }
+  }
+  
+/**
+ * Mixin to generate Snackbar styles with specified background color and text color.
+ *
+ * @param {color} @bg-color - Background color of the Snackbar.
+ * @param {color} @text-color - Text color of the Snackbar label.
+ */
+  .generate-snackbar(@bg-color: rgb(3, 196, 255), @text-color: black) {
+    &.mat-mdc-snack-bar-container {
+      .mdc-snackbar__surface {
+        background-color: @bg-color;
+        .mdc-snackbar__label {
+          color: @text-color;
+        }
+      }
+    }
+  }
