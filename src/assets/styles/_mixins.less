@@ -108,19 +108,3 @@
     }
   }
   
-/**
- * Mixin to generate Snackbar styles with specified background color and text color.
- *
- * @param {color} @bg-color - Background color of the Snackbar.
- * @param {color} @text-color - Text color of the Snackbar label.
- */
-  .generate-snackbar(@bg-color: rgb(3, 196, 255), @text-color: black) {
-    &.mat-mdc-snack-bar-container {
-      .mdc-snackbar__surface {
-        background-color: @bg-color;
-        .mdc-snackbar__label {
-          color: @text-color;
-        }
-      }
-    }
-  }

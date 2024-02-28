@@ -10,7 +10,9 @@
 @indent__xl: @indent__base * 2; // 40px
 @indent__l: @indent__base * 1.5; // 30px
 @indent__m: @indent__base * 1.25; // 25px
-@indent__s: (@indent__base / 2); // 10px
+@indent__s: (@indent__base - 2); // 18px
+@indent__sx: (@indent__base - 8 ); // 12px
+@indent__x: (@indent__base / 2); // 10px
 @indent__xs: (@indent__base / 4); // 5px
 @indent__xxs: 8px;
 
@@ -48,32 +50,4 @@
 @h6__font-size: ceil((@font-size__base * 1.28)); // 18px
 @h6__font-weight: @font-weight__heavier;
 
-@page-title-custom__font-size: 20px;
-@page-title-custom__font-weight: @font-weight__semibold;
-@page-title-custom__line-height: 24px;
-@page-title-custom__color: @color-gray1;
-@page-title-custom__text-transformation: uppercase;
 
-
-
-
-//  Primary button
-@button-primary__color: @color-white;
-@button-primary__background: @theme__color__black;
-@button-primary__border: 1px solid @theme__color__secondary;
-
-@button-primary__hover__color: @color-white;
-@button-primary__hover__background: @theme__color__primary;
-@button-primary__hover__border: 1px solid @theme__color__primary;
-
-@button-primary__active__color: @color-white;
-@button-primary__active__background: @button-primary__background;
-@button-primary__active__border: @button-primary__border;
-
-//  Display settings
-@button__border-radius: 0;
-@button__padding: 13px;
-@button__height: auto;
-@button-custom__line-height: 1;
-@button__disabled__opacity: .3;
-@button__padding__l: 12px 50px;
