@@ -1,19 +1,29 @@
-.p-component-overlay {
-    position: unset;
-}
+@import "../../_global.less";
 
+.sidebar {
+    .p-panelmenu {
+        .p-panelmenu-header {
 
+            .p-panelmenu-header-content {
+                background-color: unset;
+                border: unset;
 
+                .p-panelmenu-header-action {
+                    color: @color-white;
+                }
 
-.sidebar-main {
-    display: flex;
-    height: 100vh;
+            }
 
-    p-sidebar {
-        height: 100%;
+            &.p-highlight {
+                .p-panelmenu-header-content {
+                    background-color: @color-white;
 
-        .p-sidebar-left {
-            position: unset;
+                    .p-panelmenu-header-action {
+                        color: @color-black;
+                    }
+
+                }
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ As variáveis de cor definem a aparência geral do tema. Personalize-as para aju
 
 ### Sidebar
 
-Personalize as variáveis relacionadas à barra lateral para ajustar a largura e o plano de fundo.
+Personalize as variáveis relacionadas à barra lateral.
 
 ```less
 // Layout - Sidebar
