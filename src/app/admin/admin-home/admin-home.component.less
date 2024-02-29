@@ -12,30 +12,6 @@
         background-color: @sidebar-background;
         padding: 0 @indent__x + 6;
         align-items: center;
-        .logo {
-            .mixin-display(flex);
-            align-items: center;
-            gap: @indent__xs;
-            margin: @indent__s 0 @indent__l + 4;
-
-            &__img {
-                max-width: 63px;
-            }
-
-            &__text {
-                .mixin-display(flex);
-                flex-direction: column;
-                span {
-                    font-family: @font-family__second;
-                    color: @color-white;
-
-                    &.subtitle{
-                        font-size: @font-size__s;
-                    }
-
-                }
-            }
-        }
     }
 
     .content-dashboard {
