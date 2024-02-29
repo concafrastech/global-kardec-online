@@ -11,16 +11,63 @@ import { MenubarModule } from 'primeng/menubar';
 })
 export class NavbarComponent implements OnInit {
     items: MenuItem[] | undefined;
+    language = 'Português'
+    user = "Victor"
 
     ngOnInit(): void {
         this.items = [
             {
-                label: 'New',
-                icon: 'pi pi-fw pi-plus',
+                label: `${this.language}`,
+                icon: 'pi pi-fw pi-language',
+                items: [
+                    {
+                        label: '🇧🇷 Português ',
+                        url: 'pt-BR/admin/'
+                    },
+                    {
+                        label: '🇺🇸 English ',
+                        url: ''
+                    },
+                    {
+                        label: '🇪🇸 Español',
+                        url: ''
+                    }
+                ]
             },
             {
-                label: 'Delete',
-                icon: 'pi pi-fw pi-trash'
+                label: 'Central de Ajuda',
+                icon: 'pi pi-fw pi-question-circle'
+            },
+            {
+                label: "Notificações",
+                icon: 'pi pi-fw pi-bell'
+
+            },
+            {
+                label: `${this.user}`,
+                icon: "pi pi-fw pi-user",
+                items: [
+                    {
+                        label: 'Mensagens',
+                        icon: 'pi pi-fw pi-envelope'
+                    },
+                    {
+                        label: 'Ajuda',
+                        icon: 'pi pi-fw pi-question-circle'
+                    },
+                    {
+                        label: 'Configurações',
+                        icon: 'pi pi-fw pi-cog'
+                    },
+                    {
+                        separator: true
+                    },
+                    {
+                        label: 'Sair da conta',
+                        icon: 'pi pi-fw pi-sign-out',
+                        
+                    },
+                ]
             }
         ];
     }
