@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost',
+    apiUrl: 'https://ceoak-back.brazilsouth.cloudapp.azure.com/',
 };
