@@ -2,21 +2,77 @@
 
 .sidebar {
     .p-panelmenu {
+        .p-panelmenu-content {
+            background-color: @color-gray-light;
+            border-radius: unset;
+
+            .p-panelmenu-root-list{
+                padding: 0 0 0 @indent__x + 6;
+            }
+
+            .p-menuitem > {
+                .p-menuitem-content {
+                   
+                    &:hover {
+                        .p-menuitem-link {
+                            .p-menuitem-text, .p-menuitem-icon, .p-element * {
+                                color: @color-blue-light;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+
+
+        }
+
         .p-panelmenu-header {
+            &:hover {
+                background-color: @color-gray-light;
+
+                .p-panelmenu-header-content {
+
+                    .p-panelmenu-header-action {
+                        color: @color-black;
+                    }
+                }
+            }
 
             .p-panelmenu-header-content {
                 background-color: unset;
                 border: unset;
+                border-radius: unset;
+                padding: 0 0 0 @indent__x + 6;
 
                 .p-panelmenu-header-action {
-                    color: @color-white;
+                    .mixin-display(grid);
+                    color: @color-gray-light;
+                    grid-template-columns: auto auto 1fr;
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 0px;
+                    grid-row-gap: 0px;
                 }
 
+                .p-element {
+                    grid-column: 4 / span 1;
+
+                }
+
+                .p-menuitem-icon {
+                    grid-area: 1 / 1 / 2 / 2;
+                }
+
+                .p-menuitem-text {
+                    grid-area: 1 / 2 / 2 / 3;
+                }
             }
 
             &.p-highlight {
                 .p-panelmenu-header-content {
-                    background-color: @color-white;
+                    background-color: @color-gray-light;
 
                     .p-panelmenu-header-action {
                         color: @color-black;
