@@ -1,29 +1,64 @@
 @import "../../_global.less";
 
+
 .sidebar {
     .p-panelmenu {
+        .p-panelmenu-panel {
+            margin-bottom: unset;
+        }
+
         .p-panelmenu-content {
             background-color: @color-gray-light;
             border-radius: unset;
+            border: unset;
 
-            .p-panelmenu-root-list{
+            .p-panelmenu-root-list {
                 padding: 0 0 0 @indent__x + 6;
             }
 
-            .p-menuitem > {
-                .p-menuitem-content {
-                   
-                    &:hover {
+            .p-menuitem {
+                &:not(.p-highlight):not(.p-disabled) {
+
+                    &>.p-menuitem-content {
+                        background-color: unset;
+
+                        &:hover {
+                            background-color: unset;
+
+                        }
+                    }
+
+                }
+
+                &> {
+                    .p-menuitem-content {
                         .p-menuitem-link {
-                            .p-menuitem-text, .p-menuitem-icon, .p-element * {
-                                color: @color-blue-light;
+
+                            .p-menuitem-text,
+                            .p-menuitem-icon,
+                            .p-element * {
+                                font-size: @font-size__m;
+                                font-weight: @font-weight__heavier;
                             }
 
                         }
 
+                        &:hover {
+                            .p-menuitem-link {
+
+                                .p-menuitem-text,
+                                .p-menuitem-icon,
+                                .p-element * {
+                                    color: @color-blue-light;
+                                }
+
+                            }
+
+                        }
                     }
                 }
             }
+
 
 
 
@@ -58,15 +93,19 @@
 
                 .p-element {
                     grid-column: 4 / span 1;
+                    font-size: @font-size__m;
 
                 }
 
                 .p-menuitem-icon {
                     grid-area: 1 / 1 / 2 / 2;
+                    font-size: @font-size__m;
                 }
 
                 .p-menuitem-text {
                     grid-area: 1 / 2 / 2 / 3;
+                    font-size: @font-size__m;
+                    font-weight: @font-weight__heavier;
                 }
             }
 
@@ -85,8 +124,8 @@
 }
 
 
-.content-dashboard{
-    .p-menubar{
+.content-dashboard {
+    .p-menubar {
         flex-direction: row-reverse;
-    }  
+    }
 }
