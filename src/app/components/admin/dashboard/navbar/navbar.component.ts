@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
+import { ButtonModule } from 'primeng/button';
+import { NavbarService } from '../../../../services/utilities/navbar.service';
+
 
 @Component({
     selector: 'app-navbar',
     standalone: true,
-    imports: [MenubarModule],
+    imports: [MenubarModule, ButtonModule],
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.less'
 })
@@ -13,6 +16,11 @@ export class NavbarComponent implements OnInit {
     items: MenuItem[] | undefined;
     language = 'Português'
     user = "Victor"
+    minimize = false;
+
+    constructor(private navbarService: NavbarService) { }
+
+
 
     ngOnInit(): void {
         this.items = [
@@ -65,11 +73,18 @@ export class NavbarComponent implements OnInit {
                     {
                         label: 'Sair da conta',
                         icon: 'pi pi-fw pi-sign-out',
-                        
+
                     },
                 ]
             }
         ];
     }
 
+    changeMinimize(): void {
+      if(this.navbarService.getMinimize()){
+        this.navbarService.setMinimize(false)
+      }else{
+        this.navbarService.setMinimize(true)
+      }
+    }
 }

@@ -1,5 +1,5 @@
 <div class="container">
-    <aside class="sidebar">
+    <aside class="sidebar" [ngClass]="{'sidebar-minimized': navbarService.getMinimize()}">
         <app-sidebar></app-sidebar>
     </aside>
     <div class="content-dashboard">

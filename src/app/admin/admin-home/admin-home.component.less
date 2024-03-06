@@ -4,18 +4,34 @@
     .mixin-display(flex);
     flex-direction: row;
     height: 100vh;
-    
+
 
     .sidebar {
         flex: 0 0 @sidebar-with;
         max-width: @sidebar-with;
         background-color: @sidebar-background;
-       // padding: 0 @indent__x + 6;
+        // padding: 0 @indent__x + 6;
         align-items: center;
+        overflow: hidden;
+        transition: max-width 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+        &.sidebar-minimized {
+            max-width: 0;
+
+            .logo{
+                &__text{
+                    opacity: 0;
+
+                }
+            }
+
+
+        }
     }
 
     .content-dashboard {
         flex: 1 1 auto;
         background-color: @primary__color__lighter;
     }
+
 }

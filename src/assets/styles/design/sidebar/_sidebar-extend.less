@@ -2,6 +2,18 @@
 
 
 .sidebar {
+    &.sidebar-minimized {
+
+        .logo{
+            &__text{
+                opacity: 0;
+                transition:  opacity 0.2s ease-in-out; /* Tempo, função de temporização e propriedade a ser animada */
+
+            }
+        }
+
+
+    }
     .p-panelmenu {
         .p-panelmenu-panel {
             margin-bottom: unset;
@@ -120,12 +132,5 @@
                 }
             }
         }
-    }
-}
-
-
-.content-dashboard {
-    .p-menubar {
-        flex-direction: row-reverse;
     }
 }
