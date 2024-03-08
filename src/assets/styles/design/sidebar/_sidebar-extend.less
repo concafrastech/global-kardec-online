@@ -4,16 +4,74 @@
 .sidebar {
     &.sidebar-minimized {
 
-        .logo{
-            &__text{
-                opacity: 0;
-                transition:  opacity 0.2s ease-in-out; /* Tempo, função de temporização e propriedade a ser animada */
 
+        .logo {
+            &__text {
+                opacity: 0;
+                transition: @sidebar-transition;
+            }
+        }
+
+        .p-panelmenu {
+            .p-panelmenu-header {
+                .p-panelmenu-header-content {
+
+                    .p-menuitem-text {
+                        opacity: 0;
+                        transition: @sidebar-transition;
+                    }
+                }
+
+
+            }
+        }
+
+        .p-panelmenu-content {
+            .p-menuitem {
+                .p-menuitem-content {
+                    .p-menuitem-link .p-menuitem-text {
+                        opacity: 0;
+                        transition: @sidebar-transition;
+                    }
+                }
+            }
+        }
+
+
+        &:hover {
+            .logo {
+                &__text {
+                    opacity: 1;
+
+                }
+            }
+
+            .p-panelmenu {
+                .p-panelmenu-header {
+                    .p-panelmenu-header-content {
+
+                        .p-menuitem-text {
+                            opacity: 1;
+                        }
+                    }
+
+
+                }
+            }
+            .p-panelmenu-content {
+                .p-menuitem {
+                    .p-menuitem-content {
+                        .p-menuitem-link .p-menuitem-text {
+                            opacity: 1;
+                        }
+                    }
+                }
             }
         }
 
 
     }
+
     .p-panelmenu {
         .p-panelmenu-panel {
             margin-bottom: unset;
@@ -92,7 +150,7 @@
                 background-color: unset;
                 border: unset;
                 border-radius: unset;
-                padding: 0 0 0 @indent__x + 6;
+                padding: 0 0 0 8px;
 
                 .p-panelmenu-header-action {
                     .mixin-display(grid);
@@ -111,7 +169,7 @@
 
                 .p-menuitem-icon {
                     grid-area: 1 / 1 / 2 / 2;
-                    font-size: @font-size__m;
+                    font-size: 24px;
                 }
 
                 .p-menuitem-text {

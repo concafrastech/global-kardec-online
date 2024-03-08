@@ -21,7 +21,6 @@ export class SidebarComponent implements OnInit {
                 items: [
                     {
                         label: 'New',
-                        icon: 'pi pi-fw pi-plus',
                         items: [
                             {
                                 label: 'Bookmark',

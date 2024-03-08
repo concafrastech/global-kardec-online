@@ -25,6 +25,7 @@ Personalize as variáveis relacionadas à barra lateral.
 // Layout - Sidebar
 @sidebar-with: 260px;                  // Largura da barra lateral
 @sidebar-background: @theme__color__primary;  // Cor de fundo da barra lateral
+@sidebar-transition // transition usado na barra lateral, o padrão é opacity 0.1s ease-in-out;
 ```
 
 Sinta-se à vontade para experimentar com essas variáveis para criar o visual desejado para o seu projeto. Lembre-se de compilar os arquivos Less após fazer alterações para visualizar as mudanças no seu aplicativo.
