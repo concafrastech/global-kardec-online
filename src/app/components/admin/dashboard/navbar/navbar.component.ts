@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
@@ -10,7 +10,7 @@ import { NavbarService } from '../../../../services/utilities/navbar.service';
     standalone: true,
     imports: [MenubarModule, ButtonModule],
     templateUrl: './navbar.component.html',
-    styleUrl: './navbar.component.less'
+    styleUrl: './navbar.component.less',
 })
 export class NavbarComponent implements OnInit {
     items: MenuItem[] | undefined;
@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
                 icon: 'pi pi-fw pi-language',
                 items: [
                     {
-                        label: '🇧🇷 Português ',
+                        label: '🇧🇷 Português ',     //  Corrigir os emojis
                         url: 'pt-BR/admin/'
                     },
                     {

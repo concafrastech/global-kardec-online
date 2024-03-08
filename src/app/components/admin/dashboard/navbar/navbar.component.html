@@ -1,7 +1,8 @@
-<p-menubar [model]="items">
+<p-menubar [model]="items" styleClass="style-navbar" [style]="{'width': '100'}">
     <ng-template pTemplate="start">
         <p-button [text]="true" (click)="changeMinimize()">
             <i class="pi pi-bars" ></i>
         </p-button>
     </ng-template>
+
 </p-menubar>
