@@ -20,38 +20,43 @@ p-menubarsub {
                         li {
                             a {
                                 span {
+                                    &.pi-bell {
+                                        &::after {
+                                            color: red;
+                                            content: "ola";
+                                            width: 16px;
+                                        }
+                                    }
 
-
-                                    &.pt-BR {
+                                    &.flag {
                                         .mixin-display();
 
                                         &:before {
                                             width: @indent__xxs * 2;
                                             height: @indent__xxs * 2;
-                                            content: url("../../../img/pt-BR.png");
                                         }
                                     }
 
-                                    &.en-US {
-                                        .mixin-display();
+                                    &.pt-BR {
+                                        &:before {
+                                            content: url("../../../img/pt-BR.png");
+                                        }
 
-                                        &::before {
-                                            width: @indent__xxs * 2;
-                                            height: @indent__xxs * 2;
+                                    }
+
+                                    &.en-US {
+                                        &:before {
                                             content: url("../../../img/en-US.png");
 
                                         }
                                     }
 
                                     &.es {
-                                        .mixin-display();
-
-                                        &::before {
-                                            width: @indent__xxs * 2;
-                                            height: @indent__xxs * 2;
+                                        &:before {
                                             content: url("../../../img/es.png");
                                         }
                                     }
+
                                 }
 
 

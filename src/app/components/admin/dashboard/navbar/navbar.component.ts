@@ -31,17 +31,17 @@ export class NavbarComponent implements OnInit {
                     {
                         label: 'Português ', 
                         url: 'pt-BR/admin/',
-                        icon: 'pt-BR'
+                        icon: 'flag pt-BR'
                     },
                     {
                         label: 'English ',
                         url: '',
-                        icon: 'en-US'
+                        icon: 'flag en-US'
                     },
                     {
                         label: 'Español',
                         url: '',
-                        icon: 'es'
+                        icon: 'flag es'
                     }
                 ]
             },
