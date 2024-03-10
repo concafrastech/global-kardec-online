@@ -29,16 +29,19 @@ export class NavbarComponent implements OnInit {
                 icon: 'pi pi-fw pi-language',
                 items: [
                     {
-                        label: '&#127463&#127479 Português ', 
-                        url: 'pt-BR/admin/'
+                        label: 'Português ', 
+                        url: 'pt-BR/admin/',
+                        icon: 'pt-BR'
                     },
                     {
-                        label: '&#127482&#127480 English ',
-                        url: ''
+                        label: 'English ',
+                        url: '',
+                        icon: 'en-US'
                     },
                     {
-                        label: '&#127466&#127480 Español',
-                        url: ''
+                        label: 'Español',
+                        url: '',
+                        icon: 'es'
                     }
                 ]
             },
