@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -7,11 +9,15 @@ import { environment } from '../../../environments/environment';
 export class CourseSerivce {
     private apiUrl: String;
 
-    constructor() {
+    constructor(private _http: HttpClient) {
         this.apiUrl = environment.apiUrl;
     }
 
-    get(): any {
-        console.log(this.apiUrl);
+    getAllCourses(): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+
+        return this._http.get(`${this.apiUrl}/gk/curso/`, { headers });
     }
 }
