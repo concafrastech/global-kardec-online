@@ -14,10 +14,12 @@
         align-items: center;
         overflow: hidden;
         transition: max-width 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+       
 
 
         &.sidebar-minimized {
             max-width: 80px;
+
 
             &:hover {
                 position: absolute;
@@ -27,9 +29,8 @@
                 min-width: 260px;
                 display: block;
                 z-index: 1;
-                color: #fff;
-                font-weight: 200;
                 overflow-x: hidden;
+
             }
 
             .logo {
