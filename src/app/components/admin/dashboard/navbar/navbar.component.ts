@@ -29,16 +29,19 @@ export class NavbarComponent implements OnInit {
                 icon: 'pi pi-fw pi-language',
                 items: [
                     {
-                        label: '🇧🇷 Português ',     //  Corrigir os emojis
-                        url: 'pt-BR/admin/'
+                        label: 'Português ', 
+                        url: 'pt-BR/admin/',
+                        icon: 'flag pt-BR'
                     },
                     {
-                        label: '🇺🇸 English ',
-                        url: ''
+                        label: 'English ',
+                        url: '',
+                        icon: 'flag en-US'
                     },
                     {
-                        label: '🇪🇸 Español',
-                        url: ''
+                        label: 'Español',
+                        url: '',
+                        icon: 'flag es'
                     }
                 ]
             },
@@ -47,7 +50,7 @@ export class NavbarComponent implements OnInit {
                 icon: 'pi pi-fw pi-question-circle'
             },
             {
-                label: "Notificações",
+                label: "Notificação",
                 icon: 'pi pi-fw pi-bell'
 
             },
