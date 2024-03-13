@@ -11,6 +11,13 @@
     display: ~"-ms-@{_value}box";
     display: @_value;
 }
+.mixin-display-flex-wrap (
+    @_value: wrap
+) {
+    flex-wrap: ~"-webkit-@{_value}";
+    flex-wrap: ~"-ms-@{_value}";
+    flex-wrap: @_value;
+}
 
 .lib-vendor-prefix-flex-grow(
     @_value: 0
