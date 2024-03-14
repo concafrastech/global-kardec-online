@@ -4,6 +4,7 @@ import { AdminGuard } from './services/guards/admin.guard';
 
 // pages
 import { UikitComponent } from './pages/utilities/uikit/uikit.component';
+import { CoursesNewComponent } from './admin/courses/courses-new/courses-new.component';
 
 export const routes: Routes = [
     {
@@ -12,12 +13,12 @@ export const routes: Routes = [
         //canActivate: [AdminGuard],
         children: [
             {
-                path: 'coursos',
+                path: 'cursos',
                 component: AdminHomeComponent
             },
             {
                 path: 'cursos/novo',
-                component: AdminHomeComponent
+                component: CoursesNewComponent
             },
         ]
     },

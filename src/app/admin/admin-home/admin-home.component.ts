@@ -4,12 +4,13 @@ import { NavbarComponent } from '../../components/admin/dashboard/navbar/navbar.
 import { NavbarService } from '../../services/utilities/navbar.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 
 
 @Component({
     selector: 'app-admin-home',
     standalone: true,
-    imports: [CommonModule,SidebarComponent, NavbarComponent],
+    imports: [CommonModule,SidebarComponent, NavbarComponent, RouterOutlet],
     templateUrl: './admin-home.component.html',
     styleUrl: './admin-home.component.less'
 })
