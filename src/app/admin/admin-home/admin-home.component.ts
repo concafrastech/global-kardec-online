@@ -18,5 +18,4 @@ export class AdminHomeComponent  {
 
     constructor(public navbarService: NavbarService) { }
 
-
 }
