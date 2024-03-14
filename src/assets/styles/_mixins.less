@@ -11,6 +11,13 @@
     display: ~"-ms-@{_value}box";
     display: @_value;
 }
+.mixin-display-flex-wrap (
+    @_value: wrap
+) {
+    flex-wrap: ~"-webkit-@{_value}";
+    flex-wrap: ~"-ms-@{_value}";
+    flex-wrap: @_value;
+}
 
 .lib-vendor-prefix-flex-grow(
     @_value: 0
@@ -82,14 +89,14 @@
 
 // Mixin para telas pequenas (telefones)
 .screen-small(@rules) {
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 425px) {
       @rules();
     }
   }
   
   // Mixin para tablets
   .screen-medium(@rules) {
-    @media screen and (min-width: 768px) and (max-width: 991px) {
+    @media screen and (min-width: 425px) and (max-width: 991px) {
       @rules();
     }
   }
@@ -104,6 +111,14 @@
   // Mixin para telas extra grandes (grande desktops)
   .screen-xlarge(@rules) {
     @media screen and (min-width: 1200px) {
+      @rules();
+    }
+  }
+
+  // Regra customizável
+
+  .screen-small(@rules, @screen) {
+    @media screen and (max-width:  @screen) {
       @rules();
     }
   }

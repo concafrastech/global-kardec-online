@@ -1,22 +1,189 @@
 @import "../../_global.less";
 
+
 .sidebar {
+    
+    &.sidebar-minimized {
+
+
+        .logo {
+            &__text {
+                opacity: 0;
+                transition: @sidebar-transition;
+            }
+        }
+
+        .p-panelmenu {
+            .p-panelmenu-header {
+                .p-panelmenu-header-content {
+
+                    .p-menuitem-text {
+                        opacity: 0;
+                        transition: @sidebar-transition;
+                    }
+                }
+
+
+            }
+        }
+
+        .p-panelmenu-content {
+            .p-menuitem {
+                .p-menuitem-content {
+                    .p-menuitem-link .p-menuitem-text {
+                        opacity: 0;
+                        transition: @sidebar-transition;
+                    }
+                }
+            }
+        }
+
+
+        &:hover {
+
+            .logo {
+                &__text {
+                    opacity: 1;
+
+                }
+            }
+
+            .p-panelmenu {
+                .p-panelmenu-header {
+                    .p-panelmenu-header-content {
+
+                        .p-menuitem-text {
+                            opacity: 1;
+                        }
+                    }
+
+
+                }
+            }
+            .p-panelmenu-content {
+                .p-menuitem {
+                    .p-menuitem-content {
+                        .p-menuitem-link .p-menuitem-text {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
     .p-panelmenu {
+        .p-panelmenu-panel {
+            margin-bottom: unset;
+        }
+
+        .p-panelmenu-content {
+            background-color: @color-gray-light;
+            border-radius: unset;
+            border: unset;
+
+            .p-panelmenu-root-list {
+                padding: 0 0 0 @indent__x + 6;
+            }
+
+            .p-menuitem {
+                &:not(.p-highlight):not(.p-disabled) {
+
+                    &>.p-menuitem-content {
+                        background-color: unset;
+
+                        &:hover {
+                            background-color: unset;
+
+                        }
+                    }
+
+                }
+
+                &> {
+                    .p-menuitem-content {
+                        .p-menuitem-link {
+
+                            .p-menuitem-text,
+                            .p-menuitem-icon,
+                            .p-element * {
+                                font-size: @font-size__m;
+                                font-weight: @font-weight__heavier;
+                            }
+
+                        }
+
+                        &:hover {
+                            .p-menuitem-link {
+
+                                .p-menuitem-text,
+                                .p-menuitem-icon,
+                                .p-element * {
+                                    color: @color-blue-light;
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+        }
+
         .p-panelmenu-header {
+            &:hover {
+                background-color: @color-gray-light;
+
+                .p-panelmenu-header-content {
+
+                    .p-panelmenu-header-action {
+                        color: @color-black;
+                    }
+                }
+            }
 
             .p-panelmenu-header-content {
                 background-color: unset;
                 border: unset;
+                border-radius: unset;
+                padding: 0 0 0 @indent__xxs;
 
                 .p-panelmenu-header-action {
-                    color: @color-white;
+                    .mixin-display(grid);
+                    color: @color-gray-light;
+                    grid-template-columns: auto auto 1fr;
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 0px;
+                    grid-row-gap: 0px;
                 }
 
+                .p-element {
+                    grid-column: 4 / span 1;
+                    font-size: @font-size__m;
+
+                }
+
+                .p-menuitem-icon {
+                    grid-area: 1 / 1 / 2 / 2;
+                    font-size: 24px;
+                }
+
+                .p-menuitem-text {
+                    grid-area: 1 / 2 / 2 / 3;
+                    font-size: @font-size__m;
+                    font-weight: @font-weight__heavier;
+                }
             }
 
             &.p-highlight {
                 .p-panelmenu-header-content {
-                    background-color: @color-white;
+                    background-color: @color-gray-light;
 
                     .p-panelmenu-header-action {
                         color: @color-black;

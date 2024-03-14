@@ -1,0 +1,120 @@
+@import "../../../../assets/styles/_global.less";
+
+@container-width: 1200px;
+
+
+.container {
+    width: @container-width;
+    margin-right: auto;
+    margin-left: auto;
+
+    .font {
+        &_inter {
+            font-family: @font-family__base;
+        }
+
+        &_audiowide {
+            font-family: @font-family__second;
+
+        }
+    }
+
+    // Classe Row
+    .row {
+        .mixin-display(flex);
+        .mixin-display-flex-wrap(nowrap);
+        flex-direction: column;
+        margin-right: @indent__s;
+        margin-left: @indent__s;
+        margin-top: @indent__s;
+
+        .text-blue-500 {
+            color: @theme__color__primary !important;
+        }
+    }
+}
+
+
+
+// Adicionando clearfix para evitar problemas com floats dentro de rows
+.clearfix {
+
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+.font-container {
+    .mixin-display(flex);
+    justify-content: space-around;
+
+    .font-column {
+        text-align: center;
+        margin: 10px;
+    }
+
+    .color-primary {
+        color: @theme__color__primary;
+    }
+
+    .color-secondary {
+        color: @theme__color__secondary;
+    }
+
+    .font-weight {
+        &_bold {
+            font-weight: @font-weight__bold;
+
+        }
+
+        &_semibold {
+            font-weight: @font-weight__semibold;
+        }
+
+        &_heavier {
+            font-weight: @font-weight__heavier;
+        }
+
+        &_regular {
+            font-weight: @font-weight__regular;
+        }
+
+        &_light {
+            font-weight: @font-weight__light;
+        }
+    }
+}
+
+
+.doc-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 450px;
+    overflow-x: auto;
+    position: relative;
+
+    th {
+        border-bottom: 1px solid var(--table-border-color);
+        padding: 3rem 1rem 1rem;
+        text-align: left;
+        text-transform: capitalize;
+    }
+
+    tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--table-border-color);
+        white-space: pre-wrap;
+        line-height: 1.5;
+
+        &:first-child {
+            font-weight: 700;
+            color: @theme__color__primary;
+        }
+    }
+}
