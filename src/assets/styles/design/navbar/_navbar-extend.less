@@ -1,0 +1,124 @@
+@import "../../_global.less";
+
+
+.p-menubar-end {
+    display: none;
+}
+
+p-menubarsub {
+    .mixin-display();
+    justify-content: right;
+    width: 100%;
+}
+
+.content-dashboard {
+    .p-menubar {
+        .p-menubar-button{
+            display: none;
+        }
+        .p-element {
+            .screen-small({
+                .p-menubar-root-list {
+                    .mixin-display(flex);
+                    .mixin-display-flex-wrap(nowrap);
+                    justify-content: flex-end;
+                    position: unset;
+                    padding: 0 32px;
+                    box-shadow: unset;
+                    background-color: unset;
+                    gap:15px;
+
+                    .p-menuitem {
+                        .p-submenu-list {
+                            position: absolute;
+                            width: auto;
+                        }
+                    }
+
+
+                    >.p-menuitem {
+                        width: unset;
+
+                        >.p-menuitem-content {
+                            padding: 5px;
+
+                            .p-menuitem-link {
+                                width: auto;
+                                padding: unset;
+
+                                .p-menuitem-text {
+                                    display: none;
+                                    width: 0;
+                                }
+
+                                .p-icon-wrapper {
+                                    all: unset;
+                                }
+                            }
+                        }
+
+                        &.p-highlight.p-focus > .p-menuitem-content {
+                            background-color: unset;
+                        }
+                    }
+                }
+            }
+
+            , 1024px);
+            
+
+        .p-menubar-root-list {
+            .p-menuitem {
+                .p-submenu-list {
+                    li {
+                        a {
+                            span {
+                                &.pi-bell {
+                                    &::after {
+                                        color: red;
+                                        content: "ola";
+                                        width: 16px;
+                                    }
+                                }
+
+                                &.flag {
+                                    .mixin-display();
+
+                                    &:before {
+                                        width: @indent__xxs * 2;
+                                        height: @indent__xxs * 2;
+                                    }
+                                }
+
+                                &.pt-BR {
+                                    &:before {
+                                        content: url("../../../img/pt-BR.png");
+                                    }
+
+                                }
+
+                                &.en-US {
+                                    &:before {
+                                        content: url("../../../img/en-US.png");
+
+                                    }
+                                }
+
+                                &.es {
+                                    &:before {
+                                        content: url("../../../img/es.png");
+                                    }
+                                }
+
+                            }
+
+
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+}
