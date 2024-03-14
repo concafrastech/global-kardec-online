@@ -10,6 +10,16 @@ export const routes: Routes = [
         path: 'admin',
         component: AdminHomeComponent,
         //canActivate: [AdminGuard],
+        children: [
+            {
+                path: 'coursos',
+                component: AdminHomeComponent
+            },
+            {
+                path: 'cursos/novo',
+                component: AdminHomeComponent
+            },
+        ]
     },
     {
         path: 'uikit',
