@@ -1,26 +1,26 @@
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="flex">
+    <div class="course_photo">
+        <div class="course_photo-cover"></div>
+        <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
+
+    </div>
+    <div class="course_info">
+            <div class="flex flex-column gap-2">
+                <label for="courseName">Nome</label>
+                <input type="text" id="courseName" pInputText formControlName="name" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseInstitute">Instituto</label>
+                <input type="text" id="courseInstitute" pInputText formControlName="institute" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courselanguage">Idioma</label>
+                <input type="text" id="courselanguage" pInputText formControlName="language" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseDescription">Descrição</label>
+                <textarea id="float-input" id="courseDescription" rows="3" cols="30" pInputTextarea></textarea>
+            </div>
+
+    </div>
+</div>

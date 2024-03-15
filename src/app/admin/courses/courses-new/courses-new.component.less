@@ -1,0 +1,34 @@
+@import "../../../../assets/styles/_global.less";
+
+.course {
+    &_photo {
+        .mixin-display();
+        .mixin-display-flex-direction();
+        .mixin-display-flex-box-align(center);
+        .mixin-gap(@indent__sx);
+        width: auto;
+        padding: 0 @indent__l;
+
+        &-cover {
+            width: 140px;
+            height: 200px;
+            background-color: @primary__color__lighter;
+        }
+    }
+
+    &_info {
+        .mixin-display();
+        .mixin-gap(@indent__sx);
+        .mixin-display-flex-wrap (wrap);
+        flex: 1;
+
+        .flex {
+            flex: auto;
+
+            label {
+                color: @theme__color__secondary;
+                font-weight: @font-weight__bold;
+            }
+        }
+    }
+}

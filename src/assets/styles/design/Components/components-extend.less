@@ -1,0 +1,25 @@
+@import "../../_global.less";
+
+.p-button {
+    border-radius: @buttons-border-radius;
+    padding: @buttons-padding;
+
+    &.p-button-primary {
+        background: @buttons-primary-background-color;
+
+        &:hover {
+            background: @buttons-primary-background-color-hover;
+        }
+    }
+
+    &.p-button-secondary {
+        background: @buttons-secondary-background-color;
+        border: unset;
+
+        &:hover {
+            color: @color-black;
+            background: @buttons-secondary-background-color-hover;
+        }
+    }
+
+}
