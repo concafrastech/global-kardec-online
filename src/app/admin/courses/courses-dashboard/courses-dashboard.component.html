@@ -1,0 +1,24 @@
+<p-card>
+    <p-table [value]="coursesList"  class="tHeader" responsiveLayout="stack" [tableStyle]="{ 'min-width': '5rem' }">
+        <ng-template pTemplate="header" class="tHeader">
+            <tr>
+                <th>Nome do Curso</th>
+                <th>Idioma</th>
+                <th>Instituto</th>
+                <th id="thStyleAction">Ação</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-course>
+            <tr class="trBody">
+                <td>{{ course.nome_do_curso }}</td>
+                <td>{{ course.instituto }}</td>
+                <td>{{ course.idioma }}</td>
+                <td class="actionItens">
+                    <a ><i class="pi pi-pencil"></i></a>
+                    <a ><i class="pi pi-trash"></i></a>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary" class="tFooter"></ng-template>
+    </p-table>
+</p-card>
