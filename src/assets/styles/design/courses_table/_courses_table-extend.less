@@ -4,16 +4,15 @@
 .p-datatable .p-datatable-thead>tr>th {
     background-color: @color-blue-light;
     color: @color-white;    
-    font-weight: 700;
+    font-weight: bold;
+    font-size: 14;
     border: 0.05px solid @color-white ;
 }
-#thStyleAction{
-    width: 15%;
-}
+
 .trBody{
-    td {
-        font-weight: 500;
-        font-size: 14px;
+    td {    
+        font-weight: 600; // 600 é equivalente à semi-bold de acordo com a MDN doc
+        font-size: 12px;
         padding: 13px;
         height: 45px;
         border: solid @color-white 0 0 0 1px;
@@ -34,4 +33,14 @@
     background-color: @color-blue-light;
 
     height: 41px;
+}
+
+.pi-pencil:hover{
+    transition: 0.2s;
+    color: @color-blue-light;
+}
+
+.pi-trash:hover{
+    transition: 0.2s;
+    color: @color-red;
 }
