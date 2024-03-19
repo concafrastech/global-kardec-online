@@ -1,10 +1,14 @@
-<div class="flex">
-    <div class="course_photo">
-        <div class="course_photo-cover"></div>
-        <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
-
+<main class="content-main">
+    <div class="page-title-wrapper">
+        <h1 class="page-title">Criar Curso</h1>
     </div>
-    <div class="course_info">
+    <div class="flex course">
+        <div class="course_photo">
+            <div class="course_photo-cover"></div>
+            <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
+
+        </div>
+        <div class="course_info">
             <div class="flex flex-column gap-2">
                 <label for="courseName">Nome</label>
                 <input type="text" id="courseName" pInputText formControlName="name" />
@@ -22,5 +26,17 @@
                 <textarea id="float-input" id="courseDescription" rows="3" cols="30" pInputTextarea></textarea>
             </div>
 
+        </div>
     </div>
-</div>
+
+    <div class="flex classes">
+        <div class="page-title-wrapper">
+            <h1 class="page-title">Conteúdos do curso</h1>
+        </div>
+        <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
+    
+    </div>
+
+    
+
+</main>
