@@ -57,11 +57,11 @@ export class CoursesDashboardComponent implements OnInit {
         }
     ]
 
-    confirmDelete(event: Event) {
+    confirmDelete(event: Event, courseName: string) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
-            message: 'Você irá deletar esse curso?',
-            header: 'Confirmar exclusão de curso',
+            message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
+            header: `Você está excluindo o curso ${courseName}.`,
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: "p-button-danger p-button-text",
             rejectButtonStyleClass: "p-button-text p-button-text",
@@ -71,10 +71,10 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
-                this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Curso deletado!' });
+                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso <b> ${courseName} <b/> excluído!` });
             },
             reject: () => {
-                this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você negou a exclusão.' });
+                this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Ok.' });
             }
         });
     }
