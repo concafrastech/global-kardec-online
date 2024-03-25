@@ -17,9 +17,9 @@
 
         <ng-template pTemplate="body" let-course>
             <tr class="trBody">
-                <td>{{ course.nome_do_curso }}</td>
-                <td>{{ course.instituto }}</td>
-                <td>{{ course.idioma }}</td>
+                <td class="courseName">{{ course.nome_do_curso }}</td>
+                <td class="instituto">{{ course.instituto }}</td>
+                <td class="idioma">{{ course.idioma }}</td>
                 <td class="actionItens">
                     <a><i class="pi pi-pencil"></i></a>
                     <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome_do_curso)"></i></a>

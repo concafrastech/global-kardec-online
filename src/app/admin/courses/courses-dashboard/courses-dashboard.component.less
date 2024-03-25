@@ -1,13 +1,35 @@
 @import "../../../../assets/styles/_global.less";
 
 
-#thStyleAction{
+#thStyleAction {
     width: 15%;
 
 }
-.title-box{
+
+.title-box {
     justify-content: space-between;
     align-items: end;
     height: min-content;
 
+}
+
+tr {
+    .screen-small ({
+        .courseName::before {
+            color: @color-blue-light;
+            content: "Nome do Curso";
+        }
+
+        .instituto::before {
+            color: @color-blue-light;
+
+            content: "Instituto";
+        }
+
+        .idioma::before {
+            color: @color-blue-light;
+
+            content: "Idioma";
+        }
+    });
 }
