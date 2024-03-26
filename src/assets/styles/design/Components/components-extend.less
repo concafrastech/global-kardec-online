@@ -31,3 +31,23 @@
         color: @theme__color__secondary;
     }
 }
+
+// Inputs
+.formGroup {
+    label {
+        color: @theme__color__secondary;
+        font-weight: @font-weight__bold;
+        margin-top: @indent__xxs;
+    }
+
+    .inputGroup {
+        .mixin-display();
+        .mixin-gap(@indent__xxs);
+        .mixin-flex-grow(1);
+        .mixin-flex-justify-content(space-evenly);
+
+        .flex {
+            width: 100%;
+        }
+    }
+}

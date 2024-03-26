@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit {
                     },
                     {
                         label: 'Criar',
-                        url: 'admin/cursos/novo',
+                        routerLink: '/admin/cursos/novo',
                         icon: 'pi pi-fw pi-plus-circle'
                     },
                     {

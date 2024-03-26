@@ -4,9 +4,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+
+import { TabViewComponent } from '../../../components/admin/tab-view/tab-view.component';
 
 
 
@@ -18,7 +19,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         ButtonModule,
         InputTextModule,
         InputTextareaModule,
-        TabViewModule,
+        TabViewComponent,
         ConfirmDialogModule
     ],
     templateUrl: './courses-new.component.html',
