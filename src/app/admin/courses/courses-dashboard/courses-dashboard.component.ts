@@ -71,7 +71,7 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
-                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso <b> ${courseName} <b/> excluído!` });
+                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso  ${courseName} excluído!` });
             },
             reject: () => {
                 this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Ok.' });
