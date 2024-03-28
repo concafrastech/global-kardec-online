@@ -8,13 +8,26 @@
 
 .title-box {
     justify-content: space-between;
-    align-items: end;
+    align-items: center;
     height: min-content;
 
+    .screen-custom({
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }, 640px)
 }
 
+.courseCreateButton {
+    align-items: center;
+    justify-content: center;
+}
+
+
 tr {
-    .screen-small ({
+    .screen-custom ({
+
         .courseName::before {
             color: @color-blue-light;
             content: "Nome do Curso";
@@ -31,5 +44,8 @@ tr {
 
             content: "Idioma";
         }
-    });
+
+    }
+
+    , 640px);
 }

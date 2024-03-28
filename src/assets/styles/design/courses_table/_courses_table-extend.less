@@ -3,26 +3,27 @@
 
 .p-datatable .p-datatable-thead>tr>th {
     background-color: @color-blue-light;
-    color: @color-white;    
+    color: @color-white;
     font-weight: bold;
     font-size: 14;
     border: 0.05px solid @color-white ;
 }
 
-.trBody{
-    td {    
+.trBody {
+    td {
         font-weight: 600; // 600 é equivalente à semi-bold de acordo com a MDN doc
         font-size: 12px;
         padding: 13px;
         height: 45px;
         border: solid @color-white 0 0 0 1px;
     }
+
     .actionItens {
         display: flex;
         justify-content: center;
         align-items: center;
-        
-    
+
+
         .pi {
             margin: 12px;
         }
@@ -35,15 +36,30 @@
     height: 41px;
 }
 
-.pi-pencil:hover{
+.pi-pencil:hover {
     transition: 0.2s;
     color: @color-blue-light;
 }
 
-.pi-trash:hover{
+.pi-trash:hover {
     transition: 0.2s;
     color: @color-red;
 }
-.p-card{
+
+.p-card {
     box-shadow: none;
 }
+
+.screen-custom({
+    .actionItens{
+        justify-content: right;
+    }
+    .actionItens::before {
+        content: "Ações";
+        color: @color-blue-light;
+
+    }
+
+}
+
+, 640px);
