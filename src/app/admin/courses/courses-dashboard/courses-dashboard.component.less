@@ -1,33 +1,15 @@
 @import "../../../../assets/styles/_global.less";
 
 
-#thStyleAction {
-    width: 15%;
-
-}
-
-.title-box {
-    justify-content: space-between;
-    align-items: center;
-    height: min-content;
-
-    .screen-custom({
+.screen-custom({
+    .title-box {
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-    }, 640px)
-}
+    }
 
-.courseCreateButton {
-    align-items: center;
-    justify-content: center;
-}
-
-
-tr {
-    .screen-custom ({
-
+    tr {
         .courseName::before {
             color: @color-blue-light;
             content: "Nome do Curso";
@@ -46,6 +28,17 @@ tr {
         }
 
     }
+}, 640px);
 
-    , 640px);
+.coursesTableCard {
+    .title-box {
+        justify-content: space-between;
+        align-items: center;
+        height: min-content;
+
+        .courseCreateButton {
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }
