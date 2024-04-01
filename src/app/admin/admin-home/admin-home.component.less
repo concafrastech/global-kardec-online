@@ -4,6 +4,10 @@
     .mixin-display(flex);
     flex-direction: row;
     height: 100vh;
+    .screen-custom({
+       height: auto;
+        
+    }, 897px);
 
 
     .sidebar {
@@ -49,6 +53,7 @@
 .content-dashboard {
     flex: 1 1 auto;
     background-color: @primary__color__lighter;
+    width: calc(100% - 263px);
 
     .main-content{
         background-color: @color-white;

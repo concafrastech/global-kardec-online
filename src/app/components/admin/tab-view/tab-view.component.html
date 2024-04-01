@@ -3,11 +3,13 @@
         <div class="page-title-wrapper">
             <h1 class="page-title">Conteúdos do curso</h1>
         </div>
-        <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
+        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary" 
+        (onClick)="addCourse()"
+        ></p-button>
     </div>
     <div class="tab-content">
-        <p-tabView>
-            <p-tabPanel *ngFor="let item of content; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
+        <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
+            <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
                 <p *ngFor="let contentItem of item.content">
                     {{ contentItem }}
                 </p>
@@ -20,20 +22,10 @@
 
 </div>
 
-
-
-<p-dialog header="Novo Recurso" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-    [maximizable]="true" [resizable]="false">
-    <div class="formGroup">
-        <div class="flex flex-column gap-2">
-            <label for="courseName">Nome</label>
-            <input type="text" id="courseName" pInputText formControlName="name" />
-        </div>
-        <div class="flex flex-column gap-2">
-            <label for="courseLink">Link</label>
-            <input type="text" id="courseLink" pInputText formControlName="link" />
-        </div>
-        <div class="inputGroup">
+<p-dialog class="add-feature" header="Novo Recurso" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    [draggable]="false" [maximizable]="true" [resizable]="false">
+    <form [formGroup]="formControl" (ngSubmit)="submitForm()">
+        <div class="formGroup">
             <div class="flex flex-column gap-2">
                 <label for="courseName">Nome</label>
                 <input type="text" id="courseName" pInputText formControlName="name" />
@@ -42,14 +34,22 @@
                 <label for="courseLink">Link</label>
                 <input type="text" id="courseLink" pInputText formControlName="link" />
             </div>
+            <div class="inputGroup">
+                <div class="flex flex-column gap-2">
+                    <label for="courseName">Instituto</label>
+                    <input type="text" id="courseName" pInputText formControlName="institute" />
+                </div>
+                <div class="flex flex-column gap-2">
+                    <label for="courseLink">Ordem</label>
+                    <input type="text" id="courseLink" pInputText formControlName="sort" />
+                </div>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseDescription">Descrição</label>
+                <textarea id="float-input" id="courseDescription" rows="5" cols="30" formControlName="description"
+                    pInputTextarea [autoResize]="false"></textarea>
+            </div>
         </div>
-        <div class="flex flex-column gap-2">
-            <label for="courseDescription">Descrição</label>
-            <textarea id="float-input" id="courseDescription" rows="5" cols="30" pInputTextarea [autoResize]="false"></textarea>
-        </div>
-
-
-    </div>
-
-
+        <button type="submit">Submit</button>
+    </form>
 </p-dialog>

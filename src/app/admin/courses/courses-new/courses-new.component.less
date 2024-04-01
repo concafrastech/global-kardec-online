@@ -4,6 +4,10 @@
     padding: 0 @indent__l;
 
     .course {
+        .screen-custom({
+            .mixin-display-flex-direction();
+            
+        }, 897px);
         &_photo {
             .mixin-display();
             .mixin-display-flex-direction();
@@ -25,6 +29,11 @@
             .mixin-display-flex-wrap (wrap);
             .mixin-flex-grow(1);
             .mixin-flex-justify-content(space-evenly);
+            .screen-custom({
+                .mixin-display-flex-direction();
+                margin-bottom: @indent__xxs;
+                .mixin-display-flex-wrap (nowrap);
+            }, 1385px);
 
             .flex {
                 .mixin-display-flex-flex-basis(calc(33.33% - 10px));
