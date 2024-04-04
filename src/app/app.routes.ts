@@ -4,6 +4,7 @@ import { AdminGuard } from './services/guards/admin.guard';
 
 // pages
 import { UikitComponent } from './pages/utilities/uikit/uikit.component';
+import { UploadComponent } from './components/common/upload/upload.component';
 
 export const routes: Routes = [
     {
@@ -25,5 +26,9 @@ export const routes: Routes = [
         path: 'uikit',
         component: UikitComponent,
         //canActivate: [AdminGuard],
+    },
+    {
+        path:'upload',
+        component: UploadComponent
     }
 ];
