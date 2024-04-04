@@ -5,6 +5,8 @@ import { AdminGuard } from './services/guards/admin.guard';
 // pages
 import { UikitComponent } from './pages/utilities/uikit/uikit.component';
 import { CoursesNewComponent } from './admin/courses/courses-new/courses-new.component';
+import {CoursesDashboardComponent} from './admin/courses/courses-dashboard/courses-dashboard.component'
+
 
 export const routes: Routes = [
     {
@@ -14,7 +16,7 @@ export const routes: Routes = [
         children: [
             {
                 path: 'cursos',
-                component: AdminHomeComponent
+                component: CoursesDashboardComponent
             },
             {
                 path: 'cursos/novo',
