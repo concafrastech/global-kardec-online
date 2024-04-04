@@ -15,13 +15,7 @@ export class AppComponent implements OnInit {
 
     constructor(private _courseService: CourseSerivce) {}
 
-    ngOnInit(): void {
-        this._courseService.getAllCourses().subscribe({
-            next: (response) => {
-                console.log(response);
-            },
-        });
-    }
+    ngOnInit(): void {}
 
     showDialog() {
         this.visible = true;
