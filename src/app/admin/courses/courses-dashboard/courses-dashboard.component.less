@@ -1,0 +1,44 @@
+@import "../../../../assets/styles/_global.less";
+
+
+.screen-custom({
+    .title-box {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    tr {
+        .courseName::before {
+            color: @color-blue-light;
+            content: "Nome do Curso";
+        }
+
+        .instituto::before {
+            color: @color-blue-light;
+
+            content: "Instituto";
+        }
+
+        .idioma::before {
+            color: @color-blue-light;
+
+            content: "Idioma";
+        }
+
+    }
+}, 640px);
+
+.coursesTableCard {
+    .title-box {
+        justify-content: space-between;
+        align-items: center;
+        height: min-content;
+
+        .courseCreateButton {
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
