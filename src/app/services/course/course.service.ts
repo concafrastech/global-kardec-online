@@ -14,6 +14,11 @@ export class CourseSerivce {
         this.apiUrl = environment.apiUrl;
     }
 
+    /**
+     * Esta função retorna todos os cursos cadastrados na base de dados.
+     *
+     * @return Object JSON
+     */
     getAllCourses(): Observable<any> {
         let headers = {
             'Content-Type': 'application/json',
@@ -22,6 +27,12 @@ export class CourseSerivce {
         return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
     }
 
+    /**
+     * Esta função é responsável por criar um curso na base de dados.
+     *
+     * @param course - É um objeto seguindo o padrão do model Course.
+     * @return Object JSON
+     */
     createCourse(course: Course): Observable<any> {
         let headers = {
             'Content-Type': 'application/json',

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CourseSerivce } from './services/course/course.service';
 
 @Component({
     selector: 'app-root',
@@ -13,7 +12,7 @@ export class AppComponent implements OnInit {
     title = 'global-kardec-online';
     visible: boolean = false;
 
-    constructor(private _courseService: CourseSerivce) {}
+    constructor() {}
 
     ngOnInit(): void {}
 
