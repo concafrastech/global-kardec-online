@@ -1,36 +1,33 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
 
 @Component({
-  selector: 'app-upload',
-  standalone: true,
-  imports: [FileUploadModule, ToastModule, CommonModule],
-  providers: [MessageService],
-  templateUrl: './upload.component.html',
-  styleUrl: './upload.component.less'
+    selector: 'app-upload',
+    standalone: true,
+    imports: [FileUploadModule, ToastModule, CommonModule],
+    providers: [MessageService],
+    templateUrl: './upload.component.html',
+    styleUrl: './upload.component.less'
 })
 
 
 export class UploadComponent {
-  
-  uploadedFiles: any[] = [];
 
-  constructor(private messageService: MessageService) {}
+    constructor(private messageService: MessageService) { }
 
-  onUpload(event:UploadEvent) {
-      for(let file of event.files) {
-          this.uploadedFiles.push(file);
-      }
+    onUpload(event: FileSelectEvent) {
+        // Captura do arquivo
+        var file: File = event.files[0];
+        // Converter arquivo para base64
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => localStorage.setItem('photo', JSON.stringify(reader.result));
 
-      this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
-  }
-  fileSize:number = 1000000;
+        this.messageService.add({ severity: 'success', summary: 'Completo', detail: 'Upload da imagem realizado!' });
+
+    }
 }
