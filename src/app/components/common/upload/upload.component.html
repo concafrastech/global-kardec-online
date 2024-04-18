@@ -1,0 +1,5 @@
+<div class="card flex justify-content-center">
+    <p-toast></p-toast>
+    <p-fileUpload chooseLabel="Selecionar o Arquivo" name="photo[]" mode="basic" [auto]="true" accept="image/*" [multiple]="false" (onSelect)="onUpload($event)" >
+    </p-fileUpload>
+</div>
