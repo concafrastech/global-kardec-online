@@ -1,4 +1,4 @@
-export interface Resourse {
+export interface Resource {
     uuid: string;
     nome: string;
     ordem: number,
