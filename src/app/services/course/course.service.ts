@@ -40,4 +40,12 @@ export class CourseSerivce {
 
         return this._http.post(`${this.apiUrl}/gk/curso`, course, { headers });
     }
+
+    deleteCourse(uuid: string): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+
+        return this._http.delete(`${this.apiUrl}/gk/curso/${uuid}`, { headers });
+    }
 }
