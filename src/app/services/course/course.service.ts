@@ -48,4 +48,10 @@ export class CourseSerivce {
 
         return this._http.delete(`${this.apiUrl}/gk/curso/${uuid}`, { headers });
     }
+    updateCourse(course: Course) {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+        return this._http.put(`${this.apiUrl}/gk/curso`, course, {headers});
+    }
 }
