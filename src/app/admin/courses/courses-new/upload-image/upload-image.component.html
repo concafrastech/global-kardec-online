@@ -1,0 +1,26 @@
+@if (base64Result) {
+<img class="course_photo-cover" [attr.src]="base64Result" />
+
+}@else {
+<div class="course_photo-cover"></div>
+
+}
+
+
+<p-toast></p-toast>
+
+
+<p-fileUpload class="course_photo-cover" #fileUpload mode="basic" [maxFileSize]="1000000" [auto]="true" name="demo[]"
+
+    invalidFileSizeMessageSummary="ksajdksjdkajkdaj" 
+    invalidFileSizeMessageDetail="Imagem grande de mais"
+    accept="image/*"  
+    (onSelect)="onUpload($event)" 
+    (onError)="onError($event)"
+    (click)="onClear()"
+    cancelIcon="true"
+    [customUpload]="true" 
+    accept="image/*" 
+    chooseLabel="Imagem"
+    >
+</p-fileUpload>

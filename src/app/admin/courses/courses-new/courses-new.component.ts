@@ -29,6 +29,7 @@ import { Languages } from '../../../models/languages';
 
 import { ToastModule } from 'primeng/toast';
 
+import { UploadImageComponent } from './upload-image/upload-image.component';
 
 
 @Component({
@@ -44,7 +45,8 @@ import { ToastModule } from 'primeng/toast';
         MessagesModule,
         MessageModule,
         DropdownModule,
-        ToastModule
+        ToastModule,
+        UploadImageComponent
 
     ],
     templateUrl: './courses-new.component.html',

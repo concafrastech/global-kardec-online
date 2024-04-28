@@ -4,9 +4,7 @@
     </div>
     <div class="flex course">
         <div class="course_photo">
-            <div class="course_photo-cover"></div>
-            <p-button label="Submit" icon="pi pi-upload" severity="primary"></p-button>
-
+            <app-upload-image></app-upload-image>
         </div>
         <form [formGroup]="formControl" class="registration_form">
             @if (showError) {
