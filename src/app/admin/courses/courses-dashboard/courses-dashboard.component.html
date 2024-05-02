@@ -6,7 +6,10 @@
         <p-button class="courseCreateButton" label="Criar Curso" icon="pi pi-plus" size="small"
             severity="primary"></p-button>
     </div>
-    <p-table [value]="coursesList" class="tHeader" responsiveLayout="stack" [tableStyle]="{ 'min-width': '5rem' }">
+    <p-table [value]="coursesList" [rows]="5" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="{currentPage}ª de {totalPages} " class="tHeader"
+        responsiveLayout="stack" [tableStyle]="{ 'min-width': '5rem' }"
+      
+        >
         <ng-template pTemplate="header" class="tHeader">
             <tr>
                 <th>Nome do Curso</th>
@@ -27,6 +30,7 @@
             </tr>
 
         </ng-template>
+    
         <ng-template pTemplate="summary" class="tFooter"></ng-template>
     </p-table>
 </p-card>
