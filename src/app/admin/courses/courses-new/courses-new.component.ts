@@ -88,15 +88,17 @@ export class CoursesNewComponent implements OnInit {
 
     enabledCourse: boolean = false;
 
+    // Recebe a imagem oriunda do component filho
+    infoToChild: string = "";
 
 
     /**
-     * 
-     * @param confirmationService 
-     * @param messageService 
-     * @param courseService 
-     * @param formBuilder 
-     * @param UtilsService 
+     *
+     * @param confirmationService
+     * @param messageService
+     * @param courseService
+     * @param formBuilder
+     * @param UtilsService
      */
     constructor(
         private confirmationService: ConfirmationService,
@@ -107,9 +109,9 @@ export class CoursesNewComponent implements OnInit {
 
     ) { }
 
-    /**
-     * 
-     */
+
+
+
     ngOnInit(): void {
         // Inicialização do formulário com validadores
         this.formControl = this.formBuilder.group({
@@ -122,7 +124,6 @@ export class CoursesNewComponent implements OnInit {
         // Chamada para obter todos os cursos disponíveis
         this.courseService.getAllCourses().subscribe({
             next: courses => {
-                console.log(courses)
                 // Manipulação dos cursos, se necessário
             },
             error: error => console.error(error)
@@ -185,6 +186,14 @@ export class CoursesNewComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * 
+     * @param imag 
+     */
+    getImage(imag: string) {
+        this.infoToChild = imag;
+    }
     /**
      * Cria um novo curso com base nos dados fornecidos pelo usuário no formulário.
      * Verifica se o formulário é válido antes de enviar os dados para o serviço de criação de curso.
@@ -200,6 +209,7 @@ export class CoursesNewComponent implements OnInit {
         if (this.formControl.valid) {
             // Criar o objeto de curso com os valores do formulário
             if (name !== null && description !== null && institute !== null && language !== null) {
+
                 const course: Course = {
                     "nome": name,
                     "capaCurso": "string",
@@ -209,7 +219,6 @@ export class CoursesNewComponent implements OnInit {
                     "tipoCurso": 1,
                     "modalidadeEnsino": "PRESENCIAL"
                 }
-
                 this.courseService.createCourse(course).subscribe({
                     next: response => {
                         console.log(response)

@@ -4,7 +4,7 @@
     </div>
     <div class="flex course">
         <div class="course_photo">
-            <app-upload-image></app-upload-image>
+            <app-upload-image (infoToParent)="getImage($event)"></app-upload-image>
         </div>
         <form [formGroup]="formControl" class="registration_form">
             @if (showError) {

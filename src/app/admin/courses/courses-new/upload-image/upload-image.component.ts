@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FileSelectEvent, FileUploadModule, FileUpload } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -15,6 +15,8 @@ import { ToastModule } from 'primeng/toast';
 export class UploadImageComponent {
 
     @ViewChild('fileUpload') fileUploadComponent: FileUpload | undefined;
+    @Output() infoToParent: EventEmitter<string> = new EventEmitter<string>();
+
     base64Result: any;
     constructor(private messageService: MessageService) { }
 
@@ -34,7 +36,7 @@ export class UploadImageComponent {
                 const base64Result = reader.result as string;
 
                 this.base64Result = base64Result;
-                console.log(base64Result);
+                this.infoToParent.emit(base64Result)
                 this.messageService.add({ severity: 'success', summary: 'Completo', detail: 'Upload da imagem realizado!' });
             };
             reader.readAsDataURL(file);
