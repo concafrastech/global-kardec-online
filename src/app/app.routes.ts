@@ -6,8 +6,8 @@ import { AdminGuard } from './services/guards/admin.guard';
 import { UikitComponent } from './pages/utilities/uikit/uikit.component';
 import { UploadComponent } from './components/common/upload/upload.component';
 import { CoursesNewComponent } from './admin/courses/courses-new/courses-new.component';
-import {CoursesDashboardComponent} from './admin/courses/courses-dashboard/courses-dashboard.component'
-
+import { CoursesDashboardComponent } from './admin/courses/courses-dashboard/courses-dashboard.component';
+import { CalendarDashboardComponent } from './admin/calendar/calendar-dashboard/calendar-dashboard.component';
 
 export const routes: Routes = [
     {
@@ -17,13 +17,17 @@ export const routes: Routes = [
         children: [
             {
                 path: 'cursos',
-                component: CoursesDashboardComponent
+                component: CoursesDashboardComponent,
             },
             {
                 path: 'cursos/novo',
-                component: CoursesNewComponent
+                component: CoursesNewComponent,
             },
-        ]
+            {
+                path: 'calendarios',
+                component: CalendarDashboardComponent,
+            },
+        ],
     },
     {
         path: 'uikit',
@@ -31,7 +35,7 @@ export const routes: Routes = [
         //canActivate: [AdminGuard],
     },
     {
-        path:'upload',
-        component: UploadComponent
-    }
+        path: 'upload',
+        component: UploadComponent,
+    },
 ];

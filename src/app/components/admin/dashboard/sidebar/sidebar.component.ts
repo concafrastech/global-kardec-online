@@ -7,14 +7,23 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     standalone: true,
     imports: [PanelMenuModule],
     templateUrl: './sidebar.component.html',
-    styleUrl: './sidebar.component.less'
+    styleUrl: './sidebar.component.less',
 })
 export class SidebarComponent implements OnInit {
     sidebarItems: MenuItem[] | undefined;
 
-
     ngOnInit(): void {
         this.sidebarItems = [
+            {
+                label: 'Calendários',
+                icon: 'pi pi-fw pi-calendar',
+                items: [
+                    {
+                        label: 'Listar',
+                        routerLink: '/admin/calendarios',
+                    },
+                ],
+            },
             {
                 label: 'File',
                 icon: 'pi pi-fw pi-file',
@@ -24,26 +33,26 @@ export class SidebarComponent implements OnInit {
                         items: [
                             {
                                 label: 'Bookmark',
-                                icon: 'pi pi-fw pi-bookmark'
+                                icon: 'pi pi-fw pi-bookmark',
                             },
                             {
                                 label: 'Video',
-                                icon: 'pi pi-fw pi-video'
-                            }
-                        ]
+                                icon: 'pi pi-fw pi-video',
+                            },
+                        ],
                     },
                     {
                         label: 'Delete',
-                        icon: 'pi pi-fw pi-trash'
+                        icon: 'pi pi-fw pi-trash',
                     },
                     {
-                        separator: true
+                        separator: true,
                     },
                     {
                         label: 'Export',
-                        icon: 'pi pi-fw pi-external-link'
-                    }
-                ]
+                        icon: 'pi pi-fw pi-external-link',
+                    },
+                ],
             },
             {
                 label: 'Edit',
@@ -51,21 +60,21 @@ export class SidebarComponent implements OnInit {
                 items: [
                     {
                         label: 'Left',
-                        icon: 'pi pi-fw pi-align-left'
+                        icon: 'pi pi-fw pi-align-left',
                     },
                     {
                         label: 'Right',
-                        icon: 'pi pi-fw pi-align-right'
+                        icon: 'pi pi-fw pi-align-right',
                     },
                     {
                         label: 'Center',
-                        icon: 'pi pi-fw pi-align-center'
+                        icon: 'pi pi-fw pi-align-center',
                     },
                     {
                         label: 'Justify',
-                        icon: 'pi pi-fw pi-align-justify'
-                    }
-                ]
+                        icon: 'pi pi-fw pi-align-justify',
+                    },
+                ],
             },
             {
                 label: 'Users',
@@ -73,11 +82,11 @@ export class SidebarComponent implements OnInit {
                 items: [
                     {
                         label: 'New',
-                        icon: 'pi pi-fw pi-user-plus'
+                        icon: 'pi pi-fw pi-user-plus',
                     },
                     {
                         label: 'Delete',
-                        icon: 'pi pi-fw pi-user-minus'
+                        icon: 'pi pi-fw pi-user-minus',
                     },
                     {
                         label: 'Search',
@@ -89,17 +98,17 @@ export class SidebarComponent implements OnInit {
                                 items: [
                                     {
                                         label: 'Print',
-                                        icon: 'pi pi-fw pi-print'
-                                    }
-                                ]
+                                        icon: 'pi pi-fw pi-print',
+                                    },
+                                ],
                             },
                             {
                                 icon: 'pi pi-fw pi-bars',
-                                label: 'List'
-                            }
-                        ]
-                    }
-                ]
+                                label: 'List',
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 label: 'Events',
@@ -111,13 +120,13 @@ export class SidebarComponent implements OnInit {
                         items: [
                             {
                                 label: 'Save',
-                                icon: 'pi pi-fw pi-calendar-plus'
+                                icon: 'pi pi-fw pi-calendar-plus',
                             },
                             {
                                 label: 'Delete',
-                                icon: 'pi pi-fw pi-calendar-minus'
-                            }
-                        ]
+                                icon: 'pi pi-fw pi-calendar-minus',
+                            },
+                        ],
                     },
                     {
                         label: 'Archieve',
@@ -125,13 +134,12 @@ export class SidebarComponent implements OnInit {
                         items: [
                             {
                                 label: 'Remove',
-                                icon: 'pi pi-fw pi-calendar-minus'
-                            }
-                        ]
-                    }
-                ]
-            }
+                                icon: 'pi pi-fw pi-calendar-minus',
+                            },
+                        ],
+                    },
+                ],
+            },
         ];
     }
-
 }
