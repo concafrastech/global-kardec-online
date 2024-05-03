@@ -1,5 +1,18 @@
 @import "../../_global.less";
 
+// Displays
+.d-flex {
+    .mixin-display(flex)
+}
+
+.justify-content-center {
+    .mixin-flex-justify-content(center)
+}
+
+.space-between {
+    .mixin-flex-justify-content(space-between)
+}
+
 .p-button {
     border-radius: @buttons-border-radius;
     padding: @buttons-padding;
