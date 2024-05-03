@@ -1,0 +1,85 @@
+@import "../../../../assets/styles/_global.less";
+
+.classes {
+    .mixin-display-flex-direction(column);
+
+    &_title {
+        .mixin-display();
+        .mixin-flex-justify-content(space-between);
+    }
+
+    .tab-content {
+        .ui-tabview-close{
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            left: 73px;
+            z-index: 9;
+        }
+        .resource-box {
+            .mixin-display();
+            gap: 8px;
+            margin-bottom: 12px;
+
+            &__icon {
+                .mixin-display();
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 4px;
+
+                &.pi-file {
+                    background-color: @color-oregon-blue;
+                }
+
+                &.pi-id-card {
+                    background-color: @color-sango-red;
+                }
+                &.pi-volume-up {
+                    background-color: @color-bluish-green;
+                }
+                &.pi-play {
+                    background-color: @color-red;
+                }
+
+                &::before {
+                    content: unset;
+                }
+
+                .pi {
+                    font-size: 24px;
+                    color: @color-white;
+                }
+            }
+
+            &__content {
+                .mixin-display();
+                flex-direction: column;
+
+                .type-file {
+                    color: @primary__color__dark;
+                    font-size: 12px;
+                }
+
+                .resource-link {
+                    font-size: 16px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    color: @theme__color__secondary;
+                }
+            }
+        }
+    }
+
+}
+
+
+.add-feature {
+    .button-save {
+        display: block;
+        float: right;
+        margin-top: @indent__base;
+    }
+}

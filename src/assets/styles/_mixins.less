@@ -1,125 +1,127 @@
-
-
 //
 //  Flex layout
 //  ---------------------------------------------
 
-.mixin-display(
-    @_value: flex
-) {
-    display: ~"-webkit-@{_value}";
-    display: ~"-ms-@{_value}box";
+.mixin-display(@_value: flex) {
+    display:~"-webkit-@{_value}";
+    display:~"-ms-@{_value}box";
     display: @_value;
 }
-.mixin-display-flex-wrap (
-    @_value: wrap
-) {
-    flex-wrap: ~"-webkit-@{_value}";
-    flex-wrap: ~"-ms-@{_value}";
+
+.mixin-display-flex-wrap (@_value: wrap) {
+    flex-wrap:~"-webkit-@{_value}";
+    flex-wrap:~"-ms-@{_value}";
     flex-wrap: @_value;
 }
 
-.lib-vendor-prefix-flex-grow(
-    @_value: 0
-) {
-    -webkit-flex-grow: @_value;
-            flex-grow: @_value;
-}
-
-.lib-vendor-prefix-flex-shrink (
-    @_value: 1
-) {
-    -webkit-flex-shrink: @_value;
-            flex-shrink: @_value;
-}
-
-.lib-vendor-prefix-flex-basis (
-    @_value: auto
-) {
-    -webkit-flex-basis: @_value;
-            flex-basis: @_value;
-}
-
-.lib-vendor-prefix-flex-wrap (
-    @_value: wrap
-) {
-    -webkit-flex-wrap: @_value;
-            flex-wrap: @_value;
-}
-
-.lib-vendor-prefix-flex-direction (
-    @_value: column
-) {
+.mixin-display-flex-direction (@_value: column) {
     -webkit-flex-direction: @_value;
-        -ms-flex-direction: @_value;
-            flex-direction: @_value;
+    -ms-flex-direction: @_value;
+    flex-direction: @_value;
 }
 
-.lib-vendor-prefix-order (
-    @_value: 0
-) {
-    -ms-flex-order: @_value;
-     -webkit-order: @_value;
-             order: @_value;
-}
-
-.lib-vendor-box-align (
-    @_value: stretch
-) {
+.mixin-display-flex-box-align (@_value: stretch) {
     -webkit-align-items: @_value;
-        -ms-align-items: @_value;
-            align-items: @_value;
+    -ms-align-items: @_value;
+    align-items: @_value;
 }
 
-.lib-vendor-prefix-appearance (
-    @value: none
-) {
+.mixin-gap(@_value: 0) {
+    display: flex;
+    gap: @_value;
+    /* Prefixos */
+    -webkit-box-gap: @_value;
+    -moz-box-gap: @_value;
+}
+
+.mixin-display-flex-flex-basis (@_value: auto) {
+    -webkit-flex-basis: @_value;
+    flex-basis: @_value;
+}
+
+.mixin-display-flex-flex-grow(@_value: 0) {
+    -webkit-flex-grow: @_value;
+    flex-grow: @_value;
+}
+
+.mixin-flex-grow(@_value: 0) {
+    -webkit-flex: @_value;
+    -moz-flex: @_value;
+    flex: @_value;
+}
+
+.mixin-flex-justify-content(@_value) {
+    -webkit-justify-content: @_value;
+    justify-content: @_value;
+}
+
+//-------------------------
+
+.mixin-display-flex-flex-shrink (@_value: 1) {
+    -webkit-flex-shrink: @_value;
+    flex-shrink: @_value;
+}
+
+
+
+.mixin-display-flex-flex-wrap (@_value: wrap) {
+    -webkit-flex-wrap: @_value;
+    flex-wrap: @_value;
+}
+
+
+.mixin-display-flex-order (@_value: 0) {
+    -ms-flex-order: @_value;
+    -webkit-order: @_value;
+    order: @_value;
+}
+
+
+
+.mixin-display-flex-appearance (@value: none) {
     -webkit-appearance: @value;
     -moz-appearance: @value;
     appearance: @value;
 }
 
-.lib-vendor-prefix-column-count (
-    @_value
-) {
+.mixin-display-flex-column-count (@_value) {
     -webkit-column-count: @_value;
-       -moz-column-count: @_value;
-            column-count: @_value;
+    -moz-column-count: @_value;
+    column-count: @_value;
 }
 
 // Mixin para telas pequenas (telefones)
 .screen-small(@rules) {
     @media screen and (max-width: 425px) {
-      @rules();
+        @rules();
     }
-  }
-  
-  // Mixin para tablets
-  .screen-medium(@rules) {
+}
+
+// Mixin para tablets
+.screen-medium(@rules) {
     @media screen and (min-width: 425px) and (max-width: 991px) {
-      @rules();
+        @rules();
     }
-  }
-  
-  // Mixin para telas grandes (desktops)
-  .screen-large(@rules) {
+}
+
+// Mixin para telas grandes (desktops)
+.screen-large(@rules) {
     @media screen and (min-width: 992px) {
-      @rules();
+        @rules();
     }
-  }
-  
-  // Mixin para telas extra grandes (grande desktops)
-  .screen-xlarge(@rules) {
+}
+
+// Mixin para telas extra grandes (grande desktops)
+.screen-xlarge(@rules) {
     @media screen and (min-width: 1200px) {
-      @rules();
+        @rules();
     }
-  }
+}
 
-  // Regra customizável
+// Regra customizável
 
-  .screen-custom(@rules, @screen) {
-    @media screen and (max-width:  @screen) {
-      @rules();
+.screen-custom(@rules, @screen) {
+    @media screen and (max-width: @screen) {
+        @rules();
     }
-  }
-  
+}

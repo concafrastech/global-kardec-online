@@ -1,0 +1,60 @@
+@import "../../_global.less";
+
+.p-button {
+    border-radius: @buttons-border-radius;
+    padding: @buttons-padding;
+
+    &.p-button-primary {
+        background: @buttons-primary-background-color;
+
+        &:hover {
+            background: @buttons-primary-background-color-hover;
+        }
+    }
+
+    &.p-button-secondary {
+        background: @buttons-secondary-background-color;
+        border: unset;
+
+        &:hover {
+            color: @color-black;
+            background: @buttons-secondary-background-color-hover;
+        }
+    }
+
+}
+
+// Cor da título das páginas
+
+.page-title-wrapper {
+    .page-title {
+        color: @theme__color__secondary;
+    }
+}
+
+// Inputs
+.formGroup {
+    label {
+        color: @theme__color__secondary;
+        font-weight: @font-weight__bold;
+        margin-top: @indent__xxs;
+    }
+
+    .inputGroup {
+        .mixin-display();
+        .mixin-gap(@indent__xxs);
+        .mixin-flex-grow(1);
+        .mixin-flex-justify-content(space-evenly);
+
+        .flex {
+            width: 100%;
+        }
+    }
+}
+
+
+// Dropdown
+
+.p-dropdown{
+    width: 100%;
+}

@@ -1,26 +1,55 @@
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-      </tr>
-    </tbody>
-  </table>
+<main class="content-main">
+    <div class="page-title-wrapper">
+        <h1 class="page-title">Criar Curso</h1>
+    </div>
+    <div class="flex course">
+        <div class="course_photo">
+            <app-upload-image (infoToParent)="getImage($event)"></app-upload-image>
+        </div>
+        <form [formGroup]="formControl" class="registration_form">
+            @if (showError) {
+            <div class="card">
+                <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+            </div>
+            }
+
+            <div class="formGroup course_info">
+
+                <div class="flex flex-column gap-2">
+                    <label for="courseName">Nome</label>
+                    <input type="text" id="courseName" pInputText formControlName="name" />
+                </div>
+                <div class="flex flex-column gap-2">
+                    <label for="courseInstitute">Instituto</label>
+                    <p-dropdown [options]="institutes" formControlName="institute" optionLabel="nome" optionValue="uuid"
+                        [showClear]="true" placeholder="Selecione o Instituto"></p-dropdown>
+                </div>
+                <div class="flex flex-column gap-2">
+                    <label for="courselanguage">Idioma</label>
+                    <p-dropdown [options]="languages" formControlName="language" optionLabel="nome" optionValue="uuid"
+                        [showClear]="true" placeholder="Selecione o Idioma"></p-dropdown>
+                </div>
+                <div class="flex flex-column gap-2">
+                    <label for="courseDescription">Descrição</label>
+                    <textarea id="float-input" id="courseDescription" rows="3" cols="30" formControlName="description"
+                        pInputTextarea></textarea>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="flex anacrara">
+        <p-toast></p-toast>
+        <p-button label="Criar curso" (onClick)="createCourse()"></p-button>
+
+    </div>
+    @if (enabledCourse) {
+    <app-tab-view></app-tab-view>
+
+    }
+
+
+
+
+
+</main>
