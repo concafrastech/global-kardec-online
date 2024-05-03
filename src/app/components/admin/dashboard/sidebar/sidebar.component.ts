@@ -17,12 +17,7 @@ export class SidebarComponent implements OnInit {
             {
                 label: 'Calendários',
                 icon: 'pi pi-fw pi-calendar',
-                items: [
-                    {
-                        label: 'Listar',
-                        routerLink: '/admin/calendarios',
-                    },
-                ],
+                routerLink: '/admin/calendarios',
             },
             {
                 label: 'Cursos',
