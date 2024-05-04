@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarService } from '../../../services/calendar/calendar.service';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 
 @Component({
     selector: 'app-calendar-dashboard',
     standalone: true,
-    imports: [ButtonModule, RippleModule],
+    imports: [ButtonModule, RippleModule, RouterLink],
     templateUrl: './calendar-dashboard.component.html',
     styleUrl: './calendar-dashboard.component.less',
 })
@@ -18,8 +18,4 @@ export class CalendarDashboardComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {}
-
-    goTo(route: string): void {
-        this._router.navigate([route]);
-    }
 }
