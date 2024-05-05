@@ -1,0 +1,82 @@
+<div class="flex classes">
+    <div class="classes_title">
+        <div class="page-title-wrapper">
+            <h1 class="page-title">Conteúdos do curso</h1>
+        </div>
+        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary" (onClick)="addCourse()"></p-button>
+    </div>
+    <div class="tab-content">
+        <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
+            <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
+                <ng-template pTemplate="header">
+                    Aula {{ i + 1 }}
+                    <span class="ui-tabview-close" (click)="onCloseTab(item.id)"></span>
+                  </ng-template>
+                <div *ngFor="let contentItem of item.content">
+                    <div class="resource-box">
+                        <div class="resource-box__icon {{ contentItem.typeFile.code }}">
+                            <i class="pi {{ contentItem.typeFile.code }}"></i>
+                        </div>
+                        <div class="resource-box__content">
+                            <span class="type-file uppercase">{{ contentItem.typeFile.name }}</span>
+                            <a class="resource-link" href="{{ contentItem.link }}" target="_blank">{{ contentItem.name
+                                }}</a>
+                        </div>
+                    </div>
+                </div>
+                <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle"
+                    label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+
+
+</div>
+
+<p-dialog class="add-feature" header="Novo Recurso" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    [draggable]="false" [maximizable]="true" [resizable]="false">
+    <form [formGroup]="formControl" (ngSubmit)="submitForm()">
+        <div class="formGroup">
+            <div class="flex flex-column gap-2">
+                <label for="courseName">Nome</label>
+                <input type="text" id="courseName" pInputText formControlName="name" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseName">Selecione o tipo de Arquivo</label>
+                <p-dropdown [options]="optionsType" formControlName="typeFile" optionLabel="name" [filter]="false"
+                    filterBy="name" [showClear]="true" placeholder="Selecione o tipo de arquivo">
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ selectedOption.name }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-country pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ country.name }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseLink">Link</label>
+                <input type="text" id="courseLink" pInputText formControlName="link" />
+            </div>
+            <div class="inputGroup">
+                <div class="flex flex-column gap-2">
+                    <label for="courseName">Instituto</label>
+                    <input type="text" id="courseName" pInputText formControlName="institute" />
+                </div>
+                <div class="flex flex-column gap-2">
+                    <label for="courseLink">Ordem</label>
+                    <input type="text" id="courseLink" pInputText formControlName="sort" />
+                </div>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="courseDescription">Descrição</label>
+                <textarea id="float-input" id="courseDescription" rows="5" cols="30" formControlName="description"
+                    pInputTextarea [autoResize]="false"></textarea>
+            </div>
+        </div>
+        <button pButton pRipple type="submit" label="Enviar"></button>
+    </form>
+</p-dialog>
