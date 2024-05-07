@@ -214,9 +214,9 @@ export class CoursesNewComponent implements OnInit {
                     "nome": name,
                     "capaCurso": "string",
                     "descricao": description,
-                    "instituto": institute,
-                    "idioma": language,
-                    "tipoCurso": 1,
+                    "nomeInstituto": institute,
+                    "nomeIdioma": language,
+                    "nomeTipoCurso": 1,
                     "modalidadeEnsino": "PRESENCIAL"
                 }
                 this.courseService.createCourse(course).subscribe({

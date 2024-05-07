@@ -7,7 +7,6 @@ export interface Course {
     nomeIdioma: string;
     nomeTipoCurso?: number;
     modalidadeEnsino?: string;
-    uuid?: string
 }
 /* 
 
