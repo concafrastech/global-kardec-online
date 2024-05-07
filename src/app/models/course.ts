@@ -1,4 +1,5 @@
 export interface Course {
+    uuid?: string;
     nome: string;
     capaCurso: string;
     descricao: string;
