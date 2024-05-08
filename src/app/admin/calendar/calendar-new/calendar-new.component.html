@@ -1,2 +1,23 @@
-<!--TODO: Desenvolver formulário de cadastro de calendário.-->
-<p>calendar-new works!</p>
+<div class="d-flex space-between align-items-center">
+    <h2>Novo calendário</h2>
+    <button
+        pButton
+        pRipple
+        label="Voltar"
+        icon="pi pi-arrow-left"
+        class="p-button-secondary p-button-height-default"
+        routerLink="/admin/calendarios"
+    ></button>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <input
+            pInputText
+            type="text"
+            class="formGroup inputGroup"
+            placeholder="Digite o nome do centro espírita"
+            [(ngModel)]="spiritCenter.nome"
+        />
+    </div>
+</div>
