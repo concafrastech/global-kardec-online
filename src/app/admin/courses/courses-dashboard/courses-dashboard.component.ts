@@ -39,7 +39,7 @@ export class CoursesDashboardComponent implements OnInit {
     private courseSubject = new BehaviorSubject<any[]>([]);
     courses$ = this.courseSubject.asObservable()
 
-    confirmDelete(event: Event, courseName: string) {
+    confirmDelete(event: Event, courseName: string, courseUUID:string) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
@@ -53,6 +53,7 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
+                this.courseService.deleteCourse(courseUUID)
                 this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso  ${courseName} excluído!` });
             },
             reject: () => {

@@ -25,7 +25,7 @@
                 <td class="idioma">{{ course.nomeIdioma }}</td>
                 <td class="actionItens">
                     <a><i class="pi pi-pencil"></i></a>
-                    <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome)"></i></a>
+                    <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome, course.uuid)"></i></a>
                 </td>
             </tr>
 
