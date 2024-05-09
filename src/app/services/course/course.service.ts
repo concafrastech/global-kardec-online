@@ -54,7 +54,7 @@ export class CourseSerivce {
         let headers = {
             'Content-Type': 'application/json',
         };
-        
+
         // Realiza uma requisição DELETE para excluir um curso específico
         return this._http.delete(`${this.apiUrl}/gk/curso/${uuid}`, { headers });
     }
@@ -69,8 +69,22 @@ export class CourseSerivce {
         let headers = {
             'Content-Type': 'application/json',
         };
-        
+
         // Realiza uma requisição PUT para atualizar um curso existente
         return this._http.put(`${this.apiUrl}/gk/curso`, course, { headers });
     }
+
+    getClassByUUID(): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+        return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
+    }
+    getAllLanguages(): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+        return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
+    }
+
 }

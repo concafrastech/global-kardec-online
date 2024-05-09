@@ -11,6 +11,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { CourseSerivce } from '../../../services/course/course.service'; // Importa o serviço CourseService
 import { BehaviorSubject } from 'rxjs';
 
+
 @Component({
     selector: 'app-courses-dashboard',
     standalone: true,
@@ -31,7 +32,7 @@ export class CoursesDashboardComponent implements OnInit {
     constructor(
         private confirmationService: ConfirmationService, // Serviço de confirmação para diálogos de exclusão
         private messageService: MessageService, // Serviço para exibir mensagens
-        private courseService: CourseSerivce // Serviço para interagir com os cursos
+        private courseService: CourseSerivce, // Serviço para interagir com os cursos
     ) { }
 
     cols!: Course[]; // Array de colunas para a tabela
@@ -70,7 +71,8 @@ export class CoursesDashboardComponent implements OnInit {
                     }
                 })
                 // Exibe uma mensagem de sucesso após a exclusão do curso
-                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso  ${courseName} excluído!` });
+                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso ${courseName} excluído!` });
+              
             },
             reject: () => {
                 // Exibe uma mensagem de cancelamento se a exclusão for cancelada
