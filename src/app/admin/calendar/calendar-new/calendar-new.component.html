@@ -1,23 +1,48 @@
-<div class="d-flex space-between align-items-center">
-    <h2>Novo calendário</h2>
-    <button
-        pButton
-        pRipple
-        label="Voltar"
-        icon="pi pi-arrow-left"
-        class="p-button-secondary p-button-height-default"
-        routerLink="/admin/calendarios"
-    ></button>
-</div>
-<hr />
-<div class="container">
-    <div class="row">
-        <input
-            pInputText
-            type="text"
-            class="formGroup inputGroup"
-            placeholder="Digite o nome do centro espírita"
-            [(ngModel)]="spiritCenter.nome"
-        />
+<main class="content-main">
+    <div class="flex space-between align-items-center">
+        <h2>Novo calendário</h2>
+        <button
+            pButton
+            pRipple
+            label="Voltar"
+            icon="pi pi-arrow-left"
+            class="p-button-secondary p-button-height-default"
+            routerLink="/admin/calendarios"
+        ></button>
     </div>
-</div>
+    <hr />
+    <div class="calendar">
+        <div class="calendar_row">
+            <div class="calendar_row_flex_100">
+                <p-dropdown
+                    name="spiritCenterCalendar"
+                    optionLabel="name"
+                    placeholder="Selecione o Centro Espírita"
+                    [options]="spiritCenters"
+                    [showClear]="true"
+                    [(ngModel)]="selectedSpiritCenter"
+                />
+            </div>
+        </div>
+        <div class="calendar_row">
+            <div class="flex flex-column gap-2 calendar_row_flex_50">
+                <label for="anoCalendar">Ano</label>
+                <input
+                    id="anoCalendar"
+                    type="number"
+                    pInputText
+                    [(ngModel)]="this.calendar.ano"
+                />
+            </div>
+            <div class="flex flex-column gap-2 calendar_row_flex_50">
+                <label for="semestreCalendar">Semestre</label>
+                <input
+                    id="semestreCalendar"
+                    type="number"
+                    pInputText
+                    [(ngModel)]="this.calendar.semestre"
+                />
+            </div>
+        </div>
+    </div>
+</main>
