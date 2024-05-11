@@ -10,6 +10,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CourseSerivce } from '../../../services/course/course.service';
 import { BehaviorSubject } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-courses-dashboard',
@@ -21,12 +22,17 @@ import { BehaviorSubject } from 'rxjs';
         ButtonModule,
         ToastModule,
         ConfirmDialogModule,
+        RouterLink
     ],
     templateUrl: './courses-dashboard.component.html',
     styleUrl: './courses-dashboard.component.less',
     providers: [MessageService, ConfirmationService, CourseSerivce],
 })
+
+
 export class CoursesDashboardComponent implements OnInit {
+
+
     constructor(
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
@@ -38,6 +44,7 @@ export class CoursesDashboardComponent implements OnInit {
     private courseSubject = new BehaviorSubject<any[]>([]);
     courses$ = this.courseSubject.asObservable();
 
+    
     confirmDelete(event: Event, courseName: string) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,

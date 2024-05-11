@@ -36,6 +36,11 @@ export class SidebarComponent implements OnInit {
                         ],
                     },
                     {
+                        label: 'Acessar',
+                        routerLink:'/admin/cursos/',
+                        icon: 'pi pi-fw pi-database'
+                    },
+                    {
                         label: 'Criar',
                         routerLink: '/admin/cursos/novo',
                         icon: 'pi pi-fw pi-plus-circle',
