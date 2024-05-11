@@ -3,13 +3,24 @@
         <div class="page-title-wrapper">
             <h1 class="page-title">Conteúdos do curso</h1>
         </div>
-        <p-button class="courseCreateButton" label="Criar Curso" icon="pi pi-plus" size="small"
-            severity="primary"></p-button>
+        <p-button
+            class="courseCreateButton"
+            label="Criar Curso"
+            icon="pi pi-plus"
+            size="small"
+            severity="primary"
+        ></p-button>
     </div>
-    <p-table [value]="coursesList" [rows]="5" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="{currentPage}ª de {totalPages} " class="tHeader"
-        responsiveLayout="stack" [tableStyle]="{ 'min-width': '5rem' }"
-      
-        >
+    <p-table
+        [value]="coursesList"
+        [rows]="5"
+        [paginator]="true"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="{ currentPage }ª de { totalPages }"
+        class="tHeader"
+        responsiveLayout="stack"
+        [tableStyle]="{ 'min-width': '5rem' }"
+    >
         <ng-template pTemplate="header" class="tHeader">
             <tr>
                 <th>Nome do Curso</th>
@@ -25,12 +36,16 @@
                 <td class="idioma">{{ course.nomeIdioma }}</td>
                 <td class="actionItens">
                     <a><i class="pi pi-pencil"></i></a>
-                    <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome)"></i></a>
+                    <a
+                        ><i
+                            class="pi pi-trash"
+                            (click)="confirmDelete($event, course.nome)"
+                        ></i
+                    ></a>
                 </td>
             </tr>
-
         </ng-template>
-    
+
         <ng-template pTemplate="summary" class="tFooter"></ng-template>
     </p-table>
 </p-card>
