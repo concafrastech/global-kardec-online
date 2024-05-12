@@ -96,7 +96,7 @@ export class TabViewComponent implements OnInit {
         // Verifica se existe um array armazenado em cache
         const classCache = localStorage.getItem('classCache');
         if (classCache) {
-            this.resources = JSON.parse(classCache);
+           // this.resources = JSON.parse(classCache);
             // Determina o próximo ID baseado no último ID armazenado
             const lastId = this.resources[this.resources.length - 1].id;
             this.contentId = parseInt(lastId) + 1;
@@ -132,7 +132,7 @@ export class TabViewComponent implements OnInit {
 
         // Inicialização das opções de arquivo
         this.optionsType = [
-            {name: 'Arquivo', code: 'pi-file'},
+            {name: 'Arquivo', id: 4, code: 'pi-file'},
             {name: 'Slide Aula', code: 'pi-id-card'},
             {name: 'Áudio', code: 'pi-volume-up'},
             {name: 'Vídeo', code: 'pi-play'}
