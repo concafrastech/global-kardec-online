@@ -12,11 +12,19 @@ import {DropdownModule} from 'primeng/dropdown'; // Componente Dropdown do Prime
 
 
 // Importações relacionadas a formulários do Angular
-import {FormsModule, ReactiveFormsModule} from '@angular/forms'; // Módulos básicos para formulários
-import {FormBuilder} from '@angular/forms'; // Serviço para construir formulários reativos
-import {FormGroup, Validators} from '@angular/forms'; // Classes para formulários reativos e validação
-import {FormControl} from '@angular/forms';
+import {
+    FormGroup,
+    Validators,
+    FormControl,
+    FormBuilder,
+    FormsModule,
+    ReactiveFormsModule
+} from '@angular/forms'; // Classes para formulários reativos e validação
 import {Content} from "../../../models/content"; // Classes para formulários direcionados e controles de formulário
+
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+
 
 // Service
 import {ResourceService} from "../../../services/resource/resource.service";
@@ -35,11 +43,14 @@ import {ItemContent} from "../../../models/itemContent";
         InputTextareaModule,
         ReactiveFormsModule,
         DropdownModule,
-        FormsModule
+        FormsModule,
+        ToastModule
 
     ],
     templateUrl: './tab-view.component.html',
-    styleUrl: './tab-view.component.less'
+    styleUrl: './tab-view.component.less',
+    providers: [MessageService]
+
 })
 
 /**
@@ -80,26 +91,39 @@ export class TabViewComponent implements OnInit {
     formControl!: FormGroup;
 
     /**
-     * Construtor da classe para inicialização do FormBuilder e ChangeDetectorRef.
+     * Construtor da classe para inicialização de dependências.
      *
      * @param formBuilder Objeto FormBuilder utilizado para construir formGroups e formControls.
      * @param cdr Objeto ChangeDetectorRef para forçar detecção de alterações.
-     * @param contentService
-     * @param itemContentService
+     * @param contentService Serviço para gerenciar recursos de conteúdo.
+     * @param itemContentService Serviço para gerenciar itens de conteúdo.
+     * @param messageService Serviço para exibir mensagens no aplicativo.
      */
     constructor(
         private formBuilder: FormBuilder,
         private cdr: ChangeDetectorRef,
         private contentService: ResourceService,
-        private itemContentService: ItemContentService
+        private itemContentService: ItemContentService,
+        private messageService: MessageService
     ) {
         // Verifica se existe um array armazenado em cache
         const classCache = localStorage.getItem('classCache');
         if (classCache) {
-           // this.resources = JSON.parse(classCache);
-            // Determina o próximo ID baseado no último ID armazenado
-            const lastId = this.resources[this.resources.length - 1].id;
-            this.contentId = parseInt(lastId) + 1;
+            try {
+                // Se houver um cache, parseia o JSON para obter os recursos
+                this.resources = JSON.parse(classCache);
+                // Determina o próximo ID com base no último ID armazenado
+                const lastId = this.resources[this.resources.length - 1].id;
+                this.contentId = parseInt(lastId) + 1;
+            } catch (error) {
+                // Se houver um erro ao analisar o cache, exibe uma mensagem de erro
+                console.error('Erro ao analisar o cache de recursos:', error);
+                // Limpa o cache para evitar problemas adicionais
+                localStorage.removeItem('classCache');
+            }
+        } else {
+            // Se não houver cache, inicializa o array de recursos
+            this.resources = [];
         }
 
     }
@@ -132,10 +156,10 @@ export class TabViewComponent implements OnInit {
 
         // Inicialização das opções de arquivo
         this.optionsType = [
-            {name: 'Arquivo', id: 4, code: 'pi-file'},
-            {name: 'Slide Aula', code: 'pi-id-card'},
-            {name: 'Áudio', code: 'pi-volume-up'},
-            {name: 'Vídeo', code: 'pi-play'}
+            {name: 'Arquivo', id: 1, code: 'pi-file'},
+            {name: 'Slide Aula', id: 2, code: 'pi-id-card'},
+            {name: 'Áudio', id: 3, code: 'pi-volume-up'},
+            {name: 'Vídeo', id: 4, code: 'pi-play'}
         ];
         //console.log(this.resources);
     }
@@ -162,15 +186,6 @@ export class TabViewComponent implements OnInit {
      * @remarks A saída do console exibe o array de recursos atualizado após a adição do novo curso.
      */
     addCourseContent(): void {
-        this.resources.push()
-
-        const novoObjeto = {
-            id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
-            content: [] // Conteúdo do objeto, se necessário
-        };
-        this.resources.push(novoObjeto);
-        this.contentId++; // Incrementa o próximo ID para a próxima inserção
-
         let courseInfo = [];
         try {
             const courseInfoStr: any = localStorage.getItem('courseInfo');
@@ -191,42 +206,40 @@ export class TabViewComponent implements OnInit {
             ordem: this.contentId,
             curso: courseInfo.id
         }
+        let idContent;
+        this.resources.push()
 
         this.contentService.postResource(content).subscribe({
             next: (response) => {
-                console.log(response)
+                // console.log(response)
+                idContent = response.uuid;
+                const novoObjeto = {
+                    id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                    idContent: response.uuid,
+                    content: [] // Conteúdo do objeto, se necessário
+                };
+                this.resources.push(novoObjeto);
+
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `A Aula foi criada com sucesso`
+                });
             },
             error: (error) => {
                 console.error(error)
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Algo de errado não está certo'
+                });
             }
         });
 
+        this.contentId++; // Incrementa o próximo ID para a próxima inserção
+
     }
 
-    /**
-     *
-     * @param name
-     * @param link
-     * @param institute
-     * @param sort
-     * @param description
-     */
-    addFeature(name: string, link: string, institute: string, sort: number, description: string): void {
-        const novoRecurso = {
-            name: name,
-            link: link,
-            institute: institute,
-            sort: sort,
-            description: description
-        };
-        // Adiciona o novo recurso ao array
-        this.resources.push(novoRecurso);
-
-        // Limpa os campos do formulário ou realiza outras ações necessárias
-        this.clearForm();
-
-        console.log(this.resources)
-    }
 
     /**
      * Método responsável por limpar os valores dos campos do formulário.
@@ -242,32 +255,47 @@ export class TabViewComponent implements OnInit {
     }
 
     /**
+     * Cria um novo item de conteúdo com base nos dados do formulário.
      *
+     * Verifica se o formulário é válido antes de criar o novo item de conteúdo.
+     *
+     * @returns void
      */
     createItemContent(): void {
         if (this.formControl && this.formControl.valid) {
             // Lógica para enviar o formulário
             if (this.indexContent !== "") {
-                console.log(this.formControl.value)
                 //  this.resources[this.indexContent].content.push(this.formControl.value);
                 this.resources[this.indexContent].content.push(this.formControl.value);
-                console.log(this.formControl.value)
+
                 const itemContend: ItemContent = {
                     nome: this.formControl.value.name,
                     descricao: this.formControl.value.description,
                     linkRecurso: this.formControl.value.link,
-                    idTipoRecursoAula: 1, // implementar ainda
+                    idTipoRecursoAula: this.formControl.value.typeFile.id, // implementar ainda
                     nomeTipoRecursoAula: "string", // nao faço ideia do que seja isso
-                    conteudo: "244deddc-3a54-4c89-9aee-81fb6520a41f", // Id do conteúdo, precisa implementar
-                    nomeConteudo: "string", // nome do conteúdo, precisa implementar
+                    conteudo: this.resources[this.indexContent].idContent, // Id do conteúdo
+                    nomeConteudo: this.formControl.value.typeFile.name, // nome do conteúdo, precisa implementar
                     ordem: 1 // tem que implementar
                 }
 
                 this.itemContentService.setItemContentFromCentro(itemContend).subscribe({
                     next: (response) => {
-                        console.log(response)
+
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: `Recurso ${response.nome} foi criado com sucesso`
+                        });
+
                     },
                     error: (error) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Algo de errado não está certo'
+                        });
+
                         console.error(error)
                     }
                 })
@@ -275,14 +303,22 @@ export class TabViewComponent implements OnInit {
                 //localStorage.setItem('classCache', JSON.stringify(this.resources));
                 this.visible = false;
                 this.clearForm()
-
-
             }
         } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Algo de errado não está certo'
+            });
             // Tratar caso o formulário seja inválido
         }
     }
 
+    /**
+     * Fecha a aba com o ID especificado.
+     *
+     * @param tabId O ID da aba a ser fechada.
+     */
     onCloseTab(tabId: string) {
         // Encontrar o índice do item no array resources com base no tabId
         const index = this.resources.findIndex(item => item.id === tabId);
