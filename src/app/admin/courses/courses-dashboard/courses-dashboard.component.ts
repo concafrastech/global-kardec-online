@@ -65,13 +65,17 @@ export class CoursesDashboardComponent implements OnInit {
                 this.courseService.deleteCourse(courseUUID).subscribe({
                     next: (response) => {
                         console.log(response);
+                        this.messageService.add({ severity: 'success', summary: 'Excluído!', detail: `O curso ${courseName} foi excluído!` });
+
                     },
                     error: (error) =>{
                         console.error(error);
+                        this.messageService.clear()
+                        this.messageService.add({ severity: 'error', summary: 'Erro', detail: `Ocorreu um erro na exclusão do curso ${courseName}` });
                     }
                 })
                 // Exibe uma mensagem de sucesso após a exclusão do curso
-                this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: `Curso ${courseName} excluído!` });
+                this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: `O curso ${courseName} será excluído!` });
               
             },
             reject: () => {
