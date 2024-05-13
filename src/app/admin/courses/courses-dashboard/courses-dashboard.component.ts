@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { dataTempModel } from '../../../models/courses';
-import { Course } from '../../../models/course';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageService, ConfirmationService } from 'primeng/api';
-import { CourseSerivce } from '../../../services/course/course.service';
-import { BehaviorSubject } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {CardModule} from 'primeng/card';
+import {TableModule} from 'primeng/table';
+import {dataTempModel} from '../../../models/courses';
+import {Course} from '../../../models/course';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {MessageService, ConfirmationService} from 'primeng/api';
+import {CourseSerivce} from '../../../services/course/course.service';
+import {BehaviorSubject} from 'rxjs';
+import {RouterLink} from '@angular/router';
+import {MessagesModule} from 'primeng/messages';
+import {Message} from 'primeng/api';
+
 
 @Component({
     selector: 'app-courses-dashboard',
@@ -22,29 +25,95 @@ import { RouterLink } from '@angular/router';
         ButtonModule,
         ToastModule,
         ConfirmDialogModule,
-        RouterLink
+        RouterLink,
+        MessagesModule
     ],
     templateUrl: './courses-dashboard.component.html',
     styleUrl: './courses-dashboard.component.less',
     providers: [MessageService, ConfirmationService, CourseSerivce],
 })
 
-
+/**
+ * Lista os cursos que existem
+ */
 export class CoursesDashboardComponent implements OnInit {
 
-
+    /**
+     * Construtor para inicializar o componente.
+     * @param confirmationService Serviço para lidar com diálogos de confirmação.
+     * @param messageService Serviço para exibir mensagens.
+     * @param courseService Serviço para gerenciar cursos.
+     */
     constructor(
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private courseService: CourseSerivce,
-    ) {}
+    ) {
+    }
 
+    /**
+     * Array para armazenar dados das colunas para a tabela de cursos.
+     */
     cols!: Course[];
-    coursesList!: Course[];
+
+    /**
+     * Array para armazenar a lista de cursos.
+     */
+    public coursesList!: Course[];
+
+    /**
+     * Sinalizador booleano para controlar a visibilidade da tabela.
+     */
+    public showTableMessage: boolean = true;
+
+    /**
+     * Assunto para observar mudanças na lista de cursos.
+     * @private
+     */
     private courseSubject = new BehaviorSubject<any[]>([]);
+
+    /**
+     * Fluxo observável de cursos.
+     */
     courses$ = this.courseSubject.asObservable();
 
-    
+    messages: Message[] = [];
+
+
+    /**
+     * Método do ciclo de vida do Angular que é chamado após a inicialização do componente.
+     */
+    ngOnInit() {
+        this.messages = [{
+            severity: 'info',
+            detail: 'Não há cursos para serem listados. Comece criando o primeiro curso.'
+        }];
+
+        // Obtém todos os cursos e atualiza a lista de cursos quando a resposta for recebida.
+        this.courseService.getAllCourses().subscribe({
+            next: (response) => {
+                this.updateCourse(response.content);
+                this.showTableMessage = false;
+            },
+            error: (error) => {
+                console.error(error);
+            },
+        });
+
+        // Subscreve-se para receber atualizações na lista de cursos.
+        this.courses$.subscribe((coursesItems) => {
+            this.coursesList = coursesItems;
+        });
+
+
+    }
+
+
+    /**
+     * Confirma a exclusão de um curso.
+     * @param event O evento que acionou a função.
+     * @param courseName O nome do curso a ser excluído.
+     */
     confirmDelete(event: Event, courseName: string) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
@@ -75,19 +144,11 @@ export class CoursesDashboardComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
-        this.courseService.getAllCourses().subscribe({
-            next: (response) => {
-                this.updateCourse(response.content);
-            },
-            error: (error) => {
-                console.error(error);
-            },
-        });
-        this.courses$.subscribe((coursesItems) => {
-            this.coursesList = coursesItems;
-        });
-    }
+
+    /**
+     * Atualiza a lista de cursos.
+     * @param objectCourse O objeto contendo os cursos a serem atualizados.
+     */
     updateCourse(objectCourse: any[]) {
         this.courseSubject.next(objectCourse);
     }
