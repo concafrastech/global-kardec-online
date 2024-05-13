@@ -1,9 +1,10 @@
+<p-toast />
 <div class="flex classes">
     <div class="classes_title">
         <div class="page-title-wrapper">
             <h1 class="page-title">Conteúdos do curso</h1>
         </div>
-        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary" (onClick)="addCourse()"></p-button>
+        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary" (onClick)="addCourseContent()"></p-button>
     </div>
     <div class="tab-content">
         <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
@@ -35,15 +36,15 @@
 
 <p-dialog class="add-feature" header="Novo Recurso" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
     [draggable]="false" [maximizable]="true" [resizable]="false">
-    <form [formGroup]="formControl" (ngSubmit)="submitForm()">
+    <form [formGroup]="formControl" (ngSubmit)="createItemContent()">
         <div class="formGroup">
             <div class="flex flex-column gap-2">
                 <label for="courseName">Nome</label>
                 <input type="text" id="courseName" pInputText formControlName="name" />
             </div>
             <div class="flex flex-column gap-2">
-                <label for="courseName">Selecione o tipo de Arquivo</label>
-                <p-dropdown [options]="optionsType" formControlName="typeFile" optionLabel="name" [filter]="false"
+                <label for="typeFile">Selecione o tipo de Arquivo</label>
+                <p-dropdown [options]="optionsType" id="typeFile" formControlName="typeFile" optionLabel="name" [filter]="false"
                     filterBy="name" [showClear]="true" placeholder="Selecione o tipo de arquivo">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                         <div class="flex align-items-center gap-2">
@@ -63,20 +64,20 @@
             </div>
             <div class="inputGroup">
                 <div class="flex flex-column gap-2">
-                    <label for="courseName">Instituto</label>
-                    <input type="text" id="courseName" pInputText formControlName="institute" />
+                    <label for="typeInstitute">Instituto</label>
+                    <input type="text" id="typeInstitute" pInputText formControlName="institute" />
                 </div>
                 <div class="flex flex-column gap-2">
-                    <label for="courseLink">Ordem</label>
-                    <input type="text" id="courseLink" pInputText formControlName="sort" />
+                    <label for="sortOrder">Ordem</label>
+                    <input type="text" id="sortOrder" pInputText formControlName="sort" />
                 </div>
             </div>
             <div class="flex flex-column gap-2">
                 <label for="courseDescription">Descrição</label>
-                <textarea id="float-input" id="courseDescription" rows="5" cols="30" formControlName="description"
+                <textarea id="courseDescription"  rows="5" cols="30" formControlName="description"
                     pInputTextarea [autoResize]="false"></textarea>
             </div>
         </div>
-        <button pButton pRipple type="submit" label="Enviar"></button>
+        <button class="button-save" pButton pRipple type="submit" label="Enviar"></button>
     </form>
 </p-dialog>

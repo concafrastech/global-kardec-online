@@ -39,13 +39,15 @@
         </form>
     </div>
     <div class="flex anacrara">
-        <p-toast></p-toast>
-        <p-button label="Criar curso" (onClick)="createCourse()"></p-button>
+        @if (!enabledCourse) {
+            <p-toast></p-toast>
+            <p-button label="Criar curso" (onClick)="createCourse()"></p-button>
+        }
+
 
     </div>
     @if (enabledCourse) {
     <app-tab-view></app-tab-view>
-
     }
 
 
