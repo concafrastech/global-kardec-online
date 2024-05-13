@@ -25,7 +25,6 @@ export class CourseSerivce {
             'Content-Type': 'application/json',
         };
 
-        // Realiza uma requisição GET para obter todos os cursos
         return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
     }
 

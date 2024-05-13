@@ -1,35 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { FormControl, FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {Component, OnInit, HostListener} from '@angular/core';
+import {ButtonModule} from 'primeng/button';
+import {FormControl, FormGroup, FormBuilder, Validators, ReactiveFormsModule} from '@angular/forms';
 
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {InputTextModule} from 'primeng/inputtext';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
 
-import { TabViewComponent } from '../../../components/admin/tab-view/tab-view.component';
+import {TabViewComponent} from '../../../components/admin/tab-view/tab-view.component';
 
 
-import { CourseSerivce } from '../../../services/course/course.service';
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
-import { Message } from 'primeng/api';
+import {CourseSerivce} from '../../../services/course/course.service';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import {Message} from 'primeng/api';
 
-import { Course } from '../../../models/course';
+import {Course} from '../../../models/course';
 
-import { UtilsService } from '../../../services/utilities/auxiliary/utils.service';
+import {UtilsService} from '../../../services/utilities/auxiliary/utils.service';
 
-import { DropdownModule } from 'primeng/dropdown';
+import {DropdownModule} from 'primeng/dropdown';
 
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
-import { Institutes } from '../../../models/institutes';
+import {Institutes} from '../../../models/institutes';
 
-import { Languages } from '../../../models/languages';
+import {Languages} from '../../../models/languages';
 
-import { ToastModule } from 'primeng/toast';
+import {ToastModule} from 'primeng/toast';
 
-import { UploadImageComponent } from './upload-image/upload-image.component';
+import {UploadImageComponent} from './upload-image/upload-image.component';
 
 
 @Component({
@@ -91,6 +91,8 @@ export class CoursesNewComponent implements OnInit {
     // Recebe a imagem oriunda do component filho
     infoToChild: string = "";
 
+    // Flag para controlar se o formulário foi modificado
+    formModified: boolean = false;
 
     /**
      *
@@ -106,52 +108,25 @@ export class CoursesNewComponent implements OnInit {
         private courseService: CourseSerivce,
         private formBuilder: FormBuilder,
         private UtilsService: UtilsService
-
-    ) { }
-
-
+    ) {
+    }
 
 
     ngOnInit(): void {
-        // Inicialização do formulário com validadores
-        this.formControl = this.formBuilder.group({
-            name: new FormControl('', [Validators.required]),
-            institute: new FormControl('', [Validators.required]),
-            language: new FormControl('', [Validators.required]),
-            description: new FormControl('', [Validators.required]),
-        });
+        // Inicializa o formulário com validadores
+        this.initializeForm();
 
-        // Chamada para obter todos os cursos disponíveis
-        this.courseService.getAllCourses().subscribe({
-            next: courses => {
-                // Manipulação dos cursos, se necessário
-            },
-            error: error => console.error(error)
-        });
+        // Carrega o curso salvo do localStorage, se existir
+        //this.loadSavedCourseFromLocalStorage();
 
-        // Inicialização das mensagens de erro
-        this.messages = [
-            { severity: 'error', summary: 'Atenção', detail: 'Algo está errado, por favor verifique ' },
-        ];
+        // Carrega os cursos disponíveis
+        this.loadAvailableCourses();
 
-        // Chamada para obter os institutos disponíveis
-        this.UtilsService.getInstitutes().subscribe({
-            next: async institutes => {
-                // Atualiza os institutos quando os dados são recebidos
-                this.updateInstitutes(institutes);
-            },
-            error: error => console.error(error)
-        });
+        // Inicializa as mensagens de erro
+        this.initializeErrorMessages();
 
-
-        // Chamada para obter os institutos disponíveis
-        this.UtilsService.getLanguages().subscribe({
-            next: async languages => {
-                // Atualiza os institutos quando os dados são recebidos
-                this.updateLanguages(languages);
-            },
-            error: error => console.error(error)
-        });
+        // Carrega os institutos e os idiomas disponíveis
+        this.loadAvailableInstitutesAndLanguages();
 
         // Inscreve-se no Observable institutes$ para monitorar alterações
         this.institutes$.subscribe(institutes => {
@@ -165,6 +140,37 @@ export class CoursesNewComponent implements OnInit {
             this.languages = languages;
         });
     }
+
+
+    @HostListener('window:beforeunload', ['$event'])
+    unloadNotification($event: BeforeUnloadEvent) {
+        console.log($event);
+
+        // Impedir comportamento padrão (opcional)
+        $event.preventDefault(); // Descomente se precisar impedir o comportamento padrão
+
+        const mensagemConfirmacao = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
+
+        return this.confirmationService.confirm({
+            message: mensagemConfirmacao,
+            header: 'Confirmação de Saída', // Ajuste o texto do cabeçalho conforme necessário
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass: "p-button-danger p-button-text",
+            rejectButtonStyleClass: "p-button-text p-button-text",
+            acceptIcon: "none",
+            rejectIcon: "none",
+            accept: () => {
+                // Execute qualquer ação necessária antes de sair da página (por exemplo, salvar dados)
+                this.closableClass = true;
+                this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Saindo...'});
+            },
+            reject: () => {
+                this.messageService.add({severity: 'error', summary: 'Cancelado', detail: 'Permanecendo na página'});
+            }
+        });
+    }
+
+
     // Função para deletar um curso
     deleteTheClass(event: Event) {
         this.confirmationService.confirm({
@@ -179,21 +185,22 @@ export class CoursesNewComponent implements OnInit {
 
             accept: () => {
                 this.closableClass = true;
-                this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+                this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted'});
             },
             reject: () => {
-                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+                this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
             }
         });
     }
 
     /**
-     * 
-     * @param imag 
+     *
+     * @param imag
      */
     getImage(imag: string) {
         this.infoToChild = imag;
     }
+
     /**
      * Cria um novo curso com base nos dados fornecidos pelo usuário no formulário.
      * Verifica se o formulário é válido antes de enviar os dados para o serviço de criação de curso.
@@ -221,17 +228,26 @@ export class CoursesNewComponent implements OnInit {
                 }
                 this.courseService.createCourse(course).subscribe({
                     next: response => {
-                        console.log(response)
                         // Adiciona uma mensagem de sucesso
-                        this.messageService.add({ severity: 'info', summary: 'Adicionado', detail: 'Curso adicionado com sucesso' });
+                        this.messageService.add({
+                            severity: 'info',
+                            summary: 'Adicionado',
+                            detail: 'Curso adicionado com sucesso'
+                        });
 
                         this.formControl.disable()
 
                         this.enabledCourse = true;
 
-
                         // Limpa o formulário após adicionar com sucesso
                         //   this.formControl.reset();
+
+                        const courseInfo = {
+                            nome: response.nome,
+                            id: response.uuid
+                        }
+                        localStorage.setItem('courseInfo', JSON.stringify(courseInfo));
+
                     },
                     error: error => {
                         // Lógica de manipulação de erro, se necessário
@@ -241,7 +257,11 @@ export class CoursesNewComponent implements OnInit {
 
             } else {
                 // Tratar caso algum valor seja nulo
-                this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios' });
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Todos os campos são obrigatórios'
+                });
 
             }
 
@@ -249,15 +269,97 @@ export class CoursesNewComponent implements OnInit {
 
         } else {
             // Mostrar erro se o formulário não for válido
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios' });
+            this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
         }
     }
 
-    updateInstitutes(institutes: any[]) {
+    /**
+     * Atualiza o BehaviorSubject `institutesSubject` com a lista de institutos recebida.
+     * Isso notifica os observadores que há uma atualização nos institutos disponíveis.
+     * @param institutes A lista de institutos a ser atualizada.
+     */
+    private updateInstitutes(institutes: any[]): void {
         this.institutesSubject.next(institutes);
     }
-    updateLanguages(languages: any[]) {
+
+    /**
+     * Atualiza o BehaviorSubject `languagesSubject` com a lista de idiomas recebida.
+     * Isso notifica os observadores que há uma atualização nos idiomas disponíveis.
+     * @param languages A lista de idiomas a ser atualizada.
+     */
+    private updateLanguages(languages: any[]): void {
         this.languagesSubject.next(languages);
+    }
+
+    /**
+     * Carrega o curso salvo do localStorage, se existir,
+     * e preenche o formulário com os valores recuperados.
+     */
+    private loadSavedCourseFromLocalStorage(): void {
+        const savedCourse = localStorage.getItem('course');
+        if (savedCourse) {
+            const parsedCourse = JSON.parse(savedCourse);
+            this.formControl.patchValue({
+                name: parsedCourse.nome,
+                description: parsedCourse.descricao,
+                institute: parsedCourse.instituto,
+                language: parsedCourse.idioma
+            });
+        }
+    }
+
+
+    /**
+     * Inicializa o formulário com os campos e validadores necessários.
+     */
+    private initializeForm(): void {
+        localStorage.removeItem('courseInfo');
+        this.formControl = this.formBuilder.group({
+            name: new FormControl('', [Validators.required]),
+            institute: new FormControl('', [Validators.required]),
+            language: new FormControl('', [Validators.required]),
+            description: new FormControl('', [Validators.required]),
+        });
+    }
+
+    /**
+     * Carrega os cursos disponíveis.
+     */
+    private loadAvailableCourses(): void {
+        this.courseService.getAllCourses().subscribe({
+            next: courses => {
+                // Manipulação dos cursos, se necessário
+            },
+            error: error => console.error(error)
+        });
+    }
+
+    /**
+     * Inicializa as mensagens de erro.
+     */
+    private initializeErrorMessages(): void {
+        this.messages = [
+            {severity: 'error', summary: 'Atenção', detail: 'Algo está errado, por favor verifique '},
+        ];
+    }
+
+    /**
+     * Carrega os institutos e os idiomas disponíveis.
+     */
+    private loadAvailableInstitutesAndLanguages(): void {
+        this.UtilsService.getInstitutes().subscribe({
+            next: async institutes => {
+                this.updateInstitutes(institutes);
+            },
+            error: error => console.error(error)
+        });
+
+        this.UtilsService.getLanguages().subscribe({
+            next: async languages => {
+                this.updateLanguages(languages);
+            },
+            error: error => console.error(error)
+        });
     }
 
 }

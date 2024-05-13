@@ -8,18 +8,3 @@ export interface Course {
     nomeTipoCurso?: number;
     modalidadeEnsino?: string;
 }
-/* 
-
-
-nomeIdioma
-: 
-"Português"
-nomeInstituto
-: 
-"Ciclo Introdutório"
-nomeTipoCurso
-: 
-"Estudos espíritas"
-uuid
-: 
-"d406e65f-ea66-474e-a3fc-6d9d6a67fe47" */
