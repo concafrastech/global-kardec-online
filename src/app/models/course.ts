@@ -3,8 +3,8 @@ export interface Course {
     nome: string;
     capaCurso?: string;
     descricao?: string;
-    nomeInstituto: string;
-    nomeIdioma: string;
-    nomeTipoCurso?: number;
+    instituto: string;
+    idioma: string;
+    tipoCurso?: number;
     modalidadeEnsino?: string;
 }

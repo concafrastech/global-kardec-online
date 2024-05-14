@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { dataTempModel } from '../../../models/courses'; // Importa o modelo de dados temporários
-import { Course } from '../../../models/course'; // Importa o modelo Course
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageService, ConfirmationService } from 'primeng/api';
-import { CourseSerivce } from '../../../services/course/course.service'; // Importa o serviço CourseService
-import { BehaviorSubject } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {CardModule} from 'primeng/card';
+import {TableModule} from 'primeng/table';
+import {dataTempModel} from '../../../models/courses';
+import {Course} from '../../../models/course';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {MessageService, ConfirmationService} from 'primeng/api';
+import {CourseSerivce} from '../../../services/course/course.service';
+import {BehaviorSubject} from 'rxjs';
+import {RouterLink} from '@angular/router';
+import {MessagesModule} from 'primeng/messages';
+import {Message} from 'primeng/api';
 
 
 @Component({
@@ -21,31 +24,95 @@ import { BehaviorSubject } from 'rxjs';
         CommonModule,
         ButtonModule,
         ToastModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        RouterLink,
+        MessagesModule
     ],
-    templateUrl: './courses-dashboard.component.html', // Define o template HTML para o componente
-    styleUrl: './courses-dashboard.component.less', // Define o arquivo de estilo LESS para o componente
-    providers: [MessageService, ConfirmationService, CourseSerivce] // Provedores de serviços necessários para o componente
+    templateUrl: './courses-dashboard.component.html',
+    styleUrl: './courses-dashboard.component.less',
+    providers: [MessageService, ConfirmationService, CourseSerivce],
 })
+
+/**
+ * Lista os cursos que existem
+ */
 export class CoursesDashboardComponent implements OnInit {
 
+    /**
+     * Construtor para inicializar o componente.
+     * @param confirmationService Serviço para lidar com diálogos de confirmação.
+     * @param messageService Serviço para exibir mensagens.
+     * @param courseService Serviço para gerenciar cursos.
+     */
     constructor(
-        private confirmationService: ConfirmationService, // Serviço de confirmação para diálogos de exclusão
-        private messageService: MessageService, // Serviço para exibir mensagens
-        private courseService: CourseSerivce, // Serviço para interagir com os cursos
-    ) { }
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService,
+        private courseService: CourseSerivce,
+    ) {
+    }
 
-    cols!: Course[]; // Array de colunas para a tabela
-    coursesList!: Course[]; // Lista de cursos
-    private courseSubject = new BehaviorSubject<any[]>([]); // Assunto BehaviorSubject para os cursos
-    courses$ = this.courseSubject.asObservable(); // Observable para os cursos
+    /**
+     * Array para armazenar dados das colunas para a tabela de cursos.
+     */
+    cols!: Course[];
+
+    /**
+     * Array para armazenar a lista de cursos.
+     */
+    public coursesList!: Course[];
+
+    /**
+     * Sinalizador booleano para controlar a visibilidade da tabela.
+     */
+    public showTableMessage: boolean = true;
+
+    /**
+     * Assunto para observar mudanças na lista de cursos.
+     * @private
+     */
+    private courseSubject = new BehaviorSubject<any[]>([]);
+
+    /**
+     * Fluxo observável de cursos.
+     */
+    courses$ = this.courseSubject.asObservable();
+
+    messages: Message[] = [];
+
+
+    /**
+     * Método do ciclo de vida do Angular que é chamado após a inicialização do componente.
+     */
+    ngOnInit() {
+        this.messages = [{
+            severity: 'info',
+            detail: 'Não há cursos para serem listados. Comece criando o primeiro curso.'
+        }];
+
+        // Obtém todos os cursos e atualiza a lista de cursos quando a resposta for recebida.
+        this.courseService.getAllCourses().subscribe({
+            next: (response) => {
+                this.updateCourse(response.content);
+                this.showTableMessage = false;
+            },
+            error: (error) => {
+                console.error(error);
+            },
+        });
+
+        // Subscreve-se para receber atualizações na lista de cursos.
+        this.courses$.subscribe((coursesItems) => {
+            this.coursesList = coursesItems;
+        });
+
+
+    }
+
 
     /**
      * Confirma a exclusão de um curso.
-     *
-     * @param event - O evento que acionou a exclusão
-     * @param courseName - O nome do curso a ser excluído
-     * @param courseUUID - O UUID (identificador único) do curso a ser excluído
+     * @param event O evento que acionou a função.
+     * @param courseName O nome do curso a ser excluído.
      */
     confirmDelete(event: Event, courseName: string, courseUUID: string) {
         this.confirmationService.confirm({
@@ -53,64 +120,63 @@ export class CoursesDashboardComponent implements OnInit {
             message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
             header: `Você está excluindo o curso ${courseName}.`,
             icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: "p-button-danger p-button-text",
-            rejectButtonStyleClass: "p-button-text p-button-text",
-            acceptIcon: "none",
-            rejectIcon: "none",
+            acceptButtonStyleClass: 'p-button-danger p-button-text',
+            rejectButtonStyleClass: 'p-button-text p-button-text',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
             acceptLabel: 'Sim',
             rejectLabel: 'Não',
 
             accept: () => {
+                console.log(courseUUID)
                 // Exclui o curso ao confirmar a exclusão
                 this.courseService.deleteCourse(courseUUID).subscribe({
                     next: (response) => {
                         console.log(response);
-                        this.messageService.add({ severity: 'success', summary: 'Excluído!', detail: `O curso ${courseName} foi excluído!` });
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Excluído!',
+                            detail: `O curso ${courseName} foi excluído!`
+                        });
 
                     },
-                    error: (error) =>{
+                    error: (error) => {
+                        // Exibe uma mensagem de cancelamento se a exclusão for cancelada
                         console.error(error);
                         this.messageService.clear()
-                        this.messageService.add({ severity: 'error', summary: 'Erro', detail: `Ocorreu um erro na exclusão do curso ${courseName}` });
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erro',
+                            detail: `Ocorreu um erro na exclusão do curso ${courseName}`
+                        });
                     }
                 })
                 // Exibe uma mensagem de sucesso após a exclusão do curso
-                this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: `O curso ${courseName} será excluído!` });
-              
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Confirmado',
+                    detail: `O curso ${courseName} será excluído!`
+                });
+
             },
             reject: () => {
-                // Exibe uma mensagem de cancelamento se a exclusão for cancelada
-                this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Ok.' });
-            }
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'Ok.',
+                });
+            },
         });
     }
 
-    ngOnInit() {
-        // Ao inicializar o componente, obtém todos os cursos e atualiza a lista de cursos
-        this.courseService.getAllCourses().subscribe({
-            next: response => {
-                console.log(response.content)
-                this.updateCourse(response.content)
-            },
-            error: error => {
-                console.error(error);
-            }
-        })
-        // Assina os cursos atualizados
-        this.courses$.subscribe(coursesItems => {
-            this.coursesList = coursesItems
-        })
-    }
 
     /**
      * Atualiza a lista de cursos.
      *
-     * @param objectCourse - Um array contendo os dados dos cursos
+     * @param objectCourse O objeto contendo os cursos a serem atualizados.
      */
     updateCourse(objectCourse: any[]) {
-        // Atualiza adicionando valores à cursos
-        this.courseSubject.next(objectCourse)
-        console.log(objectCourse);
+        this.courseSubject.next(objectCourse);
     }
-
 }
+

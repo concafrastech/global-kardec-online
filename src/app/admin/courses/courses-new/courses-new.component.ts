@@ -221,9 +221,9 @@ export class CoursesNewComponent implements OnInit {
                     "nome": name,
                     "capaCurso": "string",
                     "descricao": description,
-                    "nomeInstituto": institute,
-                    "nomeIdioma": language,
-                    "nomeTipoCurso": 1,
+                    "instituto": institute,
+                    "idioma": language,
+                    "tipoCurso": 1,
                     "modalidadeEnsino": "PRESENCIAL"
                 }
                 this.courseService.createCourse(course).subscribe({
@@ -268,7 +268,7 @@ export class CoursesNewComponent implements OnInit {
             // Enviar o curso para o serviço
 
         } else {
-            // Mostrar erro se o formulário não for válido
+            // Mostrar erro se o formulário for inválido
             this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
         }
     }
