@@ -31,6 +31,8 @@ import {ToastModule} from 'primeng/toast';
 
 import {UploadImageComponent} from './upload-image/upload-image.component';
 
+import {ActivatedRoute} from '@angular/router';
+
 
 @Component({
     selector: 'app-courses-new',
@@ -107,7 +109,8 @@ export class CoursesNewComponent implements OnInit {
         private messageService: MessageService,
         private courseService: CourseSerivce,
         private formBuilder: FormBuilder,
-        private UtilsService: UtilsService
+        private UtilsService: UtilsService,
+        private route: ActivatedRoute
     ) {
     }
 
@@ -139,6 +142,9 @@ export class CoursesNewComponent implements OnInit {
             // Atualiza a lista de institutos quando ocorrem alterações
             this.languages = languages;
         });
+
+        this.updateCourse();
+
     }
 
 
@@ -166,29 +172,6 @@ export class CoursesNewComponent implements OnInit {
             },
             reject: () => {
                 this.messageService.add({severity: 'error', summary: 'Cancelado', detail: 'Permanecendo na página'});
-            }
-        });
-    }
-
-
-    // Função para deletar um curso
-    deleteTheClass(event: Event) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: "p-button-danger p-button-text",
-            rejectButtonStyleClass: "p-button-text p-button-text",
-            acceptIcon: "none",
-            rejectIcon: "none",
-
-            accept: () => {
-                this.closableClass = true;
-                this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted'});
-            },
-            reject: () => {
-                this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
             }
         });
     }
@@ -360,6 +343,11 @@ export class CoursesNewComponent implements OnInit {
             },
             error: error => console.error(error)
         });
+    }
+
+    private updateCourse(): void {
+        const idCouse = this.route.snapshot.paramMap.get('id');
+
     }
 
 }

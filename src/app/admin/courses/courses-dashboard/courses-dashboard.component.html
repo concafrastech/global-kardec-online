@@ -34,7 +34,7 @@
                     <td class="instituto">{{ course.nomeInstituto }}</td>
                     <td class="idioma">{{ course.nomeIdioma }}</td>
                     <td class="actionItens">
-                        <a><i class="pi pi-pencil"></i></a>
+                        <a><i class="pi pi-pencil" [routerLink]="['/admin/cursos/novo/', course.uuid.toString()]"></i></a>
                         <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome, course.uuid)"></i></a>
                     </td>
                 </tr>

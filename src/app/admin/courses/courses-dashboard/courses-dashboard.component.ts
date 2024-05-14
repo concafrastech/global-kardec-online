@@ -89,10 +89,26 @@ export class CoursesDashboardComponent implements OnInit {
             detail: 'Não há cursos para serem listados. Comece criando o primeiro curso.'
         }];
 
+        /**
+         * Chama todos os cursos que existem para ser listados
+         * Atualiza a variável dos cursos que serão listados
+         * Torna assim a tabela dinâmica
+         */
+        this.getAllCourses();
+
+
+    }
+
+    /**
+     * Retorna a lista de cursos que existem atualmente cadastrados no banco de dados
+     *
+     * @return Course
+     */
+    getAllCourses(): void {
         // Obtém todos os cursos e atualiza a lista de cursos quando a resposta for recebida.
         this.courseService.getAllCourses().subscribe({
             next: (response) => {
-                this.updateCourse(response.content);
+                this.updateListCourse(response.content);
                 this.showTableMessage = false;
             },
             error: (error) => {
@@ -104,8 +120,6 @@ export class CoursesDashboardComponent implements OnInit {
         this.courses$.subscribe((coursesItems) => {
             this.coursesList = coursesItems;
         });
-
-
     }
 
 
@@ -128,11 +142,13 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
-                console.log(courseUUID)
                 // Exclui o curso ao confirmar a exclusão
                 this.courseService.deleteCourse(courseUUID).subscribe({
                     next: (response) => {
-                        console.log(response);
+
+                        // Atualiza a lista de cursos que existem, agora atualizado.
+                        this.getAllCourses();
+
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Excluído!',
@@ -175,7 +191,7 @@ export class CoursesDashboardComponent implements OnInit {
      *
      * @param objectCourse O objeto contendo os cursos a serem atualizados.
      */
-    updateCourse(objectCourse: any[]) {
+    updateListCourse(objectCourse: any[]) {
         this.courseSubject.next(objectCourse);
     }
 }
