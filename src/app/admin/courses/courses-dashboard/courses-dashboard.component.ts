@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {CardModule} from 'primeng/card';
-import {TableModule} from 'primeng/table';
-import {dataTempModel} from '../../../models/courses';
-import {Course} from '../../../models/course';
-import {CommonModule} from '@angular/common';
-import {ButtonModule} from 'primeng/button';
-import {ToastModule} from 'primeng/toast';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {MessageService, ConfirmationService} from 'primeng/api';
-import {CourseSerivce} from '../../../services/course/course.service';
-import {BehaviorSubject} from 'rxjs';
-import {RouterLink} from '@angular/router';
-import {MessagesModule} from 'primeng/messages';
-import {Message} from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { dataTempModel } from '../../../models/courses';
+import { Course } from '../../../models/course';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { CourseSerivce } from '../../../services/course/course.service';
+import { BehaviorSubject } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
+import { ResourceService } from '../../../services/resource/resource.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class CoursesDashboardComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private courseService: CourseSerivce,
+        private resourceService: ResourceService
     ) {
     }
 
@@ -193,6 +195,15 @@ export class CoursesDashboardComponent implements OnInit {
      */
     updateListCourse(objectCourse: any[]) {
         this.courseSubject.next(objectCourse);
+    }
+
+    checkCourseResources(courseUUID: string): void {
+        try {
+            this.resourceService.getCourseResources(courseUUID)
+            
+        } catch (error) {
+            return console.error(error);
+        }
     }
 }
 
