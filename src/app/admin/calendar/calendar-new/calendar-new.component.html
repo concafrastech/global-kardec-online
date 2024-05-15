@@ -1,5 +1,5 @@
 <main class="content-main">
-    <div class="flex space-between align-items-center">
+    <div class="flex justify-content-space-between align-items-center">
         <h2>Novo calendário</h2>
         <button
             pButton
@@ -26,22 +26,34 @@
         </div>
         <div class="calendar_row">
             <div class="flex flex-column gap-2 calendar_row_flex_50">
-                <label for="anoCalendar">Ano</label>
-                <input
-                    id="anoCalendar"
-                    type="number"
-                    pInputText
+                <label>Ano</label>
+                <p-inputNumber
+                    inputId="anoCalendar"
+                    styleClass="w-100"
+                    [useGrouping]="false"
                     [(ngModel)]="this.calendar.ano"
                 />
             </div>
             <div class="flex flex-column gap-2 calendar_row_flex_50">
-                <label for="semestreCalendar">Semestre</label>
-                <input
-                    id="semestreCalendar"
-                    type="number"
-                    pInputText
+                <label>Semestre</label>
+                <p-inputNumber
+                    inputId="semestreCalendar"
+                    styleClass="w-100"
+                    [useGrouping]="false"
                     [(ngModel)]="this.calendar.semestre"
                 />
+            </div>
+        </div>
+        <div class="calendar_row justify-content-end">
+            <div class="flex flex_column">
+                <button
+                    pButton
+                    pRipple
+                    label="Criar"
+                    class="p-button-success"
+                    icon="pi pi-check"
+                    (click)="onSubmit()"
+                ></button>
             </div>
         </div>
     </div>

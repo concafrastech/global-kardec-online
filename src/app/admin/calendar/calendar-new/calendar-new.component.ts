@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { Calendar } from '../../../models/calendar';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
@@ -20,6 +21,7 @@ import { DropdownDefault } from '../../../models/utils/dropdownDefault';
         InputTextModule,
         FormsModule,
         DropdownModule,
+        InputNumberModule,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
@@ -72,12 +74,33 @@ export class CalendarNewComponent implements OnInit {
                             code += part.charAt(0).toUpperCase();
                         }
                     });
-                    spiritCentersTemp.push({
+                    spiritCentersTemp.push(<DropdownDefault>{
+                        uuid: spiritCenter.uuid,
                         name: spiritCenter.nome,
                         code: code,
                     });
                 });
                 this.spiritCenters = spiritCentersTemp;
             });
+    }
+
+    onSubmit(): void {
+        if (this.selectedSpiritCenter?.uuid == undefined) {
+            console.log('Falhou');
+            return;
+        }
+
+        if (this.calendar.ano.toString().length < 4) {
+            console.log('Ano incorreto.');
+            return;
+        }
+
+        if (this.calendar.semestre < 1 || this.calendar.semestre > 2) {
+            console.log('Semestre incorreto.');
+            return;
+        }
+
+        this.calendar.uuidCentro = <string>this.selectedSpiritCenter?.uuid;
+        console.log(this.calendar);
     }
 }
