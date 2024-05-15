@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { Course } from '../../models/course';
+import {Injectable} from '@angular/core';
+import {environment} from '../../../environments/environment';
+import {Observable, throwError} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Course} from '../../models/course';
+import {catchError, map} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +26,7 @@ export class CourseSerivce {
             'Content-Type': 'application/json',
         };
 
-        return this._http.get(`${this.apiUrl}/gk/curso?pagina=0&limite=1000`, { headers });
+        return this._http.get(`${this.apiUrl}/gk/curso?pagina=0&limite=1000`, {headers});
     }
 
     /**
@@ -40,7 +41,7 @@ export class CourseSerivce {
         };
 
         // Realiza uma requisição POST para criar um novo curso
-        return this._http.post(`${this.apiUrl}/gk/curso`, course, { headers });
+        return this._http.post(`${this.apiUrl}/gk/curso`, course, {headers});
     }
 
     /**
@@ -55,7 +56,7 @@ export class CourseSerivce {
         };
 
         // Realiza uma requisição DELETE para excluir um curso específico
-        return this._http.delete(`${this.apiUrl}/gk/curso/${uuid}`, { headers });
+        return this._http.delete(`${this.apiUrl}/gk/curso/${uuid}`, {headers});
     }
 
     /**
@@ -70,20 +71,63 @@ export class CourseSerivce {
         };
 
         // Realiza uma requisição PUT para atualizar um curso existente
-        return this._http.put(`${this.apiUrl}/gk/curso`, course, { headers });
+        return this._http.put(`${this.apiUrl}/gk/curso`, course, {headers});
     }
 
-    getClassByUUID(): Observable<any> {
+    /**
+     * Obtém um curso específico pelo ID.
+     * @param idCourse O ID do curso a ser recuperado.
+     */
+    public getCourse(idCourse: string | null): Observable<any> {
         let headers = {
             'Content-Type': 'application/json',
-        };
-        return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
+        }
+        return this._http.get<any>(`${this.apiUrl}/gk/curso/${idCourse}`, {headers})
+            .pipe(
+                // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                map(response => response.data || response),
+                catchError(this.handleError)
+            );
     }
-    getAllLanguages(): Observable<any> {
-        let headers = {
-            'Content-Type': 'application/json',
-        };
-        return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
+
+    /**
+     * Obtém o conteúdo associado a um curso específico.
+     * @param idCourse O ID do curso para o qual o conteúdo será recuperado.
+     */
+    public getContentPerCourse(idCourse: string): Observable<any> {
+        let headers = {'Content-Type': 'application/json'};
+
+        return this._http.get<any>(
+            `${this.apiUrl}/gk/conteudo/porCurso/${idCourse}`,
+            {headers}
+        )
+            .pipe(
+                // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                map(response => response.data || response),
+                catchError(this.handleError)
+            );
     }
+
+
+    /**
+     * Lida com erros retornados pelas requisições HTTP.
+     *
+     * @param error O objeto de erro retornado pela requisição HTTP.
+     * @returns Um Observable com uma mensagem de erro.
+     */
+    private handleError(error: any) {
+        let errorMessage = '';
+        if (error.error instanceof ErrorEvent) {
+            // Ocorreu um erro do lado do cliente ou da rede. Trate-o de acordo.
+            errorMessage = 'Ocorreu um erro: ' + error.error.message;
+        } else {
+            // O backend retornou um código de resposta não bem-sucedido.
+            // O corpo da resposta pode conter pistas sobre o que deu errado.
+            errorMessage = `O backend retornou o código ${error.status}: ${error.message}`;
+        }
+        console.error(errorMessage); // Registre o erro no console
+        return throwError(errorMessage); // Relance o erro como um observable para manipulação adequada de erros
+    }
+
 
 }
