@@ -24,7 +24,7 @@ export class CourseSerivce {
             'Content-Type': 'application/json',
         };
 
-        return this._http.get(`${this.apiUrl}/gk/curso`, { headers });
+        return this._http.get(`${this.apiUrl}/gk/curso?pagina=0&limite=1000`, { headers });
     }
 
     /**
