@@ -208,10 +208,11 @@ export class TabViewComponent implements OnInit {
         }
         let idContent;
         this.resources.push()
+        console.log(content)
 
         this.contentService.postResource(content).subscribe({
             next: (response) => {
-                // console.log(response)
+                console.log(response)
                 idContent = response.uuid;
                 const novoObjeto = {
                     id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
@@ -300,7 +301,7 @@ export class TabViewComponent implements OnInit {
                     }
                 })
 
-                //localStorage.setItem('classCache', JSON.stringify(this.resources));
+                localStorage.setItem('classCache', JSON.stringify(this.resources));
                 this.visible = false;
                 this.clearForm()
             }

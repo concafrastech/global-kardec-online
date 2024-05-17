@@ -217,7 +217,7 @@ export class CoursesNewComponent implements OnInit {
                 // Limpa o formulário após adicionar com sucesso
                 // this.formControl.reset();
                 // Salva as informações do curso, se necessário
-                // localStorage.setItem('courseInfo', JSON.stringify({ nome: response.nome, id: response.uuid }));
+                localStorage.setItem('courseInfo', JSON.stringify({ nome: response.nome, id: response.uuid }));
             },
             error: error => {
                 console.error('Erro ao criar curso:', error);
