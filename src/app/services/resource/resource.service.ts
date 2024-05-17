@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import { Content } from '../../models/content';
 
 @Injectable({
@@ -101,6 +101,24 @@ export class ResourceService {
 
         return this.httpClient.put<any>(`${this.apiUrl}/gk/conteudo/`, resource, { headers })
             .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    /**
+     * Obtém o conteúdo associado a um curso específico.
+     * @param idCourse O ID do curso para o qual o conteúdo será recuperado.
+     */
+    public getContentPerCourse(idCourse: string): Observable<any> {
+        let headers = {'Content-Type': 'application/json'};
+
+        return this.httpClient.get<any>(
+            `${this.apiUrl}/gk/conteudo/porCurso/${idCourse}`,
+            {headers}
+        )
+            .pipe(
+                // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                map(response => response.data || response),
                 catchError(this.handleError)
             );
     }

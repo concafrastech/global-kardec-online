@@ -8,50 +8,50 @@
         </div>
         <form [formGroup]="formControl" class="registration_form">
             @if (showError) {
-            <div class="card">
-                <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
-            </div>
+                <div class="card">
+                    <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+                </div>
             }
 
             <div class="formGroup course_info">
 
                 <div class="flex flex-column gap-2">
                     <label for="courseName">Nome</label>
-                    <input type="text" id="courseName" pInputText formControlName="name" />
+                    <input type="text" id="courseName" pInputText formControlName="name"/>
                 </div>
                 <div class="flex flex-column gap-2">
-                    <label for="courseInstitute">Instituto</label>
+                    <label>Instituto</label>
                     <p-dropdown [options]="institutes" formControlName="institute" optionLabel="nome" optionValue="uuid"
-                        [showClear]="true" placeholder="Selecione o Instituto"></p-dropdown>
+                                [showClear]="true" placeholder="Selecione o Instituto"></p-dropdown>
                 </div>
                 <div class="flex flex-column gap-2">
-                    <label for="courselanguage">Idioma</label>
+                    <label>Idioma</label>
                     <p-dropdown [options]="languages" formControlName="language" optionLabel="nome" optionValue="uuid"
-                        [showClear]="true" placeholder="Selecione o Idioma"></p-dropdown>
+                                [showClear]="true" placeholder="Selecione o Idioma"></p-dropdown>
                 </div>
                 <div class="flex flex-column gap-2">
                     <label for="courseDescription">Descrição</label>
-                    <textarea  id="courseDescription" rows="3" cols="30" formControlName="description"
-                        pInputTextarea></textarea>
+                    <textarea id="courseDescription" rows="3" cols="30" formControlName="description"
+                              pInputTextarea></textarea>
                 </div>
             </div>
 
         </form>
     </div>
     <div class="flex anacrara">
-        @if (!enabledCourse) {
+        @if (!enabledCourse && !courseUpdate) {
             <p-toast></p-toast>
-            <p-button [label]="textBottom"  (onClick)="createCourse()"></p-button>
+            <p-button [label]="textBottom" (onClick)="createCourse()"></p-button>
         }
 
 
     </div>
-    @if (enabledCourse) {
-    <app-tab-view></app-tab-view>
+    @if (enabledCourse || courseUpdate) {
+        <p-button class="block pt-4" [label]="textBottom" (onClick)="createCourse()"></p-button>
+
+        <app-tab-view></app-tab-view>
+
     }
-
-
-
 
 
 </main>

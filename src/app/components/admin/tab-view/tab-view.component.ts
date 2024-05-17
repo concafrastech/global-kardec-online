@@ -301,7 +301,7 @@ export class TabViewComponent implements OnInit {
                     }
                 })
 
-                localStorage.setItem('classCache', JSON.stringify(this.resources));
+                //localStorage.setItem('classCache', JSON.stringify(this.resources));
                 this.visible = false;
                 this.clearForm()
             }

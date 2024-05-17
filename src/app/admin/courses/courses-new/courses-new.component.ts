@@ -96,6 +96,8 @@ export class CoursesNewComponent implements OnInit {
     // Flag para controlar se o formulário foi modificado
     textBottom: string = "Criar curso";
 
+    public courseUpdate: boolean = false;
+
     /**
      *
      * @param confirmationService
@@ -327,6 +329,7 @@ export class CoursesNewComponent implements OnInit {
         // Verifica se o ID do curso está presente
         if (!idCourse) return;
 
+        this.courseUpdate = true;
         this.textBottom = "Atualizar Curso"
 
         // Chama o serviço para obter os detalhes do curso
