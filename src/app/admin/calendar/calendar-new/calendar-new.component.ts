@@ -6,10 +6,15 @@ import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogModule } from 'primeng/dialog';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { Calendar } from '../../../models/calendar';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
 import { DropdownDefault } from '../../../models/utils/dropdownDefault';
+import { DiaAula } from '../../../models/diaAula';
+import { UtilsService } from '../../../services/utilities/auxiliary/utils.service';
 
 @Component({
     selector: 'app-calendar-new',
@@ -22,6 +27,9 @@ import { DropdownDefault } from '../../../models/utils/dropdownDefault';
         FormsModule,
         DropdownModule,
         InputNumberModule,
+        DialogModule,
+        CalendarModule,
+        CheckboxModule,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
@@ -31,8 +39,15 @@ export class CalendarNewComponent implements OnInit {
     spiritCenter: SpiritCenter;
     selectedSpiritCenter: DropdownDefault | undefined;
     spiritCenters: DropdownDefault[] | undefined;
+    selectedTypeDayCalendar: DropdownDefault | undefined;
+    typesDaysCalendar: DropdownDefault[] | undefined;
+    visible: boolean;
+    diaAula: DiaAula;
 
-    constructor(private _spiritCenterService: SpiritCenterService) {
+    constructor(
+        private _spiritCenterService: SpiritCenterService,
+        private _utilsService: UtilsService,
+    ) {
         // Variável que representa o calendário
         this.calendar = {
             uuidCentro: '',
@@ -49,7 +64,21 @@ export class CalendarNewComponent implements OnInit {
             estado: '',
         };
 
+        this.diaAula = {
+            dataAula: '',
+            idTipoDiaCalendario: 0,
+            nomeTipoDiaCalendario: '',
+            aulaEspecial: false,
+        };
+
+        // Array de Centros Espíritas
         this.spiritCenters = [];
+
+        // Array de tipos de dias do calendário
+        this.typesDaysCalendar = [];
+
+        // Variável flag para controlar dialog.
+        this.visible = false;
     }
 
     ngOnInit(): void {
@@ -81,7 +110,26 @@ export class CalendarNewComponent implements OnInit {
                     });
                 });
                 this.spiritCenters = spiritCentersTemp;
+                this.getTypesDaysCalendar();
             });
+    }
+
+    getTypesDaysCalendar(): void {
+        this._utilsService.getTypeDaysCalendar().subscribe((response: any) => {
+            let typesDaysCalendarTmp: DropdownDefault[] = [];
+            response.forEach((typeDayCalendar: any) => {
+                typesDaysCalendarTmp.push(<DropdownDefault>{
+                    uuid: typeDayCalendar.id,
+                    name: typeDayCalendar.nome,
+                    code: typeDayCalendar.nome.replaceAll(' ', '_'),
+                });
+            });
+            this.typesDaysCalendar = typesDaysCalendarTmp;
+        });
+    }
+
+    showDialog() {
+        this.visible = true;
     }
 
     onSubmit(): void {
@@ -102,5 +150,6 @@ export class CalendarNewComponent implements OnInit {
 
         this.calendar.uuidCentro = <string>this.selectedSpiritCenter?.uuid;
         console.log(this.calendar);
+        console.log(this.diaAula);
     }
 }

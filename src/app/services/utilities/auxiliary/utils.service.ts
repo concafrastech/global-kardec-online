@@ -5,10 +5,9 @@ import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UtilsService {
-
     private apiUrl: string;
 
     constructor(private http: HttpClient) {
@@ -23,10 +22,13 @@ export class UtilsService {
     getInstitutes(): Observable<any> {
         const headers = { 'Content-Type': 'application/json' };
 
-        return this.http.get<any>(`${this.apiUrl}/gk/auxiliares/obterInstitutos`, { headers })
+        return this.http
+            .get<any>(`${this.apiUrl}/gk/auxiliares/obterInstitutos`, {
+                headers,
+            })
             .pipe(
-                map(response => response.data || response), // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
-                catchError(this.handleError)
+                map((response) => response.data || response), // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                catchError(this.handleError),
             );
     }
 
@@ -38,11 +40,26 @@ export class UtilsService {
     getLanguages(): Observable<any> {
         const headers = { 'Content-Type': 'application/json' };
 
-        return this.http.get<any>(`${this.apiUrl}/gk/auxiliares/obterIdioma`, { headers })
+        return this.http
+            .get<any>(`${this.apiUrl}/gk/auxiliares/obterIdioma`, { headers })
             .pipe(
-                map(response => response.data || response), // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
-                catchError(this.handleError)
+                map((response) => response.data || response), // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                catchError(this.handleError),
             );
+    }
+
+    /**
+     * Busca os tipos de dias do Calendário.
+     *
+     * @returns Observable<any> contendo um array dos tipos de dias do calendário.
+     */
+    getTypeDaysCalendar(): Observable<any> {
+        const headers = { 'Content-Type': 'application/json' };
+
+        return this.http.get(
+            `${this.apiUrl}/gk/auxiliares/obterTipoDiaCalendario`,
+            { headers },
+        );
     }
 
     /**
@@ -52,7 +69,7 @@ export class UtilsService {
      * @returns Um Observable com uma mensagem de erro.
      */
     private handleError(error: any) {
-        let errorMessage = '';
+        let errorMessage;
         if (error.error instanceof ErrorEvent) {
             // Ocorreu um erro do lado do cliente ou da rede. Trate-o de acordo.
             errorMessage = 'Ocorreu um erro: ' + error.error.message;

@@ -44,6 +44,15 @@
                 />
             </div>
         </div>
+        <div class="calender_row">
+            <p-button
+                styleClass="add-content"
+                icon="pi pi-plus-circle"
+                label="Adicionar um dia de aula."
+                [text]="true"
+                (click)="showDialog()"
+            ></p-button>
+        </div>
         <div class="calendar_row justify-content-end">
             <div class="flex flex_column">
                 <button
@@ -58,3 +67,53 @@
         </div>
     </div>
 </main>
+
+<p-dialog
+    header="Novo dia de aula"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '40rem', height: '40rem' }"
+>
+    <span class="p-text-secondary block mb-5"
+        >Preencha as informações corretamente.</span
+    >
+    <div class="color-default">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem">Data Aula</label>
+            <p-calendar
+                class="w-100"
+                styleClass="w-100"
+                [(ngModel)]="this.diaAula.dataAula"
+                dateFormat="yy-mm-dd"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Tipo do dia</label>
+            <p-dropdown
+                class="w-100"
+                name="typeDaysCalendar"
+                optionLabel="name"
+                placeholder="Selecione o tipo do dia"
+                [options]="typesDaysCalendar"
+                [showClear]="true"
+                [(ngModel)]="selectedTypeDayCalendar"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <p-checkbox
+                label="É aula especial?"
+                name="aulaEspecial"
+                [binary]="true"
+                [(ngModel)]="this.diaAula.aulaEspecial"
+            />
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="visible = false"
+            />
+            <p-button label="Save" (click)="visible = false" />
+        </div>
+    </div>
+</p-dialog>
