@@ -148,7 +148,7 @@ export class CoursesDashboardComponent implements OnInit {
                 this.courseService.archivingCourse(course).subscribe({
                     next: (response) => {
                         this.getAllCourses();
-
+                        console.log(response);
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Excluído!',
