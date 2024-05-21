@@ -90,24 +90,6 @@ export class CourseSerivce {
             );
     }
 
-    /**
-     * Obtém o conteúdo associado a um curso específico.
-     * @param idCourse O ID do curso para o qual o conteúdo será recuperado.
-     */
-    public getContentPerCourse(idCourse: string): Observable<any> {
-        let headers = {'Content-Type': 'application/json'};
-
-        return this._http.get<any>(
-            `${this.apiUrl}/gk/conteudo/porCurso/${idCourse}`,
-            {headers}
-        )
-            .pipe(
-                // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
-                map(response => response.data || response),
-                catchError(this.handleError)
-            );
-    }
-
 
     /**
      * Lida com erros retornados pelas requisições HTTP.

@@ -49,7 +49,7 @@
     @if (enabledCourse || courseUpdate) {
         <p-button class="block pt-4" [label]="textBottom" (onClick)="createCourse()"></p-button>
 
-        <app-tab-view></app-tab-view>
+        <app-tab-view [idCourse]="idCourse"></app-tab-view>
 
     }
 

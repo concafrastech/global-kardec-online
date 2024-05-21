@@ -98,6 +98,9 @@ export class CoursesNewComponent implements OnInit {
 
     public courseUpdate: boolean = false;
 
+    // Obtém o ID do curso da rota atual
+    public idCourse = this.route.snapshot.paramMap.get('id');
+
     /**
      *
      * @param confirmationService
@@ -195,7 +198,7 @@ export class CoursesNewComponent implements OnInit {
     createCourse(): void {
         // Verifica se o formulário é válido
         if (this.formControl.invalid) {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios' });
+            this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
             return;
         }
 
@@ -213,13 +216,17 @@ export class CoursesNewComponent implements OnInit {
         // Chama o serviço para criar o curso
         this.courseService.createCourse(course).subscribe({
             next: response => {
-                this.messageService.add({ severity: 'info', summary: 'Adicionado', detail: 'Curso adicionado com sucesso' });
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Adicionado',
+                    detail: 'Curso adicionado com sucesso'
+                });
                 this.formControl.disable();
                 this.enabledCourse = true;
                 // Limpa o formulário após adicionar com sucesso
                 // this.formControl.reset();
                 // Salva as informações do curso, se necessário
-                localStorage.setItem('courseInfo', JSON.stringify({ nome: response.nome, id: response.uuid }));
+                localStorage.setItem('courseInfo', JSON.stringify({nome: response.nome, id: response.uuid}));
             },
             error: error => {
                 console.error('Erro ao criar curso:', error);
@@ -324,17 +331,16 @@ export class CoursesNewComponent implements OnInit {
      * @private
      */
     private updateCourse(): void {
-        // Obtém o ID do curso da rota atual
-        const idCourse = this.route.snapshot.paramMap.get('id');
+
         // Verifica se o ID do curso está presente
-        if (!idCourse) return;
+        if (!this.idCourse) return;
 
         this.courseUpdate = true;
         this.textBottom = "Atualizar Curso"
 
         // Chama o serviço para obter os detalhes do curso
-        this.courseService.getCourse(idCourse).subscribe({
-            next: ({nome, descricao, instituto, idioma}) => {
+        this.courseService.getCourse(this.idCourse).subscribe({
+            next: ({nome, descricao, instituto, idioma, uuid}) => {
                 // Define os valores recebidos nos campos do formControl
                 this.formControl.patchValue({
                     name: nome,
@@ -342,6 +348,8 @@ export class CoursesNewComponent implements OnInit {
                     institute: instituto,
                     language: idioma
                 });
+                localStorage.setItem('courseInfo', JSON.stringify({nome: nome, id: uuid}));
+
             },
             error: error => console.error(error)
         });

@@ -1,27 +1,15 @@
 // Importações essenciais do Angular
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core'; // Funcionalidades básicas para componentes
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core'; // Funcionalidades básicas para componentes
 import {CommonModule} from '@angular/common'; // Funcionalidades básicas do Angular
-
 // Importações do PrimeNG para componentes específicos
-import {TabViewModule} from 'primeng/tabview';  // Componente TabView do PrimeNG
-import {ButtonModule} from 'primeng/button';    // Componente Button do PrimeNG
-import {DialogModule} from 'primeng/dialog';  // Componente Dialog do PrimeNG
+import {TabViewModule} from 'primeng/tabview'; // Componente TabView do PrimeNG
+import {ButtonModule} from 'primeng/button'; // Componente Button do PrimeNG
+import {DialogModule} from 'primeng/dialog'; // Componente Dialog do PrimeNG
 import {InputTextModule} from 'primeng/inputtext'; // Componente InputText do PrimeNG
 import {InputTextareaModule} from 'primeng/inputtextarea'; // Componente InputTextarea do PrimeNG
 import {DropdownModule} from 'primeng/dropdown'; // Componente Dropdown do PrimeNG
-
-
 // Importações relacionadas a formulários do Angular
-import {
-    FormGroup,
-    Validators,
-    FormControl,
-    FormBuilder,
-    FormsModule,
-    ReactiveFormsModule
-} from '@angular/forms'; // Classes para formulários reativos e validação
-import {Content} from "../../../models/content"; // Classes para formulários direcionados e controles de formulário
-
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'; // Classes para formulários reativos e validação
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 
@@ -161,11 +149,13 @@ export class TabViewComponent implements OnInit {
             {name: 'Áudio', id: 3, code: 'pi-volume-up'},
             {name: 'Vídeo', id: 4, code: 'pi-play'}
         ];
-        //console.log(this.resources);
+        console.log();
+        if(this.idCourse !== null) this.getContentPerCourse()
     }
 
     visible: boolean = false;
     indexContent: any = "";
+    @Input() idCourse!: string | null;
 
     /**
      * Método responsável por exibir o diálogo de adicionar conteúdo.
@@ -186,33 +176,30 @@ export class TabViewComponent implements OnInit {
      * @remarks A saída do console exibe o array de recursos atualizado após a adição do novo curso.
      */
     addCourseContent(): void {
-        let courseInfo = [];
-        try {
-            const courseInfoStr: any = localStorage.getItem('courseInfo');
-            if (courseInfoStr) {
-                // Converte a string de volta para um objeto JavaScript
-                courseInfo = JSON.parse(courseInfoStr);
+        let courseInfo: any[] = this.getCourseInfo();
 
-            } else {
-                console.log('Não há nenhum valor armazenado com a chave "courseInfo" no localStorage.');
-            }
-        } catch (error) {
-
+        if (!courseInfo) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Algo de errado não está certo'
+            });
+            return;
         }
-
+        // @ts-ignore
         const content: Content = {
+            // @ts-ignore
             nome: `Aula ${courseInfo.id}`,
+            // @ts-ignore
             nomeCurso: courseInfo.nome,
             ordem: this.contentId,
+            // @ts-ignore
             curso: courseInfo.id
         }
         let idContent;
         this.resources.push()
-        console.log(content)
-
         this.contentService.postResource(content).subscribe({
             next: (response) => {
-                console.log(response)
                 idContent = response.uuid;
                 const novoObjeto = {
                     id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
@@ -238,7 +225,6 @@ export class TabViewComponent implements OnInit {
         });
 
         this.contentId++; // Incrementa o próximo ID para a próxima inserção
-
     }
 
 
@@ -329,5 +315,71 @@ export class TabViewComponent implements OnInit {
             this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
             localStorage.setItem('classCache', JSON.stringify(this.resources));
         }
+    }
+
+    /**
+     * Obtém as informações do curso armazenadas no localStorage.
+     *
+     * @return {boolean | any[]} Retorna as informações do curso como um array de objetos,
+     * ou `false` se não houver informações armazenadas ou ocorrer um erro.
+     */
+    getCourseInfo(): any[] {
+        let courseInfo: any[] = [];
+        try {
+            // Recupera o item 'courseInfo' do localStorage
+            const courseInfoStr: string | null = localStorage.getItem('courseInfo');
+
+            if (courseInfoStr) {
+                // Converte a string JSON de volta para um objeto JavaScript
+                courseInfo = JSON.parse(courseInfoStr);
+            } else {
+                // Define courseInfo como false se não houver dados armazenados
+                courseInfo = [];
+                // Adiciona uma mensagem de erro usando o messageService
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Não foi possível carregar o curso, entre em contato com o administrador'
+                });
+                // Loga a ausência de dados no console para debug
+                console.log('Não há nenhum valor armazenado com a chave "courseInfo" no localStorage.');
+            }
+        } catch (error) {
+            // Em caso de erro ao recuperar ou parsear os dados, define courseInfo como false
+            courseInfo = [];
+            // Adiciona uma mensagem de erro usando o messageService
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erro',
+                detail: 'Algo de errado não está certo'
+            });
+            // Loga o erro no console para debug
+            console.error('Erro ao obter as informações do curso:', error);
+        }
+
+        return courseInfo;
+    }
+
+    getContentPerCourse(): void {
+        console.log(this.idCourse)
+        if(this.idCourse !== null)
+        this.contentService.getContentPerCourse(this.idCourse).subscribe({
+            next: (response) => {
+
+                response.forEach((content: any) => {
+                    // Perform actions with each element
+                    const newContent = {
+                        id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                        idContent: content.uuid,
+                        content: [] // Conteúdo do objeto, se necessário
+                    };
+                    this.resources.push(newContent);
+                });
+
+
+                console.log(this.resources);
+
+            }
+        })
     }
 }
