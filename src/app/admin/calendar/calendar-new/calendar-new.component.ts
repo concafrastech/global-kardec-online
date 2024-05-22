@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { NgForOf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,6 +31,7 @@ import { UtilsService } from '../../../services/utilities/auxiliary/utils.servic
         DialogModule,
         CalendarModule,
         CheckboxModule,
+        NgForOf,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
@@ -126,6 +128,11 @@ export class CalendarNewComponent implements OnInit {
             });
             this.typesDaysCalendar = typesDaysCalendarTmp;
         });
+    }
+
+    addTypesDaysCalendar(): void {
+        this.calendar.diasAula.push(this.diaAula);
+        this.visible = false;
     }
 
     showDialog() {

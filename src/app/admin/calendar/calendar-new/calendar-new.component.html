@@ -53,6 +53,12 @@
                 (click)="showDialog()"
             ></p-button>
         </div>
+        <div
+            *ngFor="let diaAula of this.calendar.diasAula"
+            class="calendar_row"
+        >
+            <span>{{ diaAula.dataAula }}</span>
+        </div>
         <div class="calendar_row justify-content-end">
             <div class="flex flex_column">
                 <button
@@ -113,7 +119,7 @@
                 severity="secondary"
                 (click)="visible = false"
             />
-            <p-button label="Save" (click)="visible = false" />
+            <p-button label="Adicionar" (click)="addTypesDaysCalendar()" />
         </div>
     </div>
 </p-dialog>
