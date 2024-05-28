@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
-import { dataTempModel } from '../../../models/courses';
+
 import { Course } from '../../../models/course';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -130,7 +130,7 @@ export class CoursesDashboardComponent implements OnInit {
      * @param event O evento que acionou a função.
      * @param courseName O nome do curso a ser excluído.
      */
-    confirmDelete(event: Event, courseName: string, courseUUID: string) {
+    confirmDelete(event: Event, courseName: string, courseUUID: string, course: Course) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
@@ -144,31 +144,29 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
-                // Exclui o curso ao confirmar a exclusão
-                this.courseService.deleteCourse(courseUUID).subscribe({
+                // Arquiva o curso ao confirmar a exclusão
+                this.courseService.archivingCourse(course).subscribe({
                     next: (response) => {
-
-                        // Atualiza a lista de cursos que existem, agora atualizado.
                         this.getAllCourses();
-
+                        console.log(response);
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Excluído!',
                             detail: `O curso ${courseName} foi excluído!`
                         });
-
                     },
-                    error: (error) => {
-                        // Exibe uma mensagem de cancelamento se a exclusão for cancelada
-                        console.error(error);
-                        this.messageService.clear()
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Erro',
-                            detail: `Ocorreu um erro na exclusão do curso ${courseName}`
-                        });
-                    }
+                    error:(error) => {
+                         // Exibe uma mensagem de cancelamento se a exclusão for cancelada
+                         console.error(error);
+                         this.messageService.clear()
+                         this.messageService.add({
+                             severity: 'error',
+                             summary: 'Erro',
+                             detail: `Ocorreu um erro na exclusão do curso ${courseName}`
+                         });
+                    },
                 })
+                
                 // Exibe uma mensagem de sucesso após a exclusão do curso
                 this.messageService.add({
                     severity: 'info',

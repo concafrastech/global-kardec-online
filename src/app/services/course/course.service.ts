@@ -111,5 +111,13 @@ export class CourseSerivce {
         return throwError(errorMessage); // Relance o erro como um observable para manipulação adequada de erros
     }
 
+    archivingCourse(course: Course){
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+        course.tipoCurso = 3
+        // Realiza uma requisição DELETE para excluir um curso específico
+        return this._http.put(`${this.apiUrl}/gk/curso`, course, {headers});
+    }
 
 }
