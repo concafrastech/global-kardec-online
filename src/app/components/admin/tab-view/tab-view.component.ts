@@ -19,6 +19,8 @@ import {ResourceService} from "../../../services/resource/resource.service";
 import {ItemContentService} from "../../../services/resource/itemContent/item-content.service";
 import {ItemContent} from "../../../models/itemContent";
 
+import {LogPipePipe} from "./log-pipe.pipe";
+
 @Component({
     selector: 'app-tab-view',
     standalone: true,
@@ -32,7 +34,8 @@ import {ItemContent} from "../../../models/itemContent";
         ReactiveFormsModule,
         DropdownModule,
         FormsModule,
-        ToastModule
+        ToastModule,
+        LogPipePipe
 
     ],
     templateUrl: './tab-view.component.html',
@@ -144,13 +147,13 @@ export class TabViewComponent implements OnInit {
 
         // Inicialização das opções de arquivo
         this.optionsType = [
-            {name: 'Arquivo', id: 1, code: 'pi-file'},
-            {name: 'Slide Aula', id: 2, code: 'pi-id-card'},
-            {name: 'Áudio', id: 3, code: 'pi-volume-up'},
-            {name: 'Vídeo', id: 4, code: 'pi-play'}
+            {name: 'PDF', id: 4, code: 'pi-file'},
+            {name: 'Youtube', id: 2, code: 'pi-id-card'},
+            {name: 'Áudio', id: 1, code: 'pi-volume-up'},
+            {name: 'Vídeo', id: 3, code: 'pi-play'}
         ];
         console.log();
-        if(this.idCourse !== null) this.getContentPerCourse()
+        if (this.idCourse !== null) this.getContentPerCourse()
     }
 
     visible: boolean = false;
@@ -252,19 +255,17 @@ export class TabViewComponent implements OnInit {
         if (this.formControl && this.formControl.valid) {
             // Lógica para enviar o formulário
             if (this.indexContent !== "") {
-                //  this.resources[this.indexContent].content.push(this.formControl.value);
-                this.resources[this.indexContent].content.push(this.formControl.value);
-
                 const itemContend: ItemContent = {
                     nome: this.formControl.value.name,
                     descricao: this.formControl.value.description,
                     linkRecurso: this.formControl.value.link,
                     idTipoRecursoAula: this.formControl.value.typeFile.id, // implementar ainda
-                    nomeTipoRecursoAula: "string", // nao faço ideia do que seja isso
+                    nomeTipoRecursoAula: this.formControl.value.typeFile.name, // nao faço ideia do que seja isso
                     conteudo: this.resources[this.indexContent].idContent, // Id do conteúdo
                     nomeConteudo: this.formControl.value.typeFile.name, // nome do conteúdo, precisa implementar
                     ordem: 1 // tem que implementar
                 }
+                console.log(itemContend)
 
                 this.itemContentService.setItemContentFromCentro(itemContend).subscribe({
                     next: (response) => {
@@ -274,6 +275,7 @@ export class TabViewComponent implements OnInit {
                             summary: 'Success',
                             detail: `Recurso ${response.nome} foi criado com sucesso`
                         });
+
 
                     },
                     error: (error) => {
@@ -286,6 +288,8 @@ export class TabViewComponent implements OnInit {
                         console.error(error)
                     }
                 })
+                this.resources[this.indexContent].content.push(itemContend);
+
 
                 //localStorage.setItem('classCache', JSON.stringify(this.resources));
                 this.visible = false;
@@ -297,7 +301,6 @@ export class TabViewComponent implements OnInit {
                 summary: 'Error',
                 detail: 'Algo de errado não está certo'
             });
-            // Tratar caso o formulário seja inválido
         }
     }
 
@@ -361,25 +364,52 @@ export class TabViewComponent implements OnInit {
     }
 
     getContentPerCourse(): void {
-        console.log(this.idCourse)
-        if(this.idCourse !== null)
-        this.contentService.getContentPerCourse(this.idCourse).subscribe({
-            next: (response) => {
+        if (this.idCourse !== null)
+            this.contentService.getContentPerCourse(this.idCourse).subscribe({
+                next: (response) => {
+                    console.log(response)
+                    response.forEach((content: any) => {
 
-                response.forEach((content: any) => {
-                    // Perform actions with each element
-                    const newContent = {
-                        id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
-                        idContent: content.uuid,
-                        content: [] // Conteúdo do objeto, se necessário
-                    };
-                    this.resources.push(newContent);
-                });
+                        const itemContent = {
+                            description: "",
+                            institute: "",
+                            link: "",
+                            name: "",
+                            sort: "",
+                            typeFile: {name: '', id: "", code: ''}
+                        }
+                        let newContent = {
+                            id: "", // Converte o ID para string e preenche com zero à esquerda se necessário
+                            idContent: 0,
+                            content: [] // Conteúdo do objeto, se necessário
+                        };
+                        this.itemContentService.getItemPerIdContent(content.uuid).subscribe({
+                            next: (response) => {
+
+                                console.log(response)
+                                if (response.length > 0) newContent.content = response;
+
+                            }
+
+                        })
+                        newContent = {
+                            id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                            idContent: content.uuid,
+                            content: [] // Conteúdo do objeto, se necessário
+                        };
+
+                        this.resources.push(newContent);
+                    });
 
 
-                console.log(this.resources);
+                    console.log("o que vai ser renderizado é:", this.resources);
 
-            }
-        })
+                }
+            })
+    }
+
+    logContentItem(contentItem: any) {
+        console.log(contentItem);
+        return true;  // Usado para condicional no template
     }
 }

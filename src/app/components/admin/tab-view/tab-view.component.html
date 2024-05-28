@@ -1,3 +1,7 @@
+<style>
+    .contentItem.idTipoRecursoAula {
+    }
+</style>
 <p-toast />
 <div class="flex classes">
     <div class="classes_title">
@@ -12,24 +16,24 @@
                 <ng-template pTemplate="header">
                     Aula {{ i + 1 }}
                     <span class="ui-tabview-close" (click)="onCloseTab(item.id)"></span>
-                  </ng-template>
+                </ng-template>
                 <div *ngFor="let contentItem of item.content">
                     <div class="resource-box">
-                        <div class="resource-box__icon {{ contentItem.typeFile.code }}">
-                            <i class="pi {{ contentItem.typeFile.code }}"></i>
+                        <div class="resource-box__icon type-{{ contentItem.idTipoRecursoAula }}">
+                            <i class="pi type-{{ contentItem.idTipoRecursoAula }}"></i>
                         </div>
                         <div class="resource-box__content">
-                            <span class="type-file uppercase">{{ contentItem.typeFile.name }}</span>
-                            <a class="resource-link" href="{{ contentItem.link }}" target="_blank">{{ contentItem.name
-                                }}</a>
+                            <span class="type-file uppercase">{{ contentItem.nomeTipoRecursoAula }}</span>
+                            <a class="resource-link" href="{{ contentItem.linkRecurso }}" target="_blank">{{ contentItem.nome }}</a>
                         </div>
                     </div>
                 </div>
-                <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle"
-                    label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
+                <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle" label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
             </p-tabPanel>
         </p-tabView>
     </div>
+
+
 
 
 </div>
