@@ -1,3 +1,4 @@
+<p-toast />
 <main class="content-main">
     <div class="flex justify-content-space-between align-items-center">
         <h2>Novo calendário</h2>
@@ -54,15 +55,13 @@
             ></p-button>
         </div>
         <div class="calendar_row w-100">
-            <p-table
-                [value]="this.calendar.diasAula"
-                [tableStyle]="{ width: '77vw' }"
-            >
+            <p-table class="w-100" [value]="this.calendar.diasAula">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Data</th>
                         <th>Tipo dia</th>
                         <th>Aula especial?</th>
+                        <th>Ações</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-dia>
@@ -70,6 +69,18 @@
                         <td>{{ dia.dataAula }}</td>
                         <td>{{ dia.nomeTipoDiaCalendario }}</td>
                         <td>{{ dia.aulaEspecial ? "Sim" : "Não" }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <p-button
+                                    icon="pi pi-pencil"
+                                    severity="warning"
+                                />
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                />
+                            </div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>

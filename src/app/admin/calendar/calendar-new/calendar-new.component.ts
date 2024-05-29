@@ -11,6 +11,8 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { Calendar } from '../../../models/calendar';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
@@ -34,9 +36,11 @@ import { UtilsService } from '../../../services/utilities/auxiliary/utils.servic
         CheckboxModule,
         NgForOf,
         TableModule,
+        ToastModule,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
+    providers: [SpiritCenterService, MessageService],
 })
 export class CalendarNewComponent implements OnInit {
     calendar: Calendar;
@@ -51,6 +55,7 @@ export class CalendarNewComponent implements OnInit {
     constructor(
         private _spiritCenterService: SpiritCenterService,
         private _utilsService: UtilsService,
+        private _messageService: MessageService,
     ) {
         // Variável que representa o calendário
         this.calendar = {
@@ -132,17 +137,30 @@ export class CalendarNewComponent implements OnInit {
         });
     }
 
-    addTypesDaysCalendar(): void {
+    prepareDataDiaAula(): void {
         let date: Date = new Date(this.diaAula.dataAula);
-        let diaAulaTmp: DiaAula;
         this.diaAula.dataAula = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-        console.log(this.selectedTypeDayCalendar);
         this.diaAula.idTipoDiaCalendario = <number>(
             this.selectedTypeDayCalendar?.uuid
         );
         this.diaAula.nomeTipoDiaCalendario = this.selectedTypeDayCalendar?.name;
-        diaAulaTmp = this.diaAula;
-        this.calendar.diasAula.push(diaAulaTmp);
+        this.selectedTypeDayCalendar = undefined;
+    }
+
+    addTypesDaysCalendar(): void {
+        this.prepareDataDiaAula();
+        this.calendar.diasAula.push({
+            dataAula: this.diaAula.dataAula,
+            idTipoDiaCalendario: this.diaAula.idTipoDiaCalendario,
+            nomeTipoDiaCalendario: this.diaAula.nomeTipoDiaCalendario,
+            aulaEspecial: this.diaAula.aulaEspecial,
+        });
+        this.diaAula = {
+            dataAula: '',
+            idTipoDiaCalendario: 0,
+            nomeTipoDiaCalendario: '',
+            aulaEspecial: false,
+        };
         this.visible = false;
     }
 
@@ -151,23 +169,45 @@ export class CalendarNewComponent implements OnInit {
     }
 
     onSubmit(): void {
+        this._messageService.clear();
+
         if (this.selectedSpiritCenter?.uuid == undefined) {
-            console.log('Falhou');
+            this._messageService.add({
+                severity: 'error',
+                summary: 'Falha',
+                detail: 'Selecione um centro espírita.',
+            });
             return;
         }
 
         if (this.calendar.ano.toString().length < 4) {
-            console.log('Ano incorreto.');
+            this._messageService.add({
+                severity: 'error',
+                summary: 'Falha',
+                detail: 'Ano incorreto. Digite o ano com 4 digitos.',
+            });
             return;
         }
 
         if (this.calendar.semestre < 1 || this.calendar.semestre > 2) {
-            console.log('Semestre incorreto.');
+            this._messageService.add({
+                severity: 'error',
+                summary: 'Falha',
+                detail: 'Semestre incorreto. Digite 1 ou 2.',
+            });
+            return;
+        }
+
+        if (this.calendar.diasAula.length == 0) {
+            this._messageService.add({
+                severity: 'error',
+                summary: 'Falha',
+                detail: 'Adicione pelo menos 1 dia.',
+            });
             return;
         }
 
         this.calendar.uuidCentro = <string>this.selectedSpiritCenter?.uuid;
         console.log(this.calendar);
-        console.log(this.diaAula);
     }
 }
