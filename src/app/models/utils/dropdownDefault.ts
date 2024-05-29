@@ -1,5 +1,5 @@
 export interface DropdownDefault {
-    uuid: string;
+    uuid: string | number;
     name: string;
     code: string;
 }

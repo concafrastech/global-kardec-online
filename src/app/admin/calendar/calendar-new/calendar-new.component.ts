@@ -10,6 +10,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TableModule } from 'primeng/table';
 import { Calendar } from '../../../models/calendar';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
@@ -32,6 +33,7 @@ import { UtilsService } from '../../../services/utilities/auxiliary/utils.servic
         CalendarModule,
         CheckboxModule,
         NgForOf,
+        TableModule,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
@@ -131,7 +133,16 @@ export class CalendarNewComponent implements OnInit {
     }
 
     addTypesDaysCalendar(): void {
-        this.calendar.diasAula.push(this.diaAula);
+        let date: Date = new Date(this.diaAula.dataAula);
+        let diaAulaTmp: DiaAula;
+        this.diaAula.dataAula = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        console.log(this.selectedTypeDayCalendar);
+        this.diaAula.idTipoDiaCalendario = <number>(
+            this.selectedTypeDayCalendar?.uuid
+        );
+        this.diaAula.nomeTipoDiaCalendario = this.selectedTypeDayCalendar?.name;
+        diaAulaTmp = this.diaAula;
+        this.calendar.diasAula.push(diaAulaTmp);
         this.visible = false;
     }
 
