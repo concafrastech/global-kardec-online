@@ -226,7 +226,6 @@ export class TabViewComponent implements OnInit {
                 });
             }
         });
-
         this.contentId++; // Incrementa o próximo ID para a próxima inserção
     }
 
@@ -269,14 +268,11 @@ export class TabViewComponent implements OnInit {
 
                 this.itemContentService.setItemContentFromCentro(itemContend).subscribe({
                     next: (response) => {
-
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
                             detail: `Recurso ${response.nome} foi criado com sucesso`
                         });
-
-
                     },
                     error: (error) => {
                         this.messageService.add({
@@ -284,7 +280,6 @@ export class TabViewComponent implements OnInit {
                             summary: 'Error',
                             detail: 'Algo de errado não está certo'
                         });
-
                         console.error(error)
                     }
                 })
@@ -398,17 +393,41 @@ export class TabViewComponent implements OnInit {
             })
     }
 
-    deleteItemContent(id: string): void {
-        console.log(id)
-        this.itemContentService.deleteItemContent(id).subscribe({
+    deleteItemContent(itemId: string, tabId: string): void {
+        console.log(itemId);
+        this.itemContentService.deleteItemContent(itemId).subscribe({
             next: (response) => {
-                console.log(response)
+                console.log(response);
+
+                // Encontrar a aba que contém o item de conteúdo
+                const tab = this.resources.find(resource => resource.id === tabId);
+                if (tab) {
+                    // Encontrar o índice do item de conteúdo na aba
+                    const itemIndex = tab.content.findIndex((item: any) => item.id === itemId);
+                    if (itemIndex !== -1) {
+                        // Remover o item de conteúdo do array local
+                        tab.content.splice(itemIndex, 1);
+                        this.cdr.detectChanges(); // Forçar uma nova detecção de alterações
+                        localStorage.setItem('classCache', JSON.stringify(this.resources)); // Atualizar o localStorage
+
+                        // Exibir uma mensagem de sucesso
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: `Item de conteúdo foi deletado com sucesso`
+                        });
+                    }
+                }
             },
             error: (error) => {
-                console.error(error)
+                console.error(error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Algo de errado não está certo'
+                });
             }
-
-        })
-
+        });
     }
+
 }

@@ -29,7 +29,7 @@
                     </div>
                     <div class="itens-course_actions">
                         <a><i class="pi pi-pencil" ></i></a>
-                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid)"></i></a>
+                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid, contentItem.conteudo)"></i></a>
                     </div>
                 </div>
                 <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle" label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
