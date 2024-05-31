@@ -17,7 +17,7 @@
                     Aula {{ i + 1 }}
                     <span class="ui-tabview-close" (click)="onCloseTab(item.id)"></span>
                 </ng-template>
-                <div *ngFor="let contentItem of item.content">
+                <div *ngFor="let contentItem of item.content" class="itens-course">
                     <div class="resource-box">
                         <div class="resource-box__icon type-{{ contentItem.idTipoRecursoAula }}">
                             <i class="pi type-{{ contentItem.idTipoRecursoAula }}"></i>
@@ -26,6 +26,10 @@
                             <span class="type-file uppercase">{{ contentItem.nomeTipoRecursoAula }}</span>
                             <a class="resource-link" href="{{ contentItem.linkRecurso }}" target="_blank">{{ contentItem.nome }}</a>
                         </div>
+                    </div>
+                    <div class="itens-course_actions">
+                        <a><i class="pi pi-pencil" ></i></a>
+                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid)"></i></a>
                     </div>
                 </div>
                 <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle" label="Adicionar uma atividade ou recurso" [text]="true"></p-button>

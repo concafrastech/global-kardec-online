@@ -367,9 +367,7 @@ export class TabViewComponent implements OnInit {
         if (this.idCourse !== null)
             this.contentService.getContentPerCourse(this.idCourse).subscribe({
                 next: (response) => {
-                    console.log(response)
                     response.forEach((content: any) => {
-
                         const itemContent = {
                             description: "",
                             institute: "",
@@ -385,12 +383,8 @@ export class TabViewComponent implements OnInit {
                         };
                         this.itemContentService.getItemPerIdContent(content.uuid).subscribe({
                             next: (response) => {
-
-                                console.log(response)
                                 if (response.length > 0) newContent.content = response;
-
                             }
-
                         })
                         newContent = {
                             id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
@@ -400,16 +394,21 @@ export class TabViewComponent implements OnInit {
 
                         this.resources.push(newContent);
                     });
-
-
-                    console.log("o que vai ser renderizado é:", this.resources);
-
                 }
             })
     }
 
-    logContentItem(contentItem: any) {
-        console.log(contentItem);
-        return true;  // Usado para condicional no template
+    deleteItemContent(id: string): void {
+        console.log(id)
+        this.itemContentService.deleteItemContent(id).subscribe({
+            next: (response) => {
+                console.log(response)
+            },
+            error: (error) => {
+                console.error(error)
+            }
+
+        })
+
     }
 }
