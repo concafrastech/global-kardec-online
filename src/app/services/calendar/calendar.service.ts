@@ -42,7 +42,7 @@ export class CalendarService {
             'Content-Type': 'application/json',
         };
 
-        return this._http.post(`${this.apiUrl}/gk/calendario`, calendar, {
+        return this._http.post(`${this.apiUrl}/gk/calendario/`, calendar, {
             headers,
         });
     }

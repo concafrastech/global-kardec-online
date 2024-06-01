@@ -12,13 +12,15 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Calendar } from '../../../models/calendar';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
 import { DropdownDefault } from '../../../models/utils/dropdownDefault';
 import { DiaAula } from '../../../models/diaAula';
 import { UtilsService } from '../../../services/utilities/auxiliary/utils.service';
+import { CalendarService } from '../../../services/calendar/calendar.service';
 
 @Component({
     selector: 'app-calendar-new',
@@ -37,10 +39,16 @@ import { UtilsService } from '../../../services/utilities/auxiliary/utils.servic
         NgForOf,
         TableModule,
         ToastModule,
+        ConfirmDialogModule,
     ],
     templateUrl: './calendar-new.component.html',
     styleUrl: './calendar-new.component.less',
-    providers: [SpiritCenterService, MessageService],
+    providers: [
+        SpiritCenterService,
+        MessageService,
+        ConfirmationService,
+        CalendarService,
+    ],
 })
 export class CalendarNewComponent implements OnInit {
     calendar: Calendar;
@@ -56,6 +64,8 @@ export class CalendarNewComponent implements OnInit {
         private _spiritCenterService: SpiritCenterService,
         private _utilsService: UtilsService,
         private _messageService: MessageService,
+        private _confirmationService: ConfirmationService,
+        private _calendarService: CalendarService,
     ) {
         // Variável que representa o calendário
         this.calendar = {
@@ -208,6 +218,42 @@ export class CalendarNewComponent implements OnInit {
         }
 
         this.calendar.uuidCentro = <string>this.selectedSpiritCenter?.uuid;
-        console.log(this.calendar);
+
+        this._calendarService
+            .createCalendar(this.calendar)
+            .subscribe((response: any) => {
+                console.log(response);
+            });
+    }
+
+    onConfirmDialog(event: Event, index: number) {
+        console.log(index);
+        this._confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Tem certeza que deseja continuar? Essa ação irá remover a data.',
+            header: 'Confirmação',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.calendar.diasAula.splice(index, 1);
+                console.log(this.calendar.diasAula);
+                this._messageService.add({
+                    severity: 'info',
+                    summary: 'Confirmado',
+                    detail: 'Você aceitou a deletar a data.',
+                });
+            },
+            reject: () => {
+                this._messageService.add({
+                    severity: 'error',
+                    summary: 'Rejeitado',
+                    detail: 'Você não aceitou deletar a data.',
+                    life: 3000,
+                });
+            },
+        });
     }
 }
