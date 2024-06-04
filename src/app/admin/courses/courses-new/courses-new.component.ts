@@ -148,37 +148,20 @@ export class CoursesNewComponent implements OnInit {
             this.languages = languages;
         });
 
-        this.updateCourse();
+        this.updateInfoCourse();
 
     }
 
-
+    /**
+     * Manipulador para o evento beforeunload da janela.
+     * Exibirá um aviso ao usuário quando ele tentar sair da página.
+     *
+     * @param $event O evento BeforeUnloadEvent.
+     */
     @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: BeforeUnloadEvent) {
-        console.log($event);
-
         // Impedir comportamento padrão (opcional)
         $event.preventDefault(); // Descomente se precisar impedir o comportamento padrão
-
-        const mensagemConfirmacao = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
-
-        return this.confirmationService.confirm({
-            message: mensagemConfirmacao,
-            header: 'Confirmação de Saída', // Ajuste o texto do cabeçalho conforme necessário
-            icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: "p-button-danger p-button-text",
-            rejectButtonStyleClass: "p-button-text p-button-text",
-            acceptIcon: "none",
-            rejectIcon: "none",
-            accept: () => {
-                // Execute qualquer ação necessária antes de sair da página (por exemplo, salvar dados)
-                this.closableClass = true;
-                this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Saindo...'});
-            },
-            reject: () => {
-                this.messageService.add({severity: 'error', summary: 'Cancelado', detail: 'Permanecendo na página'});
-            }
-        });
     }
 
     /**
@@ -326,11 +309,54 @@ export class CoursesNewComponent implements OnInit {
     }
 
     /**
+     *
+     */
+    updateCourse(): void {
+        // Verifica se o formulário é válido
+        if (this.formControl.invalid) {
+            this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
+            return;
+        }
+
+        // Cria o objeto de curso com os valores do formulário
+        const course: Course = {
+            uuid: this.idCourse ? this.idCourse : "",
+            nome: this.formControl.get('name')?.value,
+            descricao: this.formControl.get('description')?.value,
+            instituto: this.formControl.get('institute')?.value,
+            idioma: this.formControl.get('language')?.value,
+            capaCurso: 'string', // Defina o valor adequado para capaCurso
+            tipoCurso: 1,
+            modalidadeEnsino: 'PRESENCIAL'
+        };
+
+        // Chama o serviço para criar o curso
+        this.courseService.updateCourse(course).subscribe({
+            next: response => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Adicionado',
+                    detail: 'Curso atualizado com sucesso'
+                });
+               // this.formControl.disable();
+                this.enabledCourse = true;
+                // Limpa o formulário após adicionar com sucesso
+                // this.formControl.reset();
+                // Salva as informações do curso, se necessário
+                localStorage.setItem('courseInfo', JSON.stringify({nome: response.nome, id: response.uuid}));
+            },
+            error: error => {
+                console.error('Erro ao criar curso:', error);
+                // Lógica de manipulação de erro, se necessário
+            }
+        });
+    }
+    /**
      * Atualiza os campos do formulário com os dados do curso.
      *
      * @private
      */
-    private updateCourse(): void {
+    private updateInfoCourse(): void {
 
         // Verifica se o ID do curso está presente
         if (!this.idCourse) return;

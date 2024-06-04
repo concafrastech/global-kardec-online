@@ -152,7 +152,6 @@ export class TabViewComponent implements OnInit {
             {name: 'Áudio', id: 1, code: 'pi-volume-up'},
             {name: 'Vídeo', id: 3, code: 'pi-play'}
         ];
-        console.log();
         if (this.idCourse !== null) this.getContentPerCourse()
     }
 
@@ -281,9 +280,6 @@ export class TabViewComponent implements OnInit {
                             detail: 'Algo de errado não está certo'
                         });
                         console.error(error)
-                    },
-                    complete: (): void => {
-                        console.log(this.resources)
                     }
                 })
 
@@ -340,9 +336,7 @@ export class TabViewComponent implements OnInit {
                     summary: 'Erro',
                     detail: 'Não foi possível carregar o curso, entre em contato com o administrador'
                 });
-                // Loga a ausência de dados no console para debug
-                console.log('Não há nenhum valor armazenado com a chave "courseInfo" no localStorage.');
-            }
+                          }
         } catch (error) {
             // Em caso de erro ao recuperar ou parsear os dados, define courseInfo como false
             courseInfo = [];
@@ -395,7 +389,6 @@ export class TabViewComponent implements OnInit {
     }
 
     deleteItemContent(itemId: string, tabId: string, index: number): void {
-        console.log("antes de deletar", this.resources)
         this.itemContentService.deleteItemContent(itemId).subscribe({
             next: (response) => {
 
@@ -426,16 +419,18 @@ export class TabViewComponent implements OnInit {
                     summary: 'Error',
                     detail: 'Algo de errado não está certo'
                 });
-            },
-            complete: (): void => {
-                console.log(this.resources)
             }
         });
     }
 
+    /**
+     * Retorna o código do ícone correspondente ao id fornecido.
+     *
+     * @param id O id do tipo de recurso.
+     * @return O código do ícone ou undefined se não encontrado.
+     */
     returnIcon(id: string): string | undefined {
         const option = this.optionsType?.find(option => option.id === id);
-        console.log(option ? option.code : undefined)
         return option ? option.code : undefined;
     }
 

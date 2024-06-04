@@ -47,7 +47,8 @@
 
     </div>
     @if (enabledCourse || courseUpdate) {
-        <p-button class="block pt-4" [label]="textBottom" (onClick)="createCourse()"></p-button>
+        <p-button class="block pt-4" [label]="textBottom" (onClick)="updateCourse()"></p-button>
+        <p-toast></p-toast>
 
         <app-tab-view [idCourse]="idCourse"></app-tab-view>
 
