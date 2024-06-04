@@ -19,8 +19,8 @@
                 </ng-template>
                 <div *ngFor="let contentItem of item.content" class="itens-course">
                     <div class="resource-box">
-                        <div class="resource-box__icon type-{{ contentItem.idTipoRecursoAula }}">
-                            <i class="pi type-{{ contentItem.idTipoRecursoAula }}"></i>
+                        <div class="resource-box__icon {{ returnIcon(contentItem.idTipoRecursoAula) }}">
+                            <i class="pi {{ returnIcon(contentItem.idTipoRecursoAula) }}"></i>
                         </div>
                         <div class="resource-box__content">
                             <span class="type-file uppercase">{{ contentItem.nomeTipoRecursoAula }}</span>

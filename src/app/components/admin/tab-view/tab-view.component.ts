@@ -98,24 +98,24 @@ export class TabViewComponent implements OnInit {
         private messageService: MessageService
     ) {
         // Verifica se existe um array armazenado em cache
-        const classCache = localStorage.getItem('classCache');
-        if (classCache) {
-            try {
-                // Se houver um cache, parseia o JSON para obter os recursos
-                this.resources = JSON.parse(classCache);
-                // Determina o próximo ID com base no último ID armazenado
-                const lastId = this.resources[this.resources.length - 1].id;
-                this.contentId = parseInt(lastId) + 1;
-            } catch (error) {
-                // Se houver um erro ao analisar o cache, exibe uma mensagem de erro
-                console.error('Erro ao analisar o cache de recursos:', error);
-                // Limpa o cache para evitar problemas adicionais
-                localStorage.removeItem('classCache');
-            }
-        } else {
-            // Se não houver cache, inicializa o array de recursos
-            this.resources = [];
-        }
+        // const classCache = localStorage.getItem('classCache');
+        // if (classCache) {
+        //     try {
+        //         // Se houver um cache, parseia o JSON para obter os recursos
+        //         this.resources = JSON.parse(classCache);
+        //         // Determina o próximo ID com base no último ID armazenado
+        //         const lastId = this.resources[this.resources.length - 1].id;
+        //         this.contentId = parseInt(lastId) + 1;
+        //     } catch (error) {
+        //         // Se houver um erro ao analisar o cache, exibe uma mensagem de erro
+        //         console.error('Erro ao analisar o cache de recursos:', error);
+        //         // Limpa o cache para evitar problemas adicionais
+        //         localStorage.removeItem('classCache');
+        //     }
+        // } else {
+        //     // Se não houver cache, inicializa o array de recursos
+        //     this.resources = [];
+        // }
 
     }
 
@@ -312,7 +312,7 @@ export class TabViewComponent implements OnInit {
         if (index !== -1) {
             this.resources.splice(index, 1);
             this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
-            localStorage.setItem('classCache', JSON.stringify(this.resources));
+           // localStorage.setItem('classCache', JSON.stringify(this.resources));
         }
     }
 
@@ -431,6 +431,12 @@ export class TabViewComponent implements OnInit {
                 console.log(this.resources)
             }
         });
+    }
+
+    returnIcon(id: string): string | undefined {
+        const option = this.optionsType?.find(option => option.id === id);
+        console.log(option ? option.code : undefined)
+        return option ? option.code : undefined;
     }
 
 }
