@@ -264,10 +264,10 @@ export class TabViewComponent implements OnInit {
                     nomeConteudo: this.formControl.value.typeFile.name, // nome do conteúdo, precisa implementar
                     ordem: 1 // tem que implementar
                 }
-                console.log(itemContend)
 
                 this.itemContentService.setItemContentFromCentro(itemContend).subscribe({
                     next: (response) => {
+                        this.resources[this.indexContent].content.push(response);
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
@@ -281,10 +281,11 @@ export class TabViewComponent implements OnInit {
                             detail: 'Algo de errado não está certo'
                         });
                         console.error(error)
+                    },
+                    complete: (): void => {
+                        console.log(this.resources)
                     }
                 })
-                this.resources[this.indexContent].content.push(itemContend);
-
 
                 //localStorage.setItem('classCache', JSON.stringify(this.resources));
                 this.visible = false;
@@ -393,11 +394,10 @@ export class TabViewComponent implements OnInit {
             })
     }
 
-    deleteItemContent(itemId: string, tabId: string): void {
-        console.log(itemId);
+    deleteItemContent(itemId: string, tabId: string, index: number): void {
+        console.log("antes de deletar", this.resources)
         this.itemContentService.deleteItemContent(itemId).subscribe({
             next: (response) => {
-                console.log(response);
 
                 // Encontrar a aba que contém o item de conteúdo
                 const tab = this.resources.find(resource => resource.id === tabId);
@@ -408,7 +408,7 @@ export class TabViewComponent implements OnInit {
                         // Remover o item de conteúdo do array local
                         tab.content.splice(itemIndex, 1);
                         this.cdr.detectChanges(); // Forçar uma nova detecção de alterações
-                        localStorage.setItem('classCache', JSON.stringify(this.resources)); // Atualizar o localStorage
+                      //  localStorage.setItem('classCache', JSON.stringify(this.resources)); // Atualizar o localStorage
 
                         // Exibir uma mensagem de sucesso
                         this.messageService.add({
@@ -426,6 +426,9 @@ export class TabViewComponent implements OnInit {
                     summary: 'Error',
                     detail: 'Algo de errado não está certo'
                 });
+            },
+            complete: (): void => {
+                console.log(this.resources)
             }
         });
     }
