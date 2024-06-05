@@ -301,14 +301,36 @@ export class TabViewComponent implements OnInit {
      *
      * @param tabId O ID da aba a ser fechada.
      */
-    onCloseTab(tabId: string) {
+    onCloseTab(tab: any) {
         // Encontrar o índice do item no array resources com base no tabId
-        const index = this.resources.findIndex(item => item.id === tabId);
+        const index = this.resources.findIndex(item => item.id === tab.id);
         // Se o índice for encontrado, remover a entrada inteira do array resources
+
         if (index !== -1) {
-            this.resources.splice(index, 1);
-            this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
-           // localStorage.setItem('classCache', JSON.stringify(this.resources));
+            this.contentService.deleteResource(tab.idContent).subscribe({
+                next: (response) => {
+                    this.resources.splice(index, 1);
+                    this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Sucesso',
+                        detail: 'Item de conteúdo foi deletado com sucesso'
+                    });
+                },
+                error:(error)=> {
+
+                    // Exibir uma mensagem de erro se o item não for encontrado
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erro',
+                        detail: 'Você precisa deletar os conteúdos da aula'
+                    });
+                    console.error(error)
+                }
+            })
+
+
         }
     }
 
@@ -336,7 +358,7 @@ export class TabViewComponent implements OnInit {
                     summary: 'Erro',
                     detail: 'Não foi possível carregar o curso, entre em contato com o administrador'
                 });
-                          }
+            }
         } catch (error) {
             // Em caso de erro ao recuperar ou parsear os dados, define courseInfo como false
             courseInfo = [];
@@ -391,32 +413,39 @@ export class TabViewComponent implements OnInit {
     deleteItemContent(itemId: string, tabId: string, index: number): void {
         this.itemContentService.deleteItemContent(itemId).subscribe({
             next: (response) => {
-
                 // Encontrar a aba que contém o item de conteúdo
-                const tab = this.resources.find(resource => resource.id === tabId);
-                if (tab) {
-                    // Encontrar o índice do item de conteúdo na aba
-                    const itemIndex = tab.content.findIndex((item: any) => item.id === itemId);
-                    if (itemIndex !== -1) {
-                        // Remover o item de conteúdo do array local
-                        tab.content.splice(itemIndex, 1);
-                        this.cdr.detectChanges(); // Forçar uma nova detecção de alterações
-                      //  localStorage.setItem('classCache', JSON.stringify(this.resources)); // Atualizar o localStorage
+               let tab = this.resources.find(resource => resource.idContent === tabId );
+                if (tab && tab.content && tab.content[index]?.uuid === itemId) {
 
-                        // Exibir uma mensagem de sucesso
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Success',
-                            detail: `Item de conteúdo foi deletado com sucesso`
-                        });
-                    }
+                    // Remover o item de conteúdo do array local
+                    tab.content.splice(index, 1);
+
+                    // Atualizar this.resources
+                    this.resources = [...this.resources];
+
+                    // Forçar uma nova detecção de alterações
+                    this.cdr.detectChanges();
+
+                    // Exibir uma mensagem de sucesso
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Sucesso',
+                        detail: 'Item de conteúdo foi deletado com sucesso'
+                    });
+                } else {
+                    // Exibir uma mensagem de erro se o item não for encontrado
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erro',
+                        detail: 'Item de conteúdo não encontrado'
+                    });
                 }
             },
             error: (error) => {
                 console.error(error);
                 this.messageService.add({
                     severity: 'error',
-                    summary: 'Error',
+                    summary: 'Erro',
                     detail: 'Algo de errado não está certo'
                 });
             }

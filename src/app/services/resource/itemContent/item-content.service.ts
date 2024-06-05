@@ -121,7 +121,6 @@ export class ItemContentService {
      */
     deleteItemContent(idItemContent: string): Observable<any> {
         const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        console.log(idItemContent)
         return this.http.delete<any>(
             `${this.apiUrl}/gk/itemConteudo/${idItemContent}`,
             {headers}

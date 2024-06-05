@@ -72,10 +72,13 @@ export class ResourceService {
      * @param uuid
      */
     deleteResource(uuid: string): Observable<any> {
-        return this.httpClient.delete<any>(`${this.apiUrl}/gk/conteudo/${uuid}`)
-            .pipe(
-                catchError(this.handleError)
-            );
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.httpClient.delete<any>(
+            `${this.apiUrl}/gk/conteudo/${uuid}`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError) // Trata erros que ocorrem na requisição
+        );
     }
 
     /**
@@ -84,8 +87,6 @@ export class ResourceService {
      */
     postResource(resource: Content): Observable<any> {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        console.log(`${this.apiUrl}/gk/conteudo/`)
-
         return this.httpClient.post<any>(`${this.apiUrl}/gk/conteudo`, JSON.stringify(resource), { headers })
             .pipe(
                 catchError(this.handleError)

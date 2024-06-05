@@ -15,9 +15,9 @@
             <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
                 <ng-template pTemplate="header">
                     Aula {{ i + 1 }}
-                    <span class="ui-tabview-close" (click)="onCloseTab(item.id)"></span>
+                    <span class="ui-tabview-close" (click)="onCloseTab(item)"></span>
                 </ng-template>
-                <div *ngFor="let contentItem of item.content" class="itens-course">
+                <div *ngFor="let contentItem of item.content; let indexContent = index" class="itens-course">
                     <div class="resource-box">
                         <div class="resource-box__icon {{ returnIcon(contentItem.idTipoRecursoAula) }}">
                             <i class="pi {{ returnIcon(contentItem.idTipoRecursoAula) }}"></i>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="itens-course_actions">
                         <a><i class="pi pi-pencil" ></i></a>
-                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid, contentItem.conteudo, i)"></i></a>
+                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid, contentItem.conteudo, indexContent)"></i></a>
                     </div>
                 </div>
                 <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle" label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
