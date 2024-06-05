@@ -1,6 +1,6 @@
 export interface DiaAula {
     uuid?: string;
-    dataAula: Date;
+    dataAula: string;
     idTipoDiaCalendario: number;
     nomeTipoDiaCalendario?: string;
     aulaEspecial: boolean;

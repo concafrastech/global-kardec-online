@@ -84,7 +84,7 @@ export class CalendarNewComponent implements OnInit {
         };
 
         this.diaAula = {
-            dataAula: new Date(),
+            dataAula: '',
             idTipoDiaCalendario: 0,
             nomeTipoDiaCalendario: '',
             aulaEspecial: false,
@@ -148,7 +148,8 @@ export class CalendarNewComponent implements OnInit {
     }
 
     prepareDataDiaAula(): void {
-        this.diaAula.dataAula = new Date(this.diaAula.dataAula);
+        let date: Date = new Date(this.diaAula.dataAula);
+        this.diaAula.dataAula = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
         this.diaAula.idTipoDiaCalendario = <number>(
             this.selectedTypeDayCalendar?.uuid
         );
@@ -165,7 +166,7 @@ export class CalendarNewComponent implements OnInit {
             aulaEspecial: this.diaAula.aulaEspecial,
         });
         this.diaAula = {
-            dataAula: new Date(),
+            dataAula: '',
             idTipoDiaCalendario: 0,
             nomeTipoDiaCalendario: '',
             aulaEspecial: false,
@@ -226,7 +227,6 @@ export class CalendarNewComponent implements OnInit {
     }
 
     onConfirmDialog(event: Event, index: number) {
-        console.log(index);
         this._confirmationService.confirm({
             target: event.target as EventTarget,
             message:
