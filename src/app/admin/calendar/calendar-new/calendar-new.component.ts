@@ -84,7 +84,7 @@ export class CalendarNewComponent implements OnInit {
         };
 
         this.diaAula = {
-            dataAula: '',
+            dataAula: new Date(),
             idTipoDiaCalendario: 0,
             nomeTipoDiaCalendario: '',
             aulaEspecial: false,
@@ -148,8 +148,7 @@ export class CalendarNewComponent implements OnInit {
     }
 
     prepareDataDiaAula(): void {
-        let date: Date = new Date(this.diaAula.dataAula);
-        this.diaAula.dataAula = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        this.diaAula.dataAula = new Date(this.diaAula.dataAula);
         this.diaAula.idTipoDiaCalendario = <number>(
             this.selectedTypeDayCalendar?.uuid
         );
@@ -166,7 +165,7 @@ export class CalendarNewComponent implements OnInit {
             aulaEspecial: this.diaAula.aulaEspecial,
         });
         this.diaAula = {
-            dataAula: '',
+            dataAula: new Date(),
             idTipoDiaCalendario: 0,
             nomeTipoDiaCalendario: '',
             aulaEspecial: false,

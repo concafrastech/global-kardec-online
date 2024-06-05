@@ -67,7 +67,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-dia let-index="rowIndex">
                     <tr>
-                        <td>{{ dia.dataAula }}</td>
+                        <td>{{ dia.dataAula.getDate() + '/' + (dia.dataAula.getMonth() + 1) + '/' + dia.dataAula.getFullYear() }}</td>
                         <td>{{ dia.nomeTipoDiaCalendario }}</td>
                         <td>{{ dia.aulaEspecial ? "Sim" : "Não" }}</td>
                         <td>
