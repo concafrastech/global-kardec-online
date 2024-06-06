@@ -14,8 +14,13 @@ export class CalendarService {
         this.apiUrl = environment.apiUrl;
     }
 
-    // TODO: Desenvolver função de retorno de todos os calendários no back primeiro.
-    getAllCalendars() {}
+    getCalendarBySpiritCenter(uuidSpiritCenter: string): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+
+        return this._http.get(`${this.apiUrl}/gk/calendario/porCentro/${uuidSpiritCenter}`, { headers });
+    }
 
     /**
      * Função responsável por retornar um calendário de acordo com o UUID passado.
