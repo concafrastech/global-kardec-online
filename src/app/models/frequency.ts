@@ -1,9 +1,10 @@
+/**
+ *
+ * Todos os direitos pertencem à Concafras.
+ *
+ * Portal da Concafras: https://portal.concafras.com/
+ */
 export interface Frequency {
-    diaCalendario: string,
-    frequencias: [
-      {
-        matricula: string,
-        situacaoFrequencia: number
-      }
-    ]
+  matricula: string;
+  situacaoFrequencia: number;
 }

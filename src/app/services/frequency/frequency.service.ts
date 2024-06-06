@@ -65,7 +65,7 @@ export class FrequencyService {
     updateFrequency(frequency: Frequency): Observable<any> {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this.httpClient.put<any>(`${this.apiUrl}/gk/frequencia/`, frequency, { headers })
+        return this.httpClient.post<any>(`${this.apiUrl}/gk/frequencia/`, frequency, { headers })
             .pipe(
                 catchError(this.handleError) // Lidar com erros retornados pelas requisições HTTP
             );
