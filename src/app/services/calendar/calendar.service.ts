@@ -8,7 +8,7 @@ import { Calendar } from '../../models/calendar';
     providedIn: 'root',
 })
 export class CalendarService {
-    private apiUrl: string;
+    apiUrl: string;
 
     constructor(private _http: HttpClient) {
         this.apiUrl = environment.apiUrl;
@@ -19,7 +19,10 @@ export class CalendarService {
             'Content-Type': 'application/json',
         };
 
-        return this._http.get(`${this.apiUrl}/gk/calendario/porCentro/${uuidSpiritCenter}`, { headers });
+        return this._http.get(
+            `${this.apiUrl}/gk/calendario/porCentro/${uuidSpiritCenter}`,
+            { headers },
+        );
     }
 
     /**
@@ -48,6 +51,16 @@ export class CalendarService {
         };
 
         return this._http.post(`${this.apiUrl}/gk/calendario/`, calendar, {
+            headers,
+        });
+    }
+
+    deleteCalendar(uuid: string | undefined): Observable<any> {
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+
+        return this._http.delete(`${this.apiUrl}/gk/calendario/${uuid}`, {
             headers,
         });
     }

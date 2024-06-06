@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgForOf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -66,6 +66,7 @@ export class CalendarNewComponent implements OnInit {
         private _messageService: MessageService,
         private _confirmationService: ConfirmationService,
         private _calendarService: CalendarService,
+        private _router: Router,
     ) {
         // Variável que representa o calendário
         this.calendar = {
@@ -221,8 +222,8 @@ export class CalendarNewComponent implements OnInit {
 
         this._calendarService
             .createCalendar(this.calendar)
-            .subscribe((response: any) => {
-                console.log(response);
+            .subscribe(() => {
+                this._router.navigate(['/admin/calendarios']);
             });
     }
 
