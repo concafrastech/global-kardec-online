@@ -1,10 +1,9 @@
-import {environment} from '../../../environments/environment';
-import {Observable, throwError} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError} from 'rxjs/operators';
-import {Frequency} from '../../models/frequency';
-
+import { environment } from '../../../environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators';
+import { Frequency } from '../../models/frequency';
 
 @Injectable({
     providedIn: 'root'
@@ -13,53 +12,62 @@ export class FrequencyService {
     private apiUrl: string;
 
     constructor(private httpClient: HttpClient) {
+        // Define a URL da API a partir das configurações de ambiente
         this.apiUrl = environment.apiUrl;
     }
 
     /**
+     * Obtém a frequência dos alunos para uma determinada turma.
      *
-     * @param classUuid
+     * @param classUuid O UUID da turma para a qual a frequência será obtida.
+     * @returns Um Observable contendo os dados de frequência da turma.
      */
     getFrequencyByClass(classUuid: string): Observable<any> {
         return this.httpClient.get<any>(`${this.apiUrl}/gk/frequencia/porTurma/${classUuid}`)
             .pipe(
-                catchError(this.handleError)
+                catchError(this.handleError) // Lidar com erros retornados pelas requisições HTTP
             );
     }
 
     /**
+     * Obtém a frequência dos alunos para uma determinada matrícula.
      *
-     * @param registryUuid
+     * @param registryUuid O UUID da matrícula para a qual a frequência será obtida.
+     * @returns Um Observable contendo os dados de frequência da matrícula.
      */
     getFrequencyByRegistry(registryUuid: string): Observable<any> {
         return this.httpClient.get<any>(`${this.apiUrl}/gk/frequencia/porMatricula/${registryUuid}`)
             .pipe(
-                catchError(this.handleError)
+                catchError(this.handleError) // Lidar com erros retornados pelas requisições HTTP
             );
     }
 
     /**
+     * Obtém a frequência dos alunos para um determinado calendário e data de aula.
      *
-     * @param calendarUuid
-     * @param classDate
+     * @param calendarUuid O UUID do calendário para o qual a frequência será obtida.
+     * @param classDate A data da aula para a qual a frequência será obtida.
+     * @returns Um Observable contendo os dados de frequência do calendário na data especificada.
      */
     getFrequencyByCalendar(calendarUuid: string, classDate: string): Observable<any> {
         return this.httpClient.get<any>(`${this.apiUrl}/gk/frequencia/porCalendario/${calendarUuid}/${classDate}`)
             .pipe(
-                catchError(this.handleError)
+                catchError(this.handleError) // Lidar com erros retornados pelas requisições HTTP
             );
     }
 
     /**
+     * Atualiza os dados de frequência de um aluno.
      *
-     * @param frequency
+     * @param frequency O objeto de frequência a ser atualizado.
+     * @returns Um Observable representando o resultado da atualização da frequência.
      */
-    updateResource(frequency: Frequency): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    updateFrequency(frequency: Frequency): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this.httpClient.put<any>(`${this.apiUrl}/gk/frequencia/`, frequency, {headers})
+        return this.httpClient.post<any>(`${this.apiUrl}/gk/frequencia/`, frequency, { headers })
             .pipe(
-                catchError(this.handleError)
+                catchError(this.handleError) // Lidar com erros retornados pelas requisições HTTP
             );
     }
 
