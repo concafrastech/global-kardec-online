@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Class} from "../../models/class";
 import {catchError} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
+// Models
+import {Class} from "../../models/class";
+import {ClassLot} from "../../models/classLot";
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +34,7 @@ export class ClassService {
     }
 
     /**
+     * Permite o cadastramento de uma nova turma
      *
      * @param classInfo
      */
@@ -41,6 +44,124 @@ export class ClassService {
         return this._http.post<any>(
             `${this.apiUrl}/gk/turma'`,
             classInfo,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Cadastro de turmas em lote
+     *
+     * @param classLot
+     */
+    postLote(classLot: ClassLot): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.post<any>(
+            `${this.apiUrl}/gk/turma'`,
+            classLot,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Reabrir uma turma a partir do uuid da turma
+     *
+     * @param uuid id único da turma
+     */
+    patchReopen(uuid: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.patch<any>(
+            `${this.apiUrl}/gk/turma/reabrir/${uuid}'`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Encerrar uma turma a partir do uuid da turma
+     *
+     * @param uuid id único da turma
+     */
+    patchClose(uuid: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.patch<any>(
+            `${this.apiUrl}/gk/turma/encerrar/${uuid}'`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Retorna uma turma por uuid
+     *
+     * @param uuid O UUID da turma a ser retornada.
+     * @return Um Observable que emite o objeto da turma correspondente ao UUID fornecido.
+     */
+    get(uuid: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.get<any>(
+            `${this.apiUrl}/gk/turma/${uuid}'`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * permite a exclusão por um uuid
+     *
+     * @param uuid
+     * @return
+     */
+    delete(uuid: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.delete<any>(
+            `${this.apiUrl}/gk/turma/${uuid}'`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Retorna todas as turmas por centro
+     *
+     * @param uuid O UUID do centro a ser retornado.
+     * @return Um Observable que emite o objeto da turma correspondente ao UUID fornecido.
+     */
+    getPerCentro(uuid: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.get<any>(
+            `${this.apiUrl}/gk/turma/porCentro/${uuid}'`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    /**
+     * Retorna as turmas associadas a um centro e curso específicos.
+     *
+     * @param uuidCentro O UUID do centro.
+     * @param nomeCurso O nome do curso.
+     * @return Um Observable que emite a lista de turmas correspondentes ao centro e curso fornecidos.
+     */
+    getPerCentroPorCurso(uuidCentro: string, nomeCurso: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this._http.get<any>(
+            `${this.apiUrl}/gk/turma/porCentro/${uuidCentro}/${nomeCurso}'`,
             {headers}
         ).pipe(
             catchError(this.handleError)
