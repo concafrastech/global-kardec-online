@@ -1,27 +1,15 @@
 // Importações essenciais do Angular
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core'; // Funcionalidades básicas para componentes
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core'; // Funcionalidades básicas para componentes
 import {CommonModule} from '@angular/common'; // Funcionalidades básicas do Angular
-
 // Importações do PrimeNG para componentes específicos
-import {TabViewModule} from 'primeng/tabview';  // Componente TabView do PrimeNG
-import {ButtonModule} from 'primeng/button';    // Componente Button do PrimeNG
-import {DialogModule} from 'primeng/dialog';  // Componente Dialog do PrimeNG
+import {TabViewModule} from 'primeng/tabview'; // Componente TabView do PrimeNG
+import {ButtonModule} from 'primeng/button'; // Componente Button do PrimeNG
+import {DialogModule} from 'primeng/dialog'; // Componente Dialog do PrimeNG
 import {InputTextModule} from 'primeng/inputtext'; // Componente InputText do PrimeNG
 import {InputTextareaModule} from 'primeng/inputtextarea'; // Componente InputTextarea do PrimeNG
 import {DropdownModule} from 'primeng/dropdown'; // Componente Dropdown do PrimeNG
-
-
 // Importações relacionadas a formulários do Angular
-import {
-    FormGroup,
-    Validators,
-    FormControl,
-    FormBuilder,
-    FormsModule,
-    ReactiveFormsModule
-} from '@angular/forms'; // Classes para formulários reativos e validação
-import {Content} from "../../../models/content"; // Classes para formulários direcionados e controles de formulário
-
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'; // Classes para formulários reativos e validação
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 
@@ -30,6 +18,8 @@ import {MessageService} from 'primeng/api';
 import {ResourceService} from "../../../services/resource/resource.service";
 import {ItemContentService} from "../../../services/resource/itemContent/item-content.service";
 import {ItemContent} from "../../../models/itemContent";
+
+import {LogPipePipe} from "./log-pipe.pipe";
 
 @Component({
     selector: 'app-tab-view',
@@ -44,7 +34,8 @@ import {ItemContent} from "../../../models/itemContent";
         ReactiveFormsModule,
         DropdownModule,
         FormsModule,
-        ToastModule
+        ToastModule,
+        LogPipePipe
 
     ],
     templateUrl: './tab-view.component.html',
@@ -107,24 +98,24 @@ export class TabViewComponent implements OnInit {
         private messageService: MessageService
     ) {
         // Verifica se existe um array armazenado em cache
-        const classCache = localStorage.getItem('classCache');
-        if (classCache) {
-            try {
-                // Se houver um cache, parseia o JSON para obter os recursos
-                this.resources = JSON.parse(classCache);
-                // Determina o próximo ID com base no último ID armazenado
-                const lastId = this.resources[this.resources.length - 1].id;
-                this.contentId = parseInt(lastId) + 1;
-            } catch (error) {
-                // Se houver um erro ao analisar o cache, exibe uma mensagem de erro
-                console.error('Erro ao analisar o cache de recursos:', error);
-                // Limpa o cache para evitar problemas adicionais
-                localStorage.removeItem('classCache');
-            }
-        } else {
-            // Se não houver cache, inicializa o array de recursos
-            this.resources = [];
-        }
+        // const classCache = localStorage.getItem('classCache');
+        // if (classCache) {
+        //     try {
+        //         // Se houver um cache, parseia o JSON para obter os recursos
+        //         this.resources = JSON.parse(classCache);
+        //         // Determina o próximo ID com base no último ID armazenado
+        //         const lastId = this.resources[this.resources.length - 1].id;
+        //         this.contentId = parseInt(lastId) + 1;
+        //     } catch (error) {
+        //         // Se houver um erro ao analisar o cache, exibe uma mensagem de erro
+        //         console.error('Erro ao analisar o cache de recursos:', error);
+        //         // Limpa o cache para evitar problemas adicionais
+        //         localStorage.removeItem('classCache');
+        //     }
+        // } else {
+        //     // Se não houver cache, inicializa o array de recursos
+        //     this.resources = [];
+        // }
 
     }
 
@@ -156,16 +147,17 @@ export class TabViewComponent implements OnInit {
 
         // Inicialização das opções de arquivo
         this.optionsType = [
-            {name: 'Arquivo', id: 1, code: 'pi-file'},
-            {name: 'Slide Aula', id: 2, code: 'pi-id-card'},
-            {name: 'Áudio', id: 3, code: 'pi-volume-up'},
-            {name: 'Vídeo', id: 4, code: 'pi-play'}
+            {name: 'PDF', id: 4, code: 'pi-file'},
+            {name: 'Youtube', id: 2, code: 'pi-id-card'},
+            {name: 'Áudio', id: 1, code: 'pi-volume-up'},
+            {name: 'Vídeo', id: 3, code: 'pi-play'}
         ];
-        //console.log(this.resources);
+        if (this.idCourse !== null) this.getContentPerCourse()
     }
 
     visible: boolean = false;
     indexContent: any = "";
+    @Input() idCourse!: string | null;
 
     /**
      * Método responsável por exibir o diálogo de adicionar conteúdo.
@@ -186,32 +178,30 @@ export class TabViewComponent implements OnInit {
      * @remarks A saída do console exibe o array de recursos atualizado após a adição do novo curso.
      */
     addCourseContent(): void {
-        let courseInfo = [];
-        try {
-            const courseInfoStr: any = localStorage.getItem('courseInfo');
-            if (courseInfoStr) {
-                // Converte a string de volta para um objeto JavaScript
-                courseInfo = JSON.parse(courseInfoStr);
+        let courseInfo: any[] = this.getCourseInfo();
 
-            } else {
-                console.log('Não há nenhum valor armazenado com a chave "courseInfo" no localStorage.');
-            }
-        } catch (error) {
-
+        if (!courseInfo) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Algo de errado não está certo'
+            });
+            return;
         }
-
+        // @ts-ignore
         const content: Content = {
+            // @ts-ignore
             nome: `Aula ${courseInfo.id}`,
+            // @ts-ignore
             nomeCurso: courseInfo.nome,
             ordem: this.contentId,
+            // @ts-ignore
             curso: courseInfo.id
         }
         let idContent;
         this.resources.push()
-
         this.contentService.postResource(content).subscribe({
             next: (response) => {
-                // console.log(response)
                 idContent = response.uuid;
                 const novoObjeto = {
                     id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
@@ -235,9 +225,7 @@ export class TabViewComponent implements OnInit {
                 });
             }
         });
-
         this.contentId++; // Incrementa o próximo ID para a próxima inserção
-
     }
 
 
@@ -265,15 +253,12 @@ export class TabViewComponent implements OnInit {
         if (this.formControl && this.formControl.valid) {
             // Lógica para enviar o formulário
             if (this.indexContent !== "") {
-                //  this.resources[this.indexContent].content.push(this.formControl.value);
-                this.resources[this.indexContent].content.push(this.formControl.value);
-
                 const itemContend: ItemContent = {
                     nome: this.formControl.value.name,
                     descricao: this.formControl.value.description,
                     linkRecurso: this.formControl.value.link,
                     idTipoRecursoAula: this.formControl.value.typeFile.id, // implementar ainda
-                    nomeTipoRecursoAula: "string", // nao faço ideia do que seja isso
+                    nomeTipoRecursoAula: this.formControl.value.typeFile.name, // nao faço ideia do que seja isso
                     conteudo: this.resources[this.indexContent].idContent, // Id do conteúdo
                     nomeConteudo: this.formControl.value.typeFile.name, // nome do conteúdo, precisa implementar
                     ordem: 1 // tem que implementar
@@ -281,13 +266,12 @@ export class TabViewComponent implements OnInit {
 
                 this.itemContentService.setItemContentFromCentro(itemContend).subscribe({
                     next: (response) => {
-
+                        this.resources[this.indexContent].content.push(response);
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
                             detail: `Recurso ${response.nome} foi criado com sucesso`
                         });
-
                     },
                     error: (error) => {
                         this.messageService.add({
@@ -295,7 +279,6 @@ export class TabViewComponent implements OnInit {
                             summary: 'Error',
                             detail: 'Algo de errado não está certo'
                         });
-
                         console.error(error)
                     }
                 })
@@ -310,7 +293,6 @@ export class TabViewComponent implements OnInit {
                 summary: 'Error',
                 detail: 'Algo de errado não está certo'
             });
-            // Tratar caso o formulário seja inválido
         }
     }
 
@@ -319,14 +301,166 @@ export class TabViewComponent implements OnInit {
      *
      * @param tabId O ID da aba a ser fechada.
      */
-    onCloseTab(tabId: string) {
+    onCloseTab(tab: any) {
         // Encontrar o índice do item no array resources com base no tabId
-        const index = this.resources.findIndex(item => item.id === tabId);
+        const index = this.resources.findIndex(item => item.id === tab.id);
         // Se o índice for encontrado, remover a entrada inteira do array resources
+
         if (index !== -1) {
-            this.resources.splice(index, 1);
-            this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
-            localStorage.setItem('classCache', JSON.stringify(this.resources));
+            this.contentService.deleteResource(tab.idContent).subscribe({
+                next: (response) => {
+                    this.resources.splice(index, 1);
+                    this.cdr.detectChanges(); // Força uma nova detecção de alterações após a alteração no array
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Sucesso',
+                        detail: 'Item de conteúdo foi deletado com sucesso'
+                    });
+                },
+                error:(error)=> {
+
+                    // Exibir uma mensagem de erro se o item não for encontrado
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erro',
+                        detail: 'Você precisa deletar os conteúdos da aula'
+                    });
+                    console.error(error)
+                }
+            })
+
+
         }
     }
+
+    /**
+     * Obtém as informações do curso armazenadas no localStorage.
+     *
+     * @return {boolean | any[]} Retorna as informações do curso como um array de objetos,
+     * ou `false` se não houver informações armazenadas ou ocorrer um erro.
+     */
+    getCourseInfo(): any[] {
+        let courseInfo: any[] = [];
+        try {
+            // Recupera o item 'courseInfo' do localStorage
+            const courseInfoStr: string | null = localStorage.getItem('courseInfo');
+
+            if (courseInfoStr) {
+                // Converte a string JSON de volta para um objeto JavaScript
+                courseInfo = JSON.parse(courseInfoStr);
+            } else {
+                // Define courseInfo como false se não houver dados armazenados
+                courseInfo = [];
+                // Adiciona uma mensagem de erro usando o messageService
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Não foi possível carregar o curso, entre em contato com o administrador'
+                });
+            }
+        } catch (error) {
+            // Em caso de erro ao recuperar ou parsear os dados, define courseInfo como false
+            courseInfo = [];
+            // Adiciona uma mensagem de erro usando o messageService
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erro',
+                detail: 'Algo de errado não está certo'
+            });
+            // Loga o erro no console para debug
+            console.error('Erro ao obter as informações do curso:', error);
+        }
+
+        return courseInfo;
+    }
+
+    getContentPerCourse(): void {
+        if (this.idCourse !== null)
+            this.contentService.getContentPerCourse(this.idCourse).subscribe({
+                next: (response) => {
+                    response.forEach((content: any) => {
+                        const itemContent = {
+                            description: "",
+                            institute: "",
+                            link: "",
+                            name: "",
+                            sort: "",
+                            typeFile: {name: '', id: "", code: ''}
+                        }
+                        let newContent = {
+                            id: "", // Converte o ID para string e preenche com zero à esquerda se necessário
+                            idContent: 0,
+                            content: [] // Conteúdo do objeto, se necessário
+                        };
+                        this.itemContentService.getItemPerIdContent(content.uuid).subscribe({
+                            next: (response) => {
+                                if (response.length > 0) newContent.content = response;
+                            }
+                        })
+                        newContent = {
+                            id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                            idContent: content.uuid,
+                            content: [] // Conteúdo do objeto, se necessário
+                        };
+
+                        this.resources.push(newContent);
+                    });
+                }
+            })
+    }
+
+    deleteItemContent(itemId: string, tabId: string, index: number): void {
+        this.itemContentService.deleteItemContent(itemId).subscribe({
+            next: (response) => {
+                // Encontrar a aba que contém o item de conteúdo
+               let tab = this.resources.find(resource => resource.idContent === tabId );
+                if (tab && tab.content && tab.content[index]?.uuid === itemId) {
+
+                    // Remover o item de conteúdo do array local
+                    tab.content.splice(index, 1);
+
+                    // Atualizar this.resources
+                    this.resources = [...this.resources];
+
+                    // Forçar uma nova detecção de alterações
+                    this.cdr.detectChanges();
+
+                    // Exibir uma mensagem de sucesso
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Sucesso',
+                        detail: 'Item de conteúdo foi deletado com sucesso'
+                    });
+                } else {
+                    // Exibir uma mensagem de erro se o item não for encontrado
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erro',
+                        detail: 'Item de conteúdo não encontrado'
+                    });
+                }
+            },
+            error: (error) => {
+                console.error(error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Algo de errado não está certo'
+                });
+            }
+        });
+    }
+
+    /**
+     * Retorna o código do ícone correspondente ao id fornecido.
+     *
+     * @param id O id do tipo de recurso.
+     * @return O código do ícone ou undefined se não encontrado.
+     */
+    returnIcon(id: string): string | undefined {
+        const option = this.optionsType?.find(option => option.id === id);
+        return option ? option.code : undefined;
+    }
+
 }
