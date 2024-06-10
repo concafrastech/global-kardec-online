@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
-
 import { Course } from '../../../models/course';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';

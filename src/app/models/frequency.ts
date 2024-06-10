@@ -4,7 +4,7 @@
  *
  * Portal da Concafras: https://portal.concafras.com/
  */
-export interface Languages {
-    nome: string;
-    uuid: string;
+export interface Frequency {
+  matricula: string;
+  situacaoFrequencia: number;
 }
