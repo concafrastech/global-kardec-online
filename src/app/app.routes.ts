@@ -23,6 +23,10 @@ export const routes: Routes = [
                 path: 'cursos/novo',
                 component: CoursesNewComponent
             },
+            {
+                path: 'cursos/novo/:id',
+                component: CoursesNewComponent
+            },
         ]
     },
     {

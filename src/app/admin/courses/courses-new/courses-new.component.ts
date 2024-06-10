@@ -31,6 +31,8 @@ import {ToastModule} from 'primeng/toast';
 
 import {UploadImageComponent} from './upload-image/upload-image.component';
 
+import {ActivatedRoute} from '@angular/router';
+
 
 @Component({
     selector: 'app-courses-new',
@@ -92,7 +94,12 @@ export class CoursesNewComponent implements OnInit {
     infoToChild: string = "";
 
     // Flag para controlar se o formulário foi modificado
-    formModified: boolean = false;
+    textBottom: string = "Criar curso";
+
+    public courseUpdate: boolean = false;
+
+    // Obtém o ID do curso da rota atual
+    public idCourse = this.route.snapshot.paramMap.get('id');
 
     /**
      *
@@ -107,7 +114,8 @@ export class CoursesNewComponent implements OnInit {
         private messageService: MessageService,
         private courseService: CourseSerivce,
         private formBuilder: FormBuilder,
-        private UtilsService: UtilsService
+        private UtilsService: UtilsService,
+        private route: ActivatedRoute
     ) {
     }
 
@@ -139,58 +147,21 @@ export class CoursesNewComponent implements OnInit {
             // Atualiza a lista de institutos quando ocorrem alterações
             this.languages = languages;
         });
+
+        this.updateInfoCourse();
+
     }
 
-
+    /**
+     * Manipulador para o evento beforeunload da janela.
+     * Exibirá um aviso ao usuário quando ele tentar sair da página.
+     *
+     * @param $event O evento BeforeUnloadEvent.
+     */
     @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: BeforeUnloadEvent) {
-        console.log($event);
-
         // Impedir comportamento padrão (opcional)
         $event.preventDefault(); // Descomente se precisar impedir o comportamento padrão
-
-        const mensagemConfirmacao = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
-
-        return this.confirmationService.confirm({
-            message: mensagemConfirmacao,
-            header: 'Confirmação de Saída', // Ajuste o texto do cabeçalho conforme necessário
-            icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: "p-button-danger p-button-text",
-            rejectButtonStyleClass: "p-button-text p-button-text",
-            acceptIcon: "none",
-            rejectIcon: "none",
-            accept: () => {
-                // Execute qualquer ação necessária antes de sair da página (por exemplo, salvar dados)
-                this.closableClass = true;
-                this.messageService.add({severity: 'info', summary: 'Confirmado', detail: 'Saindo...'});
-            },
-            reject: () => {
-                this.messageService.add({severity: 'error', summary: 'Cancelado', detail: 'Permanecendo na página'});
-            }
-        });
-    }
-
-
-    // Função para deletar um curso
-    deleteTheClass(event: Event) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: "p-button-danger p-button-text",
-            rejectButtonStyleClass: "p-button-text p-button-text",
-            acceptIcon: "none",
-            rejectIcon: "none",
-
-            accept: () => {
-                this.closableClass = true;
-                this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted'});
-            },
-            reject: () => {
-                this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
-            }
-        });
     }
 
     /**
@@ -208,70 +179,45 @@ export class CoursesNewComponent implements OnInit {
      * e envia os dados para o serviço de criação de curso. Caso contrário, define a flag de erro para exibir uma mensagem ao usuário.
      */
     createCourse(): void {
-        const name = this.formControl.get('name')?.value;
-        const description = this.formControl.get('description')?.value;
-        const institute = this.formControl.get('institute')?.value;
-        const language = this.formControl.get('language')?.value;
-        // Verificar se o formulário é válido
-        if (this.formControl.valid) {
-            // Criar o objeto de curso com os valores do formulário
-            if (name !== null && description !== null && institute !== null && language !== null) {
-
-                const course: Course = {
-                    "nome": name,
-                    "capaCurso": "string",
-                    "descricao": description,
-                    "instituto": institute,
-                    "idioma": language,
-                    "tipoCurso": 1,
-                    "modalidadeEnsino": "PRESENCIAL"
-                }
-                this.courseService.createCourse(course).subscribe({
-                    next: response => {
-                        // Adiciona uma mensagem de sucesso
-                        this.messageService.add({
-                            severity: 'info',
-                            summary: 'Adicionado',
-                            detail: 'Curso adicionado com sucesso'
-                        });
-
-                        this.formControl.disable()
-
-                        this.enabledCourse = true;
-
-                        // Limpa o formulário após adicionar com sucesso
-                        //   this.formControl.reset();
-
-                        const courseInfo = {
-                            nome: response.nome,
-                            id: response.uuid
-                        }
-                        localStorage.setItem('courseInfo', JSON.stringify(courseInfo));
-
-                    },
-                    error: error => {
-                        // Lógica de manipulação de erro, se necessário
-                        console.error('Erro ao criar curso:', error);
-                    }
-                });
-
-            } else {
-                // Tratar caso algum valor seja nulo
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Erro',
-                    detail: 'Todos os campos são obrigatórios'
-                });
-
-            }
-
-            // Enviar o curso para o serviço
-
-        } else {
-            // Mostrar erro se o formulário não for válido
+        // Verifica se o formulário é válido
+        if (this.formControl.invalid) {
             this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
+            return;
         }
+
+        // Cria o objeto de curso com os valores do formulário
+        const course: Course = {
+            nome: this.formControl.get('name')?.value,
+            descricao: this.formControl.get('description')?.value,
+            instituto: this.formControl.get('institute')?.value,
+            idioma: this.formControl.get('language')?.value,
+            capaCurso: 'string', // Defina o valor adequado para capaCurso
+            tipoCurso: 1,
+            modalidadeEnsino: 'PRESENCIAL'
+        };
+
+        // Chama o serviço para criar o curso
+        this.courseService.createCourse(course).subscribe({
+            next: response => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Adicionado',
+                    detail: 'Curso adicionado com sucesso'
+                });
+                this.formControl.disable();
+                this.enabledCourse = true;
+                // Limpa o formulário após adicionar com sucesso
+                // this.formControl.reset();
+                // Salva as informações do curso, se necessário
+                localStorage.setItem('courseInfo', JSON.stringify({nome: response.nome, id: response.uuid}));
+            },
+            error: error => {
+                console.error('Erro ao criar curso:', error);
+                // Lógica de manipulação de erro, se necessário
+            }
+        });
     }
+
 
     /**
      * Atualiza o BehaviorSubject `institutesSubject` com a lista de institutos recebida.
@@ -357,6 +303,79 @@ export class CoursesNewComponent implements OnInit {
         this.UtilsService.getLanguages().subscribe({
             next: async languages => {
                 this.updateLanguages(languages);
+            },
+            error: error => console.error(error)
+        });
+    }
+
+    /**
+     *
+     */
+    updateCourse(): void {
+        // Verifica se o formulário é válido
+        if (this.formControl.invalid) {
+            this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios'});
+            return;
+        }
+
+        // Cria o objeto de curso com os valores do formulário
+        const course: Course = {
+            uuid: this.idCourse ? this.idCourse : "",
+            nome: this.formControl.get('name')?.value,
+            descricao: this.formControl.get('description')?.value,
+            instituto: this.formControl.get('institute')?.value,
+            idioma: this.formControl.get('language')?.value,
+            capaCurso: 'string', // Defina o valor adequado para capaCurso
+            tipoCurso: 1,
+            modalidadeEnsino: 'PRESENCIAL'
+        };
+
+        // Chama o serviço para criar o curso
+        this.courseService.updateCourse(course).subscribe({
+            next: response => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Adicionado',
+                    detail: 'Curso atualizado com sucesso'
+                });
+               // this.formControl.disable();
+                this.enabledCourse = true;
+                // Limpa o formulário após adicionar com sucesso
+                // this.formControl.reset();
+                // Salva as informações do curso, se necessário
+                localStorage.setItem('courseInfo', JSON.stringify({nome: response.nome, id: response.uuid}));
+            },
+            error: error => {
+                console.error('Erro ao criar curso:', error);
+                // Lógica de manipulação de erro, se necessário
+            }
+        });
+    }
+    /**
+     * Atualiza os campos do formulário com os dados do curso.
+     *
+     * @private
+     */
+    private updateInfoCourse(): void {
+
+        // Verifica se o ID do curso está presente
+        if (!this.idCourse) return;
+
+        this.courseUpdate = true;
+        this.textBottom = "Atualizar Curso"
+
+        // Chama o serviço para obter os detalhes do curso
+        this.courseService.getCourse(this.idCourse).subscribe({
+            next: ({nome, descricao, instituto, idioma, uuid}) => {
+                // Define os valores recebidos nos campos do formControl
+                this.formControl.patchValue({
+                    name: nome,
+                    description: descricao,
+                    institute: instituto,
+                    language: idioma
+                });
+                localStorage.setItem('courseInfo', JSON.stringify({nome: nome, id: uuid}));
+
             },
             error: error => console.error(error)
         });

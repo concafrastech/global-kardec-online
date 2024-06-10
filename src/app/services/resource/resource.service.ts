@@ -10,12 +10,12 @@
  *
  */
 
-import {environment} from '../../../environments/environment';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError} from 'rxjs/operators';
-import {Content} from '../../models/content';
+import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import {catchError, map} from 'rxjs/operators';
+import { Content } from '../../models/content';
 
 @Injectable({
     providedIn: 'root'
@@ -36,15 +36,32 @@ export class ResourceService {
     constructor(
         private httpClient: HttpClient
     ) {
+        // Define a URL da API a partir das configurações de ambiente
+
         this.apiUrl = environment.apiUrl;
     }
 
     /**
+     * Obtém um recurso específico com base no UUID fornecido.
      *
-     * @param uuid
+     * @param uuid O UUID do recurso a ser obtido.
+     * @returns Um Observable contendo os detalhes do recurso.
      */
     getResource(uuid: string): Observable<any> {
         return this.httpClient.get<any>(`${this.apiUrl}/gk/conteudo/${uuid}`)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    /**
+      * Obtém todos os recursos associados a um determinado curso.
+      *
+      * @param courseUUID O UUID do curso para o qual os recursos serão obtidos.
+      * @returns Um Observable contendo uma lista de recursos do curso.
+      */
+    getCourseResources(courseUUID: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.apiUrl}/gk/conteudo/porCurso/${courseUUID}`)
             .pipe(
                 catchError(this.handleError)
             );
@@ -55,10 +72,13 @@ export class ResourceService {
      * @param uuid
      */
     deleteResource(uuid: string): Observable<any> {
-        return this.httpClient.delete<any>(`${this.apiUrl}/gk/conteudo/${uuid}`)
-            .pipe(
-                catchError(this.handleError)
-            );
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.httpClient.delete<any>(
+            `${this.apiUrl}/gk/conteudo/${uuid}`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError) // Trata erros que ocorrem na requisição
+        );
     }
 
     /**
@@ -66,10 +86,8 @@ export class ResourceService {
      * @param resource
      */
     postResource(resource: Content): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        console.log(`${this.apiUrl}/gk/conteudo/`)
-
-        return this.httpClient.post<any>(`${this.apiUrl}/gk/conteudo`, JSON.stringify(resource), {headers})
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this.httpClient.post<any>(`${this.apiUrl}/gk/conteudo`, JSON.stringify(resource), { headers })
             .pipe(
                 catchError(this.handleError)
             );
@@ -80,10 +98,28 @@ export class ResourceService {
      * @param resource
      */
     updateResource(resource: Content): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this.httpClient.put<any>(`${this.apiUrl}/gk/conteudo/`, resource, {headers})
+        return this.httpClient.put<any>(`${this.apiUrl}/gk/conteudo/`, resource, { headers })
             .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    /**
+     * Obtém o conteúdo associado a um curso específico.
+     * @param idCourse O ID do curso para o qual o conteúdo será recuperado.
+     */
+    public getContentPerCourse(idCourse: string): Observable<any> {
+        let headers = {'Content-Type': 'application/json'};
+
+        return this.httpClient.get<any>(
+            `${this.apiUrl}/gk/conteudo/porCurso/${idCourse}`,
+            {headers}
+        )
+            .pipe(
+                // Lidar com respostas da API em potencial com ou sem uma propriedade "data"
+                map(response => response.data || response),
                 catchError(this.handleError)
             );
     }

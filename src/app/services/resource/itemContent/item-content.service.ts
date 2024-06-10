@@ -34,7 +34,6 @@ export class ItemContentService {
      */
     constructor(
         private http: HttpClient,
-
     ) {
         this.apiUrl = environment.apiUrl;
     }
@@ -96,6 +95,24 @@ export class ItemContentService {
     }
 
     /**
+     * Obtém as informações de um item de conteúdo com base no seu ID.
+     *
+     * @param idIContent O ID do item de conteúdo a ser obtido.
+     * @returns Um Observable que emite as informações do item de conteúdo.
+     *
+     */
+    getItemPerIdContent(idIContent: string): Observable<any> {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this.http.get<any>(
+            `${this.apiUrl}/gk/itemConteudo/84d13166-39cf-11ed-9067-706979ac0e21/porConteudo/${idIContent}`,
+            {headers}
+        ).pipe(
+            catchError(this.handleError) // Trata erros que ocorrem na requisição
+        );
+    }
+
+    /**
      * Exclui um item de conteúdo com base no seu ID.
      *
      * @param idItemContent O ID do item de conteúdo a ser excluído.
@@ -104,7 +121,6 @@ export class ItemContentService {
      */
     deleteItemContent(idItemContent: string): Observable<any> {
         const headers = new HttpHeaders({'Content-Type': 'application/json'});
-
         return this.http.delete<any>(
             `${this.apiUrl}/gk/itemConteudo/${idItemContent}`,
             {headers}
