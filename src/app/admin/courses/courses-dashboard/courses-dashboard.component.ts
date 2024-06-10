@@ -37,7 +37,6 @@ import {Message} from 'primeng/api';
  */
 export class CoursesDashboardComponent implements OnInit {
 
-    loading: boolean = false;
     /**
      * Construtor para inicializar o componente.
      * @param confirmationService Serviço para lidar com diálogos de confirmação.
