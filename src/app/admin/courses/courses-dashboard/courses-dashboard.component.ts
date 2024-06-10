@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {TableModule} from 'primeng/table';
-import {dataTempModel} from '../../../models/courses';
 import {Course} from '../../../models/course';
 import {CommonModule} from '@angular/common';
 import {ButtonModule} from 'primeng/button';
@@ -38,6 +37,7 @@ import {Message} from 'primeng/api';
  */
 export class CoursesDashboardComponent implements OnInit {
 
+    loading: boolean = false;
     /**
      * Construtor para inicializar o componente.
      * @param confirmationService Serviço para lidar com diálogos de confirmação.
