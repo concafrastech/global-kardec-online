@@ -24,6 +24,10 @@ export const routes: Routes = [
                 component: CoursesNewComponent,
             },
             {
+                path: 'cursos/novo/:id',
+                component: CoursesNewComponent
+            },
+            {
                 path: 'calendarios',
                 component: CalendarDashboardComponent,
             },
@@ -31,7 +35,7 @@ export const routes: Routes = [
                 path: 'calendarios/novo',
                 component: CalendarNewComponent,
             },
-        ],
+        ]
     },
     {
         path: 'uikit',

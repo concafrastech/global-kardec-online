@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {CardModule} from 'primeng/card';
-import {TableModule} from 'primeng/table';
-import {dataTempModel} from '../../../models/courses';
-import {Course} from '../../../models/course';
-import {CommonModule} from '@angular/common';
-import {ButtonModule} from 'primeng/button';
-import {ToastModule} from 'primeng/toast';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {MessageService, ConfirmationService} from 'primeng/api';
-import {CourseSerivce} from '../../../services/course/course.service';
-import {BehaviorSubject} from 'rxjs';
-import {RouterLink} from '@angular/router';
-import {MessagesModule} from 'primeng/messages';
-import {Message} from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { Course } from '../../../models/course';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { CourseSerivce } from '../../../services/course/course.service';
+import { BehaviorSubject } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
+import { ResourceService } from '../../../services/resource/resource.service';
 
 
 @Component({
@@ -48,6 +48,7 @@ export class CoursesDashboardComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private courseService: CourseSerivce,
+        private resourceService: ResourceService
     ) {
     }
 
@@ -89,10 +90,26 @@ export class CoursesDashboardComponent implements OnInit {
             detail: 'Não há cursos para serem listados. Comece criando o primeiro curso.'
         }];
 
+        /**
+         * Chama todos os cursos que existem para ser listados
+         * Atualiza a variável dos cursos que serão listados
+         * Torna assim a tabela dinâmica
+         */
+        this.getAllCourses();
+
+
+    }
+
+    /**
+     * Retorna a lista de cursos que existem atualmente cadastrados no banco de dados
+     *
+     * @return Course
+     */
+    getAllCourses(): void {
         // Obtém todos os cursos e atualiza a lista de cursos quando a resposta for recebida.
         this.courseService.getAllCourses().subscribe({
             next: (response) => {
-                this.updateCourse(response.content);
+                this.updateListCourse(response.content);
                 this.showTableMessage = false;
             },
             error: (error) => {
@@ -104,8 +121,6 @@ export class CoursesDashboardComponent implements OnInit {
         this.courses$.subscribe((coursesItems) => {
             this.coursesList = coursesItems;
         });
-
-
     }
 
 
@@ -114,7 +129,7 @@ export class CoursesDashboardComponent implements OnInit {
      * @param event O evento que acionou a função.
      * @param courseName O nome do curso a ser excluído.
      */
-    confirmDelete(event: Event, courseName: string) {
+    confirmDelete(event: Event, courseName: string, courseUUID: string, course: Course) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
@@ -128,11 +143,36 @@ export class CoursesDashboardComponent implements OnInit {
             rejectLabel: 'Não',
 
             accept: () => {
+                // Arquiva o curso ao confirmar a exclusão
+                this.courseService.archivingCourse(course).subscribe({
+                    next: (response) => {
+                        this.getAllCourses();
+                        console.log(response);
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Excluído!',
+                            detail: `O curso ${courseName} foi excluído!`
+                        });
+                    },
+                    error:(error) => {
+                         // Exibe uma mensagem de cancelamento se a exclusão for cancelada
+                         console.error(error);
+                         this.messageService.clear()
+                         this.messageService.add({
+                             severity: 'error',
+                             summary: 'Erro',
+                             detail: `Ocorreu um erro na exclusão do curso ${courseName}`
+                         });
+                    },
+                })
+                
+                // Exibe uma mensagem de sucesso após a exclusão do curso
                 this.messageService.add({
-                    severity: 'success',
+                    severity: 'info',
                     summary: 'Confirmado',
-                    detail: `Curso  ${courseName} excluído!`,
+                    detail: `O curso ${courseName} será excluído!`
                 });
+
             },
             reject: () => {
                 this.messageService.add({
@@ -147,9 +187,20 @@ export class CoursesDashboardComponent implements OnInit {
 
     /**
      * Atualiza a lista de cursos.
+     *
      * @param objectCourse O objeto contendo os cursos a serem atualizados.
      */
-    updateCourse(objectCourse: any[]) {
+    updateListCourse(objectCourse: any[]) {
         this.courseSubject.next(objectCourse);
     }
+
+    checkCourseResources(courseUUID: string): void {
+        try {
+            this.resourceService.getCourseResources(courseUUID)
+            
+        } catch (error) {
+            return console.error(error);
+        }
+    }
 }
+

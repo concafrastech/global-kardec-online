@@ -9,7 +9,7 @@
     }
 
     .tab-content {
-        .ui-tabview-close{
+        .ui-tabview-close {
             position: absolute;
             display: block;
             width: 20px;
@@ -17,60 +17,94 @@
             left: 73px;
             z-index: 9;
         }
-        .resource-box {
-            .mixin-display();
-            gap: 8px;
-            margin-bottom: 12px;
 
-            &__icon {
+        .itens-course {
+            .mixin-display(flex);
+            .mixin-flex-justify-content(space-between);
+            .mixin-display-flex-box-align(center);
+
+            .resource-box {
                 .mixin-display();
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 4px;
+                gap: 8px;
+                margin-bottom: 12px;
 
-                &.pi-file {
-                    background-color: @color-oregon-blue;
+                &__icon {
+                    .mixin-display();
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 4px;
+
+                    &.pi-file {
+                        background-color: @color-oregon-blue;
+                    }
+
+                    &.pi-id-card {
+                        background-color: @color-sango-red;
+                    }
+
+                    &.pi-volume-up {
+                        background-color: @color-bluish-green;
+                    }
+
+                    &.pi-play {
+                        background-color: @color-red;
+                    }
+
+                    &::before {
+                        content: unset;
+                    }
+
+                    .pi {
+                        font-size: 24px;
+                        color: @color-white;
+                    }
                 }
 
-                &.pi-id-card {
-                    background-color: @color-sango-red;
-                }
-                &.pi-volume-up {
-                    background-color: @color-bluish-green;
-                }
-                &.pi-play {
-                    background-color: @color-red;
-                }
+                &__content {
+                    .mixin-display();
+                    flex-direction: column;
 
-                &::before {
-                    content: unset;
-                }
+                    .type-file {
+                        color: @primary__color__dark;
+                        font-size: 12px;
+                    }
 
-                .pi {
-                    font-size: 24px;
-                    color: @color-white;
+                    .resource-link {
+                        font-size: 16px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        color: @theme__color__secondary;
+                    }
                 }
             }
 
-            &__content {
-                .mixin-display();
-                flex-direction: column;
+            &_actions {
+                .mixin-display(flex);
+                .mixin-gap(@indent__s);
 
-                .type-file {
-                    color: @primary__color__dark;
-                    font-size: 12px;
-                }
+                > a {
+                    cursor: pointer;
 
-                .resource-link {
-                    font-size: 16px;
-                    text-decoration: none;
-                    font-weight: 600;
-                    color: @theme__color__secondary;
+                    i {
+                        &.pi-pencil{
+                            .mixin-display(none);
+                            &:hover {
+                                transition: 0.2s;
+                                color: @color-blue-light;
+                            }
+                        }
+
+                        &.pi-trash:hover {
+                            transition: 0.2s;
+                            color: @color-red;
+                        }
+                    }
                 }
             }
         }
+
     }
 
 }
