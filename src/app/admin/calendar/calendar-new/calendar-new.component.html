@@ -1,0 +1,151 @@
+<p-toast />
+<p-confirmDialog />
+<main class="content-main">
+    <div class="flex justify-content-space-between align-items-center">
+        <h2>Novo calendário</h2>
+        <button
+            pButton
+            pRipple
+            label="Voltar"
+            icon="pi pi-arrow-left"
+            class="p-button-secondary p-button-height-default"
+            routerLink="/admin/calendarios"
+        ></button>
+    </div>
+    <hr />
+    <div class="calendar">
+        <div class="calendar_row">
+            <div class="calendar_row_flex_100">
+                <p-dropdown
+                    name="spiritCenterCalendar"
+                    optionLabel="name"
+                    placeholder="Selecione o Centro Espírita"
+                    [options]="spiritCenters"
+                    [showClear]="true"
+                    [(ngModel)]="selectedSpiritCenter"
+                />
+            </div>
+        </div>
+        <div class="calendar_row">
+            <div class="flex flex-column gap-2 calendar_row_flex_50">
+                <label>Ano</label>
+                <p-inputNumber
+                    inputId="anoCalendar"
+                    styleClass="w-100"
+                    [useGrouping]="false"
+                    [(ngModel)]="this.calendar.ano"
+                />
+            </div>
+            <div class="flex flex-column gap-2 calendar_row_flex_50">
+                <label>Semestre</label>
+                <p-inputNumber
+                    inputId="semestreCalendar"
+                    styleClass="w-100"
+                    [useGrouping]="false"
+                    [(ngModel)]="this.calendar.semestre"
+                />
+            </div>
+        </div>
+        <div class="calender_row">
+            <p-button
+                styleClass="add-content"
+                icon="pi pi-plus-circle"
+                label="Adicionar um dia de aula."
+                [text]="true"
+                (click)="showDialog()"
+            ></p-button>
+        </div>
+        <div class="calendar_row w-100">
+            <p-table class="w-100" [value]="this.calendar.diasAula">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipo dia</th>
+                        <th>Aula especial?</th>
+                        <th>Ações</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-dia let-index="rowIndex">
+                    <tr>
+                        <td>{{ dia.dataAula }}</td>
+                        <td>{{ dia.nomeTipoDiaCalendario }}</td>
+                        <td>{{ dia.aulaEspecial ? "Sim" : "Não" }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    (click)="onConfirmDialog($event, index)"
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="calendar_row justify-content-end">
+            <div class="flex flex_column">
+                <button
+                    pButton
+                    pRipple
+                    label="Criar"
+                    class="p-button-success"
+                    icon="pi pi-check"
+                    (click)="onSubmit()"
+                ></button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<p-dialog
+    header="Novo dia de aula"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '40rem', height: '40rem' }"
+>
+    <span class="p-text-secondary block mb-5"
+        >Preencha as informações corretamente.</span
+    >
+    <div class="color-default">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem">Data Aula</label>
+            <p-calendar
+                class="w-100"
+                styleClass="w-100"
+                [(ngModel)]="this.diaAula.dataAula"
+                dateFormat="yy-mm-dd"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Tipo do dia</label>
+            <p-dropdown
+                class="w-100"
+                name="typeDaysCalendar"
+                optionLabel="name"
+                placeholder="Selecione o tipo do dia"
+                [options]="typesDaysCalendar"
+                [showClear]="true"
+                [(ngModel)]="selectedTypeDayCalendar"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <p-checkbox
+                label="É aula especial?"
+                name="aulaEspecial"
+                [binary]="true"
+                [(ngModel)]="this.diaAula.aulaEspecial"
+            />
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="visible = false"
+            />
+            <p-button label="Adicionar" (click)="addTypesDaysCalendar()" />
+        </div>
+    </ng-template>
+</p-dialog>

@@ -1,5 +1,21 @@
 @import "../../_global.less";
 
+.w-100 {
+    width: 100%;
+}
+
+.justify-content-center {
+    .mixin-flex-justify-content(center);
+}
+
+.justify-content-space-between {
+    .mixin-flex-justify-content(space-between);
+}
+
+.justify-content-end {
+    .mixin-flex-justify-content(end);
+}
+
 .p-button {
     border-radius: @buttons-border-radius;
     padding: @buttons-padding;
@@ -22,6 +38,9 @@
         }
     }
 
+    &.p-button-height-default {
+        height: 3rem;
+    }
 }
 
 // Cor da título das páginas
@@ -52,9 +71,8 @@
     }
 }
 
-
 // Dropdown
 
-.p-dropdown{
+.p-dropdown {
     width: 100%;
 }
