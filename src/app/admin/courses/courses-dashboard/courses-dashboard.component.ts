@@ -13,6 +13,8 @@ import { RouterLink } from '@angular/router';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
 import { ResourceService } from '../../../services/resource/resource.service';
+import {SearchIcon} from 'primeng/icons/search'
+
 
 
 @Component({
@@ -26,7 +28,8 @@ import { ResourceService } from '../../../services/resource/resource.service';
         ToastModule,
         ConfirmDialogModule,
         RouterLink,
-        MessagesModule
+        MessagesModule,
+        SearchIcon
     ],
     templateUrl: './courses-dashboard.component.html',
     styleUrl: './courses-dashboard.component.less',

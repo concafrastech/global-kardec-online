@@ -40,6 +40,17 @@
             responsiveLayout="stack"
             [tableStyle]="{ 'min-width': '5rem' }"
         >
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <!-- <p-iconField iconPosition="left" class="ml-auto"> -->
+                    <input 
+                        pInputText 
+                        type="text" 
+                        
+                        placeholder="Search keyword" />
+                <!-- </p-iconField> -->
+            </div>
+        </ng-template>
             <ng-template pTemplate="header" class="tHeader">
                 <tr>
                     <th>Nome do Curso</th>
