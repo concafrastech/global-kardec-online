@@ -2,19 +2,20 @@
     .contentItem.idTipoRecursoAula {
     }
 </style>
-<p-toast />
+<p-toast/>
 <div class="flex classes">
     <div class="classes_title">
         <div class="page-title-wrapper">
             <h1 class="page-title">Conteúdos do curso</h1>
         </div>
-        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary" (onClick)="addCourseContent()"></p-button>
+        <p-button label="Adicionar Aula" icon="pi pi-plus-circle" severity="primary"
+                  (onClick)="showDialogContent()"></p-button>
     </div>
     <div class="tab-content">
         <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
             <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
                 <ng-template pTemplate="header">
-                    Aula {{ i + 1 }}
+                    {{ item.nome }}
                     <span class="ui-tabview-close" (click)="onCloseTab(item)"></span>
                 </ng-template>
                 <div *ngFor="let contentItem of item.content; let indexContent = index" class="itens-course">
@@ -24,36 +25,69 @@
                         </div>
                         <div class="resource-box__content">
                             <span class="type-file uppercase">{{ contentItem.nomeTipoRecursoAula }}</span>
-                            <a class="resource-link" href="{{ contentItem.linkRecurso }}" target="_blank">{{ contentItem.nome }}</a>
+                            <a class="resource-link" href="{{ contentItem.linkRecurso }}"
+                               target="_blank">{{ contentItem.nome }}</a>
                         </div>
                     </div>
                     <div class="itens-course_actions">
-                        <a><i class="pi pi-pencil" ></i></a>
-                        <a><i class="pi pi-trash" (click)="deleteItemContent(contentItem.uuid, contentItem.conteudo, indexContent)"></i></a>
+                        <a><i class="pi pi-pencil"></i></a>
+                        <a><i class="pi pi-trash"
+                              (click)="deleteItemContent(contentItem.uuid, contentItem.conteudo, indexContent)"></i></a>
                     </div>
                 </div>
-                <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle" label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
+                <p-button (click)="showDialog(i)" styleClass="add-content" icon="pi pi-plus-circle"
+                          label="Adicionar uma atividade ou recurso" [text]="true"></p-button>
             </p-tabPanel>
         </p-tabView>
     </div>
 
 
-
-
 </div>
 
+<!-- SUGESTÃO: CRIAR UM NOVO COMPONENT -->
+<p-dialog class="add-feature" header="Novo Recurso" [(visible)]="visibleContent" [modal]="true"
+          [style]="{ width: '50vw' }"
+          [draggable]="false" [maximizable]="true" [resizable]="false">
+    <form [formGroup]="formControlContent" (ngSubmit)="addCourseContent()">
+        <div class="formGroup">
+            <div class="flex flex-column gap-2">
+                <label for="contentName">Nome da Aula</label>
+                <input type="text" id="contentName" pInputText formControlName="contentName"/>
+                <div
+                    *ngIf="formControlContent.get('contentName')?.invalid &&
+                (formControlContent.get('contentName')?.dirty || formControlContent.get('contentName')?.touched)">
+                    <small *ngIf="formControlContent.get('contentName')?.errors?.['required']">
+                        Nome da Aula é obrigatório.</small>
+                </div>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label for="sortOrder">Ordem do recurso</label>
+                <input type="number" id="sortOrder" pInputText formControlName="sortOrder"/>
+                <div
+                    *ngIf="formControlContent.get('sortOrder')?.invalid &&
+                    (formControlContent.get('sortOrder')?.dirty || formControlContent.get('sortOrder')?.touched)">
+                    <small *ngIf="formControlContent.get('sortOrder')?.errors?.['required']">
+                        Ordem do recurso é obrigatório.</small>
+                </div>
+            </div>
+        </div>
+        <button class="button-save" pButton pRipple type="submit" label="Enviar"></button>
+    </form>
+</p-dialog>
+
 <p-dialog class="add-feature" header="Novo Recurso" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
-    [draggable]="false" [maximizable]="true" [resizable]="false">
+          [draggable]="false" [maximizable]="true" [resizable]="false">
     <form [formGroup]="formControl" (ngSubmit)="createItemContent()">
         <div class="formGroup">
             <div class="flex flex-column gap-2">
                 <label for="courseName">Nome</label>
-                <input type="text" id="courseName" pInputText formControlName="name" />
+                <input type="text" id="courseName" pInputText formControlName="name"/>
             </div>
             <div class="flex flex-column gap-2">
                 <label for="typeFile">Selecione o tipo de Arquivo</label>
-                <p-dropdown [options]="optionsType" id="typeFile" formControlName="typeFile" optionLabel="name" [filter]="false"
-                    filterBy="name" [showClear]="true" placeholder="Selecione o tipo de arquivo">
+                <p-dropdown [options]="optionsType" id="typeFile" formControlName="typeFile" optionLabel="name"
+                            [filter]="false"
+                            filterBy="name" [showClear]="true" placeholder="Selecione o tipo de arquivo">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                         <div class="flex align-items-center gap-2">
                             <div>{{ selectedOption.name }}</div>
@@ -68,22 +102,22 @@
             </div>
             <div class="flex flex-column gap-2">
                 <label for="courseLink">Link</label>
-                <input type="text" id="courseLink" pInputText formControlName="link" />
+                <input type="text" id="courseLink" pInputText formControlName="link"/>
             </div>
             <div class="inputGroup">
                 <div class="flex flex-column gap-2">
                     <label for="typeInstitute">Instituto</label>
-                    <input type="text" id="typeInstitute" pInputText formControlName="institute" />
+                    <input type="text" id="typeInstitute" pInputText formControlName="institute"/>
                 </div>
                 <div class="flex flex-column gap-2">
-                    <label for="sortOrder">Ordem</label>
-                    <input type="text" id="sortOrder" pInputText formControlName="sort" />
+                    <label for="sort">Ordem</label>
+                    <input type="text" id="sort" pInputText formControlName="sort"/>
                 </div>
             </div>
             <div class="flex flex-column gap-2">
                 <label for="courseDescription">Descrição</label>
-                <textarea id="courseDescription"  rows="5" cols="30" formControlName="description"
-                    pInputTextarea [autoResize]="false"></textarea>
+                <textarea id="courseDescription" rows="5" cols="30" formControlName="description"
+                          pInputTextarea [autoResize]="false"></textarea>
             </div>
         </div>
         <button class="button-save" pButton pRipple type="submit" label="Enviar"></button>

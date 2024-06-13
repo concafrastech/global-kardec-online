@@ -10,8 +10,13 @@
  * Portal da Concafras: https://portal.concafras.com/
  */
 export interface Content {
-    nome:string,
-    ordem: any,
-    curso: any,
-    nomeCurso: any
+    nome: string;
+    nomeCurso: string;
+    ordem: number;
+    curso: number;
+}
+
+export interface CourseInfo {
+    nome: string;
+    id: number;
 }
