@@ -50,10 +50,28 @@
                     <th class="thStyleAction">Ação</th>
                 </tr>
                 <tr>
-                    <th ></th>
-                    <th></th>
-                    <th></th>
-                    <th class="thStyleAction">Ação</th>
+                    <th> 
+                        <p-columnFilter 
+                        type="text" 
+                        field="nome" 
+                        placeholder="Pesquisar por" 
+                        ariaLabel="Filtro Curso" />
+                    </th>
+                    <th> 
+                        <p-columnFilter 
+                        type="text" 
+                        field="nomeInstituto" 
+                        placeholder="Pesquisar por Instituto" 
+                        ariaLabel="Filtro Instituto" />
+                    </th>
+                    <th> 
+                        <p-columnFilter 
+                        type="text" 
+                        field="nomeInstituto" 
+                        placeholder="Pesquisar por Idioma" 
+                        ariaLabel="Filtro Idioma" />
+                    </th>
+                    <th class="thStyleAction"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-course>
