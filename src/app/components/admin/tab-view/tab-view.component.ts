@@ -11,7 +11,9 @@ import {DropdownModule} from 'primeng/dropdown'; // Componente Dropdown do Prime
 // Importações relacionadas a formulários do Angular
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'; // Classes para formulários reativos e validação
 import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
+import { SpeedDialModule } from 'primeng/speeddial';
+
 
 // Service
 import {ResourceService} from "../../../services/resource/resource.service";
@@ -38,7 +40,8 @@ import {LogPipePipe} from "./log-pipe.pipe";
         DropdownModule,
         FormsModule,
         ToastModule,
-        LogPipePipe
+        LogPipePipe, // remover
+        SpeedDialModule
 
     ],
     templateUrl: './tab-view.component.html',
@@ -93,6 +96,9 @@ export class TabViewComponent implements OnInit {
      */
     formControlContent!: FormGroup;
 
+    buttonItems: MenuItem[];
+
+
     /**
      * Construtor da classe para inicialização de dependências.
      *
@@ -109,6 +115,35 @@ export class TabViewComponent implements OnInit {
         private itemContentService: ItemContentService,
         private messageService: MessageService
     ) {
+        this.buttonItems = [
+            {
+                icon: 'pi pi-pencil',
+                command: () => {
+                    this.messageService.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
+                }
+            },
+            {
+                icon: 'pi pi-refresh',
+                command: () => {
+                    this.messageService.add({ severity: 'success', summary: 'Update', detail: 'Data Updated' });
+                }
+            },
+            {
+                icon: 'pi pi-trash',
+                command: () => {
+                    this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
+                }
+            },
+            {
+                icon: 'pi pi-upload',
+                routerLink: ['/fileupload']
+            },
+            {
+                icon: 'pi pi-external-link',
+                target:'_blank',
+                url: 'http://angular.io'
+            }
+        ];
         // Verifica se existe um array armazenado em cache
         // const classCache = localStorage.getItem('classCache');
         // if (classCache) {
@@ -352,6 +387,8 @@ export class TabViewComponent implements OnInit {
         // Se o índice for encontrado, remover a entrada inteira do array resources
 
         if (index !== -1) {
+            console.log(tab.idContent)
+
             this.contentService.deleteResource(tab.idContent).subscribe({
                 next: (response) => {
                     this.resources.splice(index, 1);

@@ -12,10 +12,14 @@
         .ui-tabview-close {
             position: absolute;
             display: block;
-            width: 20px;
-            height: 20px;
-            left: 73px;
+            width: @indent__base;
+            height: @indent__base;
+            right: 0;
             z-index: 9;
+
+            &:hover {
+                color: @color-red;
+            }
         }
 
         .itens-course {
@@ -88,8 +92,9 @@
                     cursor: pointer;
 
                     i {
-                        &.pi-pencil{
+                        &.pi-pencil {
                             .mixin-display(none);
+
                             &:hover {
                                 transition: 0.2s;
                                 color: @color-blue-light;

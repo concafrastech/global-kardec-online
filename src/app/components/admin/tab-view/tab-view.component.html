@@ -13,10 +13,12 @@
     </div>
     <div class="tab-content">
         <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
-            <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="true">
+            <p-tabPanel *ngFor="let item of resources; let i = index" [header]="'Aula ' + (i + 1)" [closable]="false">
                 <ng-template pTemplate="header">
                     {{ item.nome }}
-                    <span class="ui-tabview-close" (click)="onCloseTab(item)"></span>
+                    <span class="pi pi-times ui-tabview-close" (click)="onCloseTab(item)" ></span>
+
+                    <!--                    <span class="ui-tabview-close" (click)="onCloseTab(item)"></span>-->
                 </ng-template>
                 <div *ngFor="let contentItem of item.content; let indexContent = index" class="itens-course">
                     <div class="resource-box">
