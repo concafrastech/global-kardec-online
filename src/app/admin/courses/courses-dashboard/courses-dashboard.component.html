@@ -39,23 +39,20 @@
             class="tHeader"
             responsiveLayout="stack"
             [tableStyle]="{ 'min-width': '5rem' }"
+            sortMode="multiple"
         >
-        <ng-template pTemplate="caption">
-            <div class="flex">
-                <!-- <p-iconField iconPosition="left" class="ml-auto"> -->
-                    <input 
-                        pInputText 
-                        type="text" 
-                        
-                        placeholder="Search keyword" />
-                <!-- </p-iconField> -->
-            </div>
-        </ng-template>
+        
             <ng-template pTemplate="header" class="tHeader">
                 <tr>
-                    <th>Nome do Curso</th>
-                    <th>Instituto</th>
-                    <th>Idioma</th>
+                    <th pSortableColumn="nome">Nome do Curso <p-sortIcon field="nome" /></th>
+                    <th pSortableColumn="nomeInstituto">Instituto <p-sortIcon field="nomeInstituto" /></th>
+                    <th pSortableColumn="nomeIdioma">Idioma <p-sortIcon field="nomeIdioma" /></th>
+                    <th class="thStyleAction">Ação</th>
+                </tr>
+                <tr>
+                    <th ></th>
+                    <th></th>
+                    <th></th>
                     <th class="thStyleAction">Ação</th>
                 </tr>
             </ng-template>
