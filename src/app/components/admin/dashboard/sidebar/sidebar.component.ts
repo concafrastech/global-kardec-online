@@ -2,149 +2,133 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api/menuitem';
 import { PanelMenuModule } from 'primeng/panelmenu';
 
+
+import { BadgeModule } from 'primeng/badge';
+import { RippleModule } from 'primeng/ripple';
+import { CommonModule } from '@angular/common';
+
 @Component({
     selector: 'app-sidebar',
     standalone: true,
-    imports: [PanelMenuModule],
+    imports: [PanelMenuModule, BadgeModule, RippleModule, CommonModule],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.less',
 })
 export class SidebarComponent implements OnInit {
     sidebarItems: MenuItem[] | undefined;
+    items: MenuItem[] | undefined;
+
 
     ngOnInit(): void {
         this.sidebarItems = [
             {
-                label: 'Calendários',
+                label: 'Cursos',
+                icon: 'pi pi-fw pi-book',
+                routerLink: '/admin/cursos/',
+            },
+            {
+                label: 'Turmas',
+                icon: 'pi pi-fw pi-bookmark',
+                routerLink: '/admin/turmas',
+            },
+            {
+                label: 'Turmas em lote',
+                icon: 'pi pi-fw pi-bookmark',
+                routerLink: '/admin/turmas/lote',
+            },
+            {
+                label: 'Matriculas',
+                icon: 'pi pi-fw pi-check-square',
+                routerLink: '/admin/matriculas',
+            },
+            {
+                label: 'Matriculas em lote',
+                icon: 'pi pi-fw pi-check-square',
+                routerLink: '/admin/matriculas/lote',
+            },
+            {
+                label: 'Semestre Letivo',
                 icon: 'pi pi-fw pi-calendar',
                 routerLink: '/admin/calendarios',
             },
             {
-                label: 'Cursos',
-                icon: 'pi pi-fw pi-book',
-                items: [
-                    {
-                        label: 'Configuração',
-                        items: [
-                            {
-                                label: 'Institutos',
-                                icon: 'pi pi-fw pi-heart-fill',
-                            },
-                            {
-                                label: 'Idiomas',
-                                icon: 'pi pi-fw pi-language',
-                            },
-                            {
-                                label: 'Recursos',
-                                icon: 'pi pi-fw pi-box',
-                            },
-                        ],
-                    },
-                    {
-                        label: 'Acessar',
-                        routerLink: '/admin/cursos/',
-                        icon: 'pi pi-fw pi-database',
-                    },
-                    {
-                        label: 'Criar',
-                        routerLink: '/admin/cursos/novo',
-                        icon: 'pi pi-fw pi-plus-circle',
-                    },
-                    {
-                        separator: true,
-                    },
-                    {
-                        label: 'Exportar',
-                        icon: 'pi pi-fw pi-external-link',
-                    },
-                ],
+                label: 'Notificações',
+                icon: 'pi pi-fw pi-comments',
+                routerLink: '/admin/notificacao',
             },
             {
-                label: 'Edit',
-                icon: 'pi pi-fw pi-pencil',
-                items: [
-                    {
-                        label: 'Left',
-                        icon: 'pi pi-fw pi-align-left',
-                    },
-                    {
-                        label: 'Right',
-                        icon: 'pi pi-fw pi-align-right',
-                    },
-                    {
-                        label: 'Center',
-                        icon: 'pi pi-fw pi-align-center',
-                    },
-                    {
-                        label: 'Justify',
-                        icon: 'pi pi-fw pi-align-justify',
-                    },
-                ],
+                label: 'Configurações',
+                icon: 'pi pi-fw pi-cog',
+                routerLink: '/admin/configuracao',
             },
             {
-                label: 'Users',
-                icon: 'pi pi-fw pi-user',
+                label: 'Desconectar',
+                icon: 'pi pi-fw pi-sign-out',
+                routerLink: '/admin/desconectar',
+            },
+        ];
+        this.items = [
+            {
+                label: 'Mail',
+                icon: 'pi pi-envelope',
+                badge: '5',
                 items: [
                     {
-                        label: 'New',
-                        icon: 'pi pi-fw pi-user-plus',
+                        label: 'Compose',
+                        icon: 'pi pi-file-edit',
+                        shortcut: '⌘+N'
                     },
                     {
-                        label: 'Delete',
-                        icon: 'pi pi-fw pi-user-minus',
+                        label: 'Inbox',
+                        icon: 'pi pi-inbox',
+                        badge: '5'
                     },
                     {
-                        label: 'Search',
-                        icon: 'pi pi-fw pi-users',
-                        items: [
-                            {
-                                label: 'Filter',
-                                icon: 'pi pi-fw pi-filter',
-                                items: [
-                                    {
-                                        label: 'Print',
-                                        icon: 'pi pi-fw pi-print',
-                                    },
-                                ],
-                            },
-                            {
-                                icon: 'pi pi-fw pi-bars',
-                                label: 'List',
-                            },
-                        ],
+                        label: 'Sent',
+                        icon: 'pi pi-send',
+                        shortcut: '⌘+S'
                     },
-                ],
+                    {
+                        label: 'Trash',
+                        icon: 'pi pi-trash',
+                        shortcut: '⌘+T'
+                    }
+                ]
             },
             {
-                label: 'Events',
-                icon: 'pi pi-fw pi-calendar',
+                label: 'Reports',
+                icon: 'pi pi-chart-bar',
+                shortcut: '⌘+R',
                 items: [
                     {
-                        label: 'Edit',
-                        icon: 'pi pi-fw pi-pencil',
-                        items: [
-                            {
-                                label: 'Save',
-                                icon: 'pi pi-fw pi-calendar-plus',
-                            },
-                            {
-                                label: 'Delete',
-                                icon: 'pi pi-fw pi-calendar-minus',
-                            },
-                        ],
+                        label: 'Sales',
+                        icon: 'pi pi-chart-line',
+                        badge: '3'
                     },
                     {
-                        label: 'Archieve',
-                        icon: 'pi pi-fw pi-calendar-times',
-                        items: [
-                            {
-                                label: 'Remove',
-                                icon: 'pi pi-fw pi-calendar-minus',
-                            },
-                        ],
-                    },
-                ],
+                        label: 'Products',
+                        icon: 'pi pi-list',
+                        badge: '6'
+                    }
+                ]
             },
+            {
+                label: 'Profile',
+                icon: 'pi pi-user',
+                shortcut: '⌘+W',
+                items: [
+                    {
+                        label: 'Settings',
+                        icon: 'pi pi-cog',
+                        shortcut: '⌘+O'
+                    },
+                    {
+                        label: 'Privacy',
+                        icon: 'pi pi-shield',
+                        shortcut: '⌘+P'
+                    }
+                ]
+            }
         ];
     }
 }

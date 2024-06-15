@@ -11,13 +11,18 @@ import {DropdownModule} from 'primeng/dropdown'; // Componente Dropdown do Prime
 // Importações relacionadas a formulários do Angular
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'; // Classes para formulários reativos e validação
 import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
+import { SpeedDialModule } from 'primeng/speeddial';
 
 
 // Service
 import {ResourceService} from "../../../services/resource/resource.service";
 import {ItemContentService} from "../../../services/resource/itemContent/item-content.service";
+
+// Models
 import {ItemContent} from "../../../models/itemContent";
+import {Content} from "../../../models/content";
+import {CourseInfo} from "../../../models/content";
 
 import {LogPipePipe} from "./log-pipe.pipe";
 
@@ -35,7 +40,8 @@ import {LogPipePipe} from "./log-pipe.pipe";
         DropdownModule,
         FormsModule,
         ToastModule,
-        LogPipePipe
+        LogPipePipe, // remover
+        SpeedDialModule
 
     ],
     templateUrl: './tab-view.component.html',
@@ -81,6 +87,18 @@ export class TabViewComponent implements OnInit {
      */
     formControl!: FormGroup;
 
+
+    /**
+     * FormGroup que contém os formControls para o formulário de entrada.
+     *
+     * @formControl FormGroup que contém os controles do formulário.
+     *
+     */
+    formControlContent!: FormGroup;
+
+    buttonItems: MenuItem[];
+
+
     /**
      * Construtor da classe para inicialização de dependências.
      *
@@ -97,6 +115,35 @@ export class TabViewComponent implements OnInit {
         private itemContentService: ItemContentService,
         private messageService: MessageService
     ) {
+        this.buttonItems = [
+            {
+                icon: 'pi pi-pencil',
+                command: () => {
+                    this.messageService.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
+                }
+            },
+            {
+                icon: 'pi pi-refresh',
+                command: () => {
+                    this.messageService.add({ severity: 'success', summary: 'Update', detail: 'Data Updated' });
+                }
+            },
+            {
+                icon: 'pi pi-trash',
+                command: () => {
+                    this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
+                }
+            },
+            {
+                icon: 'pi pi-upload',
+                routerLink: ['/fileupload']
+            },
+            {
+                icon: 'pi pi-external-link',
+                target:'_blank',
+                url: 'http://angular.io'
+            }
+        ];
         // Verifica se existe um array armazenado em cache
         // const classCache = localStorage.getItem('classCache');
         // if (classCache) {
@@ -144,6 +191,10 @@ export class TabViewComponent implements OnInit {
             sort: new FormControl('', [Validators.required]),
             description: new FormControl('', [Validators.required])
         });
+        this.formControlContent = this.formBuilder.group({
+            contentName: ['', Validators.required],
+            sortOrder: ['', Validators.required],
+        });
 
         // Inicialização das opções de arquivo
         this.optionsType = [
@@ -153,9 +204,11 @@ export class TabViewComponent implements OnInit {
             {name: 'Vídeo', id: 3, code: 'pi-play'}
         ];
         if (this.idCourse !== null) this.getContentPerCourse()
+        console.log(this.resources)
     }
 
     visible: boolean = false;
+    visibleContent: boolean = false;
     indexContent: any = "";
     @Input() idCourse!: string | null;
 
@@ -168,6 +221,13 @@ export class TabViewComponent implements OnInit {
         this.indexContent = index;
         this.visible = true;
     }
+    /**
+     * Método responsável por exibir o diálogo de adicionar conteúdo.
+     *
+     */
+    showDialogContent(): void {
+        this.visibleContent = true;
+    }
 
     /**
      * Método responsável por adicionar um novo curso ao array de recursos.
@@ -178,54 +238,65 @@ export class TabViewComponent implements OnInit {
      * @remarks A saída do console exibe o array de recursos atualizado após a adição do novo curso.
      */
     addCourseContent(): void {
-        let courseInfo: any[] = this.getCourseInfo();
+        let courseInfo: CourseInfo | any = this.getCourseInfo();
 
-        if (!courseInfo) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Algo de errado não está certo'
-            });
-            return;
-        }
-        // @ts-ignore
-        const content: Content = {
-            // @ts-ignore
-            nome: `Aula ${courseInfo.id}`,
-            // @ts-ignore
-            nomeCurso: courseInfo.nome,
-            ordem: this.contentId,
-            // @ts-ignore
-            curso: courseInfo.id
-        }
-        let idContent;
-        this.resources.push()
-        this.contentService.postResource(content).subscribe({
-            next: (response) => {
-                idContent = response.uuid;
-                const novoObjeto = {
-                    id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
-                    idContent: response.uuid,
-                    content: [] // Conteúdo do objeto, se necessário
-                };
-                this.resources.push(novoObjeto);
+        if (this.formControlContent && this.formControlContent.valid) {
 
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: `A Aula foi criada com sucesso`
-                });
-            },
-            error: (error) => {
-                console.error(error)
+            if (!courseInfo) {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
                     detail: 'Algo de errado não está certo'
                 });
+                return;
             }
-        });
-        this.contentId++; // Incrementa o próximo ID para a próxima inserção
+
+            const content: Content = {
+                nome:  this.formControlContent.get('contentName')?.value,
+                nomeCurso: courseInfo.nome,
+                ordem: this.formControlContent.get('sortOrder')?.value,
+                curso: courseInfo.id
+            }
+
+            this.resources.push()
+
+            this.contentService.postResource(content).subscribe({
+                next: (response) => {
+                    const novoObjeto = {
+                        id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                        nome: response.nome,
+                        idContent: response.uuid,
+                        content: [] // Conteúdo do objeto, se necessário
+                    };
+                    this.resources.push(novoObjeto);
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `A Aula foi criada com sucesso`
+                    });
+                },
+                error: (error) => {
+                    console.error(error)
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Algo de errado não está certo'
+                    });
+                }
+            });
+            this.contentId++; // Incrementa o próximo ID para a próxima inserção
+            this.resetFormControls()
+            this.visibleContent = false;
+
+
+        } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Ops!',
+                detail: 'Todos os campos devem ser preenchidos'
+            });
+        }
     }
 
 
@@ -234,12 +305,17 @@ export class TabViewComponent implements OnInit {
      */
     clearForm() {
         // Define os valores dos campos do formulário como vazio
-        this.formControl.get('name')?.setValue('');
-        this.formControl.get('typeFile')?.setValue('');
-        this.formControl.get('link')?.setValue('');
-        this.formControl.get('institute')?.setValue('');
-        this.formControl.get('sort')?.setValue('');
-        this.formControl.get('description')?.setValue('');
+        this.formControl.reset();
+
+    }
+    /**
+     * Método responsável por limpar os valores dos campos do formulário.
+     */
+    resetFormControls(): void {
+        if (this.formControlContent) {
+            this.formControlContent.reset();
+
+        }
     }
 
     /**
@@ -296,6 +372,10 @@ export class TabViewComponent implements OnInit {
         }
     }
 
+    createContent(): void{
+
+    }
+
     /**
      * Fecha a aba com o ID especificado.
      *
@@ -307,6 +387,8 @@ export class TabViewComponent implements OnInit {
         // Se o índice for encontrado, remover a entrada inteira do array resources
 
         if (index !== -1) {
+            console.log(tab.idContent)
+
             this.contentService.deleteResource(tab.idContent).subscribe({
                 next: (response) => {
                     this.resources.splice(index, 1);
@@ -390,6 +472,7 @@ export class TabViewComponent implements OnInit {
                         }
                         let newContent = {
                             id: "", // Converte o ID para string e preenche com zero à esquerda se necessário
+                            nome:"nome",
                             idContent: 0,
                             content: [] // Conteúdo do objeto, se necessário
                         };
@@ -400,6 +483,7 @@ export class TabViewComponent implements OnInit {
                         })
                         newContent = {
                             id: this.contentId.toString().padStart(2, '0'), // Converte o ID para string e preenche com zero à esquerda se necessário
+                            nome:content.nome,
                             idContent: content.uuid,
                             content: [] // Conteúdo do objeto, se necessário
                         };
