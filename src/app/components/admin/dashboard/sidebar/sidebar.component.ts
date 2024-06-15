@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api/menuitem';
 import { PanelMenuModule } from 'primeng/panelmenu';
 
-
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
@@ -17,7 +16,6 @@ import { CommonModule } from '@angular/common';
 export class SidebarComponent implements OnInit {
     sidebarItems: MenuItem[] | undefined;
     items: MenuItem[] | undefined;
-
 
     ngOnInit(): void {
         this.sidebarItems = [
@@ -60,6 +58,13 @@ export class SidebarComponent implements OnInit {
                 label: 'Configurações',
                 icon: 'pi pi-fw pi-cog',
                 routerLink: '/admin/configuracao',
+                items: [
+                    {
+                        label: 'Pessoas',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: '/admin/configuracao/pessoas',
+                    },
+                ],
             },
             {
                 label: 'Desconectar',
@@ -76,24 +81,24 @@ export class SidebarComponent implements OnInit {
                     {
                         label: 'Compose',
                         icon: 'pi pi-file-edit',
-                        shortcut: '⌘+N'
+                        shortcut: '⌘+N',
                     },
                     {
                         label: 'Inbox',
                         icon: 'pi pi-inbox',
-                        badge: '5'
+                        badge: '5',
                     },
                     {
                         label: 'Sent',
                         icon: 'pi pi-send',
-                        shortcut: '⌘+S'
+                        shortcut: '⌘+S',
                     },
                     {
                         label: 'Trash',
                         icon: 'pi pi-trash',
-                        shortcut: '⌘+T'
-                    }
-                ]
+                        shortcut: '⌘+T',
+                    },
+                ],
             },
             {
                 label: 'Reports',
@@ -103,14 +108,14 @@ export class SidebarComponent implements OnInit {
                     {
                         label: 'Sales',
                         icon: 'pi pi-chart-line',
-                        badge: '3'
+                        badge: '3',
                     },
                     {
                         label: 'Products',
                         icon: 'pi pi-list',
-                        badge: '6'
-                    }
-                ]
+                        badge: '6',
+                    },
+                ],
             },
             {
                 label: 'Profile',
@@ -120,15 +125,15 @@ export class SidebarComponent implements OnInit {
                     {
                         label: 'Settings',
                         icon: 'pi pi-cog',
-                        shortcut: '⌘+O'
+                        shortcut: '⌘+O',
                     },
                     {
                         label: 'Privacy',
                         icon: 'pi pi-shield',
-                        shortcut: '⌘+P'
-                    }
-                ]
-            }
+                        shortcut: '⌘+P',
+                    },
+                ],
+            },
         ];
     }
 }
