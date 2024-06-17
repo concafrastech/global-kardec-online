@@ -135,8 +135,8 @@ export class CoursesDashboardComponent implements OnInit {
     confirmDelete(event: Event, courseName: string, courseUUID: string, course: Course) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
-            message: `Esta exclusão é permanente. <br/> <b>Você tem certeza?<b/>`,
-            header: `Você está excluindo o curso ${courseName}.`,
+            message: `Ao arquivar, o curso deixará de ser exibido aos alunos. <br/> <b>Você tem certeza?<b/>`,
+            header: `Você está arquivando o curso ${courseName}.`,
             icon: 'pi pi-info-circle',
             acceptButtonStyleClass: 'p-button-danger p-button-text',
             rejectButtonStyleClass: 'p-button-text p-button-text',
@@ -153,8 +153,8 @@ export class CoursesDashboardComponent implements OnInit {
                         console.log(response);
                         this.messageService.add({
                             severity: 'success',
-                            summary: 'Excluído!',
-                            detail: `O curso ${courseName} foi excluído!`
+                            summary: 'Arquivado!',
+                            detail: `O curso ${courseName} foi arquivado!`
                         });
                     },
                     error:(error) => {
@@ -164,7 +164,7 @@ export class CoursesDashboardComponent implements OnInit {
                          this.messageService.add({
                              severity: 'error',
                              summary: 'Erro',
-                             detail: `Ocorreu um erro na exclusão do curso ${courseName}`
+                             detail: `Ocorreu no arquivamento do curso ${courseName}`
                          });
                     },
                 })
