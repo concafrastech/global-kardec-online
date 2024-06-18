@@ -132,7 +132,10 @@ export class CoursesDashboardComponent implements OnInit {
      * @param event O evento que acionou a função.
      * @param courseName O nome do curso a ser excluído.
      */
-    confirmDelete(event: Event, courseName: string, courseUUID: string, course: Course) {
+    confirmArquive(event: Event, courseName: string, courseUUID: string, course: Course) {
+        
+        
+        
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Ao arquivar, o curso deixará de ser exibido aos alunos. <br/> <b>Você tem certeza?<b/>`,
@@ -144,10 +147,13 @@ export class CoursesDashboardComponent implements OnInit {
             rejectIcon: 'none',
             acceptLabel: 'Sim',
             rejectLabel: 'Não',
-
+            
             accept: () => {
                 // Arquiva o curso ao confirmar a exclusão
-                this.courseService.archivingCourse(course).subscribe({
+                console.log(course);
+                course.modalidadeEnsino = "ARQUIVADO"
+                
+                this.courseService.updateCourse(course).subscribe({
                     next: (response) => {
                         this.getAllCourses();
                         console.log(response);
@@ -166,7 +172,8 @@ export class CoursesDashboardComponent implements OnInit {
                              summary: 'Erro',
                              detail: `Ocorreu no arquivamento do curso ${courseName}`
                          });
-                    },
+                         console.log(course)
+                    }, 
                 })
                 
                 // Exibe uma mensagem de sucesso após a exclusão do curso
@@ -184,7 +191,7 @@ export class CoursesDashboardComponent implements OnInit {
                     detail: 'Ok.',
                 });
             },
-        });
+        }); 
     }
 
 
