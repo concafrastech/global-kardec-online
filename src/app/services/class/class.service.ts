@@ -8,7 +8,7 @@ import {Class} from "../../models/class";
 import {ClassLot} from "../../models/classLot";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ClassService {
     private apiUrl: String;
@@ -22,15 +22,11 @@ export class ClassService {
      * @param classInfo
      */
     put(classInfo: Class): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.put<any>(
-            `${this.apiUrl}/gk/turma'`,
-            classInfo,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .put<any>(`${this.apiUrl}/gk/turma'`, classInfo, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -39,15 +35,11 @@ export class ClassService {
      * @param classInfo
      */
     post(classInfo: Class): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.post<any>(
-            `${this.apiUrl}/gk/turma'`,
-            classInfo,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .post<any>(`${this.apiUrl}/gk/turma'`, classInfo, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -56,15 +48,11 @@ export class ClassService {
      * @param classLot
      */
     postLote(classLot: ClassLot): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.post<any>(
-            `${this.apiUrl}/gk/turma'`,
-            classLot,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .post<any>(`${this.apiUrl}/gk/turma'`, classLot, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -73,14 +61,11 @@ export class ClassService {
      * @param uuid id único da turma
      */
     patchReopen(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.patch<any>(
-            `${this.apiUrl}/gk/turma/reabrir/${uuid}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .patch<any>(`${this.apiUrl}/gk/turma/reabrir/${uuid}'`, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -89,14 +74,13 @@ export class ClassService {
      * @param uuid id único da turma
      */
     patchClose(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.patch<any>(
-            `${this.apiUrl}/gk/turma/encerrar/${uuid}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .patch<any>(`${this.apiUrl}/gk/turma/encerrar/${uuid}'`, {
+                headers,
+            })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -105,15 +89,12 @@ export class ClassService {
      * @param uuid O UUID da turma a ser retornada.
      * @return Um Observable que emite o objeto da turma correspondente ao UUID fornecido.
      */
-    get(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    get(uuid: string | undefined): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.get<any>(
-            `${this.apiUrl}/gk/turma/${uuid}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .get<any>(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -123,14 +104,11 @@ export class ClassService {
      * @return
      */
     delete(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.delete<any>(
-            `${this.apiUrl}/gk/turma/${uuid}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .delete<any>(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -139,15 +117,14 @@ export class ClassService {
      * @param uuid O UUID do centro a ser retornado.
      * @return Um Observable que emite o objeto da turma correspondente ao UUID fornecido.
      */
-    getPerCentro(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-
-        return this._http.get<any>(
-            `${this.apiUrl}/gk/turma/porCentro/${uuid}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+    getBySpiritCenter(uuid: string | undefined): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this._http
+            .get<any>(
+                `${this.apiUrl}/gk/turma/porCentro/${uuid}`,
+                { headers },
+            )
+            .pipe(catchError(this.handleError));
     }
 
     /**
@@ -157,15 +134,18 @@ export class ClassService {
      * @param nomeCurso O nome do curso.
      * @return Um Observable que emite a lista de turmas correspondentes ao centro e curso fornecidos.
      */
-    getPerCentroPorCurso(uuidCentro: string, nomeCurso: string): Observable<any> {
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    getPerCentroPorCurso(
+        uuidCentro: string,
+        nomeCurso: string,
+    ): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-        return this._http.get<any>(
-            `${this.apiUrl}/gk/turma/porCentro/${uuidCentro}/${nomeCurso}'`,
-            {headers}
-        ).pipe(
-            catchError(this.handleError)
-        );
+        return this._http
+            .get<any>(
+                `${this.apiUrl}/gk/turma/porCentro/${uuidCentro}/${nomeCurso}'`,
+                { headers },
+            )
+            .pipe(catchError(this.handleError));
     }
 
     /**
