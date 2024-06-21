@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
 import { ResourceService } from '../../../services/resource/resource.service';
-import {SearchIcon} from 'primeng/icons/search'
+import { SearchIcon } from 'primeng/icons/search'
 
 
 
@@ -133,9 +133,9 @@ export class CoursesDashboardComponent implements OnInit {
      * @param courseName O nome do curso a ser excluído.
      */
     confirmArquive(event: Event, courseName: string, courseUUID: string, course: Course) {
-        
-        
-        
+
+
+
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Ao arquivar, o curso deixará de ser exibido aos alunos. <br/> <b>Você tem certeza?<b/>`,
@@ -147,12 +147,12 @@ export class CoursesDashboardComponent implements OnInit {
             rejectIcon: 'none',
             acceptLabel: 'Sim',
             rejectLabel: 'Não',
-            
+
+            // Arquiva o curso ao confirmar a exclusão
             accept: () => {
-                // Arquiva o curso ao confirmar a exclusão
-                console.log(course);
+                this.convertParam(course)
                 course.modalidadeEnsino = "ARQUIVADO"
-                
+                console.log(course);
                 this.courseService.updateCourse(course).subscribe({
                     next: (response) => {
                         this.getAllCourses();
@@ -163,19 +163,18 @@ export class CoursesDashboardComponent implements OnInit {
                             detail: `O curso ${courseName} foi arquivado!`
                         });
                     },
-                    error:(error) => {
-                         // Exibe uma mensagem de cancelamento se a exclusão for cancelada
-                         console.error(error);
-                         this.messageService.clear()
-                         this.messageService.add({
-                             severity: 'error',
-                             summary: 'Erro',
-                             detail: `Ocorreu no arquivamento do curso ${courseName}`
-                         });
-                         console.log(course)
-                    }, 
+                    error: (error) => {
+                        // Exibe uma mensagem de cancelamento se a exclusão for cancelada
+                        console.error(error);
+                        this.messageService.clear()
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erro',
+                            detail: `Ocorreu no arquivamento do curso ${courseName}`
+                        });
+                    },
                 })
-                
+
                 // Exibe uma mensagem de sucesso após a exclusão do curso
                 this.messageService.add({
                     severity: 'info',
@@ -191,7 +190,7 @@ export class CoursesDashboardComponent implements OnInit {
                     detail: 'Ok.',
                 });
             },
-        }); 
+        });
     }
 
 
@@ -204,10 +203,21 @@ export class CoursesDashboardComponent implements OnInit {
         this.courseSubject.next(objectCourse);
     }
 
+    convertParam(course: Course) {
+        this.courseService.getCourse(course.uuid!).subscribe({
+            next({instituto, idioma}) {
+                course.instituto = instituto
+                course.idioma = idioma
+                return course
+            },
+        })
+        
+    }
+
     checkCourseResources(courseUUID: string): void {
         try {
             this.resourceService.getCourseResources(courseUUID)
-            
+
         } catch (error) {
             return console.error(error);
         }
