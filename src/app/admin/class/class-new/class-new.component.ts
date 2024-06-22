@@ -7,7 +7,7 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { RouterLink, Router} from '@angular/router';
-import {BehaviorSubject, timeout} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 
 // Models
@@ -266,19 +266,9 @@ export class ClassNewComponent implements OnInit {
                     this.getCalendar(uuiCalendar)?.semestre || 0,
                 uuidCentro: this.formControl.get('spirit')?.value || '',
             };
-            const teste = {
-                linkSala: 'string',
-                curso: 'd406e65f-ea66-474e-a3fc-6d9d6a67fe47',
-                nomeCurso: 'string',
-                calendario: '46d10106-3aab-478d-900a-6057287b8558',
-                anoCalendario: 0,
-                semestreCalendario: 0,
-                uuidCentro: '84d13166-39cf-11ed-9067-706979ac0e21',
-                nomeCentro: 'string',
-            };
 
             this.classService.post(classControl).subscribe({
-                next: async (classContent) => {
+                next: async () => {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Sucesso',
