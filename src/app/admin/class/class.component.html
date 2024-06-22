@@ -1,4 +1,4 @@
-<p-card class="classTableCard">
+<div class="classTableCard">
     <div class="flex title-box">
         <div class="page-title-wrapper">
             <h1 class="page-title">Turmas</h1>
@@ -12,9 +12,16 @@
             routerLink="novo"
         ></p-button>
     </div>
-    <p-accordion [activeIndex]="0" *ngFor="let tabs of classList">
-        <p-accordionTab  *ngFor="let tab of classList" [header]="tab.nomeCentro">
-            <p-table [value]="tab.classes" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-toast />
+
+    <p-accordion>
+        <p-accordionTab *ngFor="let tab of classList" [header]="tab.nomeCentro">
+            <p-table
+                [paginator]="true"
+                [value]="tab.classes"
+                [rows]="5"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Curso</th>
@@ -31,15 +38,15 @@
                             <a href="{{class.linkSala}}"  target="_blank" rel="noopener noreferrer" class="link-external">
                                 Acessar sala
                             </a>
-                           </td>
+                        </td>
                         <td class="actionItens">
-<!--                            <a><i class="pi pi-pencil" [routerLink]="['/admin/cursos/novo/', course.uuid.toString()]"></i></a>-->
-                            <a><i class="pi pi-trash" ></i></a>
+                            <a (click)="deleteClass(class.uuid)"><i class="pi pi-trash"></i></a>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </p-accordionTab>
     </p-accordion>
-</p-card>
+
+</div>
 

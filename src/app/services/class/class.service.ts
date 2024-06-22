@@ -112,7 +112,7 @@ export class ClassService {
             'Content-Type': 'application/json',
         };
         return this._http
-            .delete(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
+            .delete(`${this.apiUrl}/gk/turma/${uuid}`, { headers })
             .pipe(catchError(this.handleError));
     }
 
