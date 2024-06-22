@@ -8,6 +8,8 @@ import { CoursesNewComponent } from './admin/courses/courses-new/courses-new.com
 import { CoursesDashboardComponent } from './admin/courses/courses-dashboard/courses-dashboard.component';
 import { CalendarDashboardComponent } from './admin/calendar/calendar-dashboard/calendar-dashboard.component';
 import { CalendarNewComponent } from './admin/calendar/calendar-new/calendar-new.component';
+import { PeopleComponent } from './admin/config/people/people.component';
+import { PeopleFormsComponent } from './admin/config/people/people-forms/people-forms.component';
 
 export const routes: Routes = [
     {
@@ -25,7 +27,7 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos/novo/:id',
-                component: CoursesNewComponent
+                component: CoursesNewComponent,
             },
             {
                 path: 'calendarios',
@@ -35,7 +37,20 @@ export const routes: Routes = [
                 path: 'calendarios/novo',
                 component: CalendarNewComponent,
             },
-        ]
+            {
+                path: 'configuracao',
+                children: [
+                    {
+                        path: 'pessoas',
+                        component: PeopleComponent,
+                    },
+                    {
+                        path: 'pessoas/novo',
+                        component: PeopleFormsComponent,
+                    },
+                ],
+            },
+        ],
     },
     {
         path: 'uikit',

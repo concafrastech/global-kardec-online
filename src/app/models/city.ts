@@ -4,8 +4,11 @@
  *
  * Portal da Concafras: https://portal.concafras.com/
  */
-export interface User {
-    uuid?: string;
-    loginEmail: string;
-    loginTelefone: string;
+
+import { State } from './state';
+
+export interface City {
+    id?: number;
+    nome: string;
+    estado: State;
 }

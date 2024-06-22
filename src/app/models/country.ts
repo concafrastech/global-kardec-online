@@ -4,8 +4,8 @@
  *
  * Portal da Concafras: https://portal.concafras.com/
  */
-export interface User {
-    uuid?: string;
-    loginEmail: string;
-    loginTelefone: string;
+
+export interface Country {
+    id?: number;
+    nome: string;
 }

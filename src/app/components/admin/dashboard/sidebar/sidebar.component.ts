@@ -57,7 +57,6 @@ export class SidebarComponent implements OnInit {
             {
                 label: 'Configurações',
                 icon: 'pi pi-fw pi-cog',
-                routerLink: '/admin/configuracao',
                 items: [
                     {
                         label: 'Pessoas',
