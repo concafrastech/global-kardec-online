@@ -164,7 +164,6 @@ export class ClassComponent implements OnInit {
                                 }
                             })
                             .filter((item) => item.nomeCentro); // Remove any empty items
-                        console.log(this.classList);
                     },
                 );
             });
