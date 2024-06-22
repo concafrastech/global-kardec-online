@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {catchError} from "rxjs/operators";
-import {Observable, throwError} from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 // Models
-import {Class} from "../../models/class";
-import {ClassLot} from "../../models/classLot";
+import { Class } from '../../models/class';
+import { ClassLot } from '../../models/classLot';
 
 @Injectable({
     providedIn: 'root',
@@ -35,10 +35,11 @@ export class ClassService {
      * @param classInfo
      */
     post(classInfo: Class): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+        let headers = {
+            'Content-Type': 'application/json',
+        };
         return this._http
-            .post<any>(`${this.apiUrl}/gk/turma'`, classInfo, { headers })
+            .post(`${this.apiUrl}/gk/turma`, classInfo, { headers })
             .pipe(catchError(this.handleError));
     }
 
@@ -48,8 +49,9 @@ export class ClassService {
      * @param classLot
      */
     postLote(classLot: ClassLot): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+        let headers = {
+            'Content-Type': 'application/json',
+        };
         return this._http
             .post<any>(`${this.apiUrl}/gk/turma'`, classLot, { headers })
             .pipe(catchError(this.handleError));
@@ -61,8 +63,9 @@ export class ClassService {
      * @param uuid id único da turma
      */
     patchReopen(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+        let headers = {
+            'Content-Type': 'application/json',
+        };
         return this._http
             .patch<any>(`${this.apiUrl}/gk/turma/reabrir/${uuid}'`, { headers })
             .pipe(catchError(this.handleError));
@@ -74,8 +77,9 @@ export class ClassService {
      * @param uuid id único da turma
      */
     patchClose(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+        let headers = {
+            'Content-Type': 'application/json',
+        };
         return this._http
             .patch<any>(`${this.apiUrl}/gk/turma/encerrar/${uuid}'`, {
                 headers,
@@ -104,10 +108,11 @@ export class ClassService {
      * @return
      */
     delete(uuid: string): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+        let headers = {
+            'Content-Type': 'application/json',
+        };
         return this._http
-            .delete<any>(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
+            .delete(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
             .pipe(catchError(this.handleError));
     }
 
@@ -120,10 +125,7 @@ export class ClassService {
     getBySpiritCenter(uuid: string | undefined): Observable<any> {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         return this._http
-            .get<any>(
-                `${this.apiUrl}/gk/turma/porCentro/${uuid}`,
-                { headers },
-            )
+            .get<any>(`${this.apiUrl}/gk/turma/porCentro/${uuid}`, { headers })
             .pipe(catchError(this.handleError));
     }
 

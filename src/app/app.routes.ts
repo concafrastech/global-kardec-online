@@ -13,6 +13,10 @@ import {ClassNewComponent} from "./admin/class/class-new/class-new.component";
 
 export const routes: Routes = [
     {
+        path: '',
+        component: AdminHomeComponent,
+    },
+    {
         path: 'admin',
         component: AdminHomeComponent,
         //canActivate: [AdminGuard],
@@ -43,6 +47,10 @@ export const routes: Routes = [
             },
             {
                 path: 'turmas/novo',
+                component: ClassNewComponent,
+            },
+            {
+                path: 'turmas/atualizar/:id',
                 component: ClassNewComponent,
             },
         ]

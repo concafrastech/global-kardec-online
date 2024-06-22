@@ -4,11 +4,11 @@
             <h1 class="page-title">Cadastro de Turmas</h1>
         </div>
     </div>
+    <p-toast />
 
     <form [formGroup]="formControl" class="registration_form">
 
         <div class="formGroup course_info">
-
             <div class="flex flex-column gap-2">
                 <label>Curso</label>
                 <p-dropdown
@@ -34,14 +34,33 @@
                     [filter]="true"
                     filterBy="nome"
                     [showClear]="true"
+                    (onChange)="onSpiritCenterChange($event)"
                 >
                 </p-dropdown>
             </div>
-            <div class="flex flex-column gap-2">
-                <label>Calendário</label>
-                <p-dropdown formControlName="calendar" optionLabel="nome" optionValue="uuid"
-                            [showClear]="true" placeholder="Selecione um Calendário"></p-dropdown>
-            </div>
+            @if (messageCalendar) {
+                <div class="card">
+                    <p-messages
+                        [(value)]="messages"
+                        [enableService]="false"
+                        [closable]="false"/>
+                </div>
+            }
+
+            @if (calendarVisible) {
+                <div class="flex flex-column gap-2">
+                    <label>Calendário</label>
+                    <p-dropdown
+                        formControlName="calendar"
+                        [options]="calendars"
+                        optionLabel="label"
+                        optionValue="uuid"
+                        [showClear]="true"
+                        placeholder="Selecione um Calendário"
+                    ></p-dropdown>
+                </div>
+            }
+
             <div class="flex flex-column gap-2">
                 <label for="link">Link da sala</label>
                 <input type="text" id="link" pInputText formControlName="link"/>
@@ -55,7 +74,7 @@
             icon="pi pi-save"
             size="small"
             severity="primary"
-            (onClick)="salveClass()"
+            (onClick)="saveClass()"
         ></p-button>
     </form>
 
