@@ -16,6 +16,12 @@
     .mixin-flex-justify-content(end);
 }
 
+.card {
+    .p-card {
+        box-shadow: none;
+    }
+}
+
 .p-button {
     border-radius: @buttons-border-radius;
     padding: @buttons-padding;
@@ -44,12 +50,19 @@
 }
 
 // Cor da título das páginas
+.title-box {
+    border-bottom: 1px solid @theme__color__secondary;
+    margin-bottom: @indent__m;
 
-.page-title-wrapper {
-    .page-title {
-        color: @theme__color__secondary;
+    .page-title-wrapper {
+        .mixin-display(flex);
+
+        .page-title {
+            color: @theme__color__secondary;
+        }
     }
 }
+
 
 // Inputs
 .formGroup {
