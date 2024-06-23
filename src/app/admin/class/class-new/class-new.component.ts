@@ -21,7 +21,7 @@ import {CalendarService} from '../../../services/calendar/calendar.service';
 import {ClassService} from '../../../services/class/class.service';
 
 // PrimeNg
-import {Button} from 'primeng/button';
+import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
@@ -36,7 +36,7 @@ import {Class} from '../../../models/class';
     selector: 'app-class-new',
     standalone: true,
     imports: [
-        Button,
+        ButtonModule,
         CardModule,
         RouterLink,
         DropdownModule,
