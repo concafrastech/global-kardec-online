@@ -198,7 +198,7 @@ export class ClassComponent implements OnInit {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Erro',
-                    detail: 'Algo de errado não está certo'
+                    detail: 'Não é possível deletar a turma, pois há alunos associados a ela'
                 });
             },
         });
