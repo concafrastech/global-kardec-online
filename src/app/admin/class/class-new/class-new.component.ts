@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -6,32 +6,31 @@ import {
     Validators,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { RouterLink, Router} from '@angular/router';
+import {RouterLink, Router, ActivatedRoute} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 
-
 // Models
-import { Course } from '../../../models/course';
-import { SpiritCenter } from '../../../models/spiritCenter';
-import { Calendar } from '../../../models/calendar';
+import {Course} from '../../../models/course';
+import {SpiritCenter} from '../../../models/spiritCenter';
+import {Calendar} from '../../../models/calendar';
 
 // Services
-import { CourseSerivce } from '../../../services/course/course.service';
-import { SpiritCenterService } from '../../../services/spirit-center/spirit-center.service';
-import { CalendarService } from '../../../services/calendar/calendar.service';
-import { ClassService } from '../../../services/class/class.service';
+import {CourseSerivce} from '../../../services/course/course.service';
+import {SpiritCenterService} from '../../../services/spirit-center/spirit-center.service';
+import {CalendarService} from '../../../services/calendar/calendar.service';
+import {ClassService} from '../../../services/class/class.service';
 
 // PrimeNg
-import { Button } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
-import { Message } from 'primeng/api';
-import { PaginatorModule } from 'primeng/paginator';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { Class } from '../../../models/class';
+import {Button} from 'primeng/button';
+import {CardModule} from 'primeng/card';
+import {DropdownModule} from 'primeng/dropdown';
+import {InputTextModule} from 'primeng/inputtext';
+import {MessagesModule} from 'primeng/messages';
+import {Message} from 'primeng/api';
+import {PaginatorModule} from 'primeng/paginator';
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import {Class} from '../../../models/class';
 
 @Component({
     selector: 'app-class-new',
@@ -90,6 +89,13 @@ export class ClassNewComponent implements OnInit {
 
     messages: Message[] = []; // Inicializa como um array vazio
 
+    // Obtém o ID do curso da rota atual
+    public idClass = this.activeRoute.snapshot.paramMap.get('id');
+
+    // Variável de instância para armazenar os dados da turma
+    classRow: Class | undefined;
+
+
     /**
      *
      * @param formBuilder
@@ -99,6 +105,7 @@ export class ClassNewComponent implements OnInit {
      * @param messageService
      * @param classService
      * @param router
+     * @param activeRoute
      */
     constructor(
         private formBuilder: FormBuilder,
@@ -107,8 +114,10 @@ export class ClassNewComponent implements OnInit {
         private calendarService: CalendarService,
         private messageService: MessageService,
         private classService: ClassService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private activeRoute: ActivatedRoute,
+    ) {
+    }
 
     /**
      *
@@ -119,6 +128,10 @@ export class ClassNewComponent implements OnInit {
         this.getCourses();
 
         this.getSpiritCenter();
+
+        if (this.idClass !== undefined) {
+            this.isUpdateClass();
+        }
 
         this.messages = [
             {
@@ -132,7 +145,6 @@ export class ClassNewComponent implements OnInit {
      * Inicializa o formulário com os campos e validadores necessários.
      */
     private initializeForm(): void {
-        localStorage.removeItem('courseInfo');
         this.formControl = this.formBuilder.group({
             course: new FormControl('', [Validators.required]),
             spirit: new FormControl('', [Validators.required]),
@@ -247,10 +259,6 @@ export class ClassNewComponent implements OnInit {
      * Método para salvar a classe com os dados do formulário.
      */
     saveClass() {
-        // d406e65f-ea66-474e-a3fc-6d9d6a67fe47
-        // centro 84d13166-39cf-11ed-9067-706979ac0e21
-        // calendario 46d10106-3aab-478d-900a-6057287b8558
-        //console.log(this.courses);
         if (this.formControl.valid) {
             const uuidCourse = this.formControl.get('course')?.value;
             const uuidSpirit = this.formControl.get('spirit')?.value;
@@ -282,8 +290,6 @@ export class ClassNewComponent implements OnInit {
                     console.error(error);
                 },
             });
-
-            console.log(classControl);
         } else {
             this.messageService.add({
                 severity: 'warn',
@@ -298,7 +304,6 @@ export class ClassNewComponent implements OnInit {
      * @param uuid
      */
     getNameCouse(uuid: string): string | undefined {
-        console.log(uuid);
         for (const course of this.courses || []) {
             if (course.uuid === uuid) {
                 return course.nome;
@@ -328,4 +333,76 @@ export class ClassNewComponent implements OnInit {
         }
         return undefined; // Retorna undefined se nenhum curso for encontrado
     }
+
+    /**
+     * Método que atualiza a turma com base no ID da turma.
+     *
+     * Este método verifica se existe um ID de turma (`idClass`). Se o ID estiver presente,
+     * ele chama o serviço `classService` para obter os dados da turma correspondente.
+     * Em seguida, os dados da turma são configurados no formulário (`formControl`).
+     */
+    isUpdateClass(): void {
+        // Verifica se existe um ID de turma
+        if (this.idClass) {
+            // Chama o serviço para obter os dados da turma com o ID fornecido
+            this.classService.get(this.idClass).subscribe({
+                // Se a chamada for bem-sucedida, configura os dados da turma no formulário
+                next: (classRow: Class) => {
+                    this.classRow = classRow;  // Armazena os dados da turma na variável de instância
+                    this.getCalendars(classRow.uuidCentro);
+                    this.formControl.setValue({
+                        course: classRow.curso,
+                        spirit: classRow.uuidCentro,
+                        calendar: classRow.calendario,
+                        link: classRow.linkSala
+                    });
+                    this.calendarVisible = true;
+                },
+                // Se ocorrer um erro, exibe-o no console
+                error: (error) => console.error(error),
+            });
+        }
+    }
+
+    updateClass(): void {
+        if (!this.classRow) {
+            console.error('Class data not loaded');
+            return;
+        }
+
+        // Obtenha os valores do formulário
+        const course = this.formControl.get('course')?.value;
+        const spirit = this.formControl.get('spirit')?.value;
+        const calendar = this.formControl.get('calendar')?.value;
+        const link = this.formControl.get('link')?.value;
+        const nomeCurso = this.getNameCouse(course)
+        const nomeCentro = this.getNameSpirit(spirit)
+
+        // Organize o objeto Class
+        const updatedClass: Class = {
+            ...this.classRow,  // Objeto original obtido do serviço
+            curso: course,
+            nomeCurso: nomeCurso || "" , // Se 'nomeCurso' for o mesmo que 'curso'
+            uuidCentro: spirit,
+            nomeCentro: nomeCentro || "" , // Se 'nomeCentro' for o mesmo que 'uuidCentro'
+            calendario: calendar,
+            linkSala: link
+        };
+
+        this.classService.put(updatedClass).subscribe({
+            next: async (response) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Turma atualizada com sucesso!',
+                });
+                setTimeout(() => {
+                    this.router.navigate(['/admin/turmas']);
+                }, 2000);
+            },
+            // Se ocorrer um erro, exibe-o no console
+            error: (error) => console.error(error),
+        })
+    }
+
 }

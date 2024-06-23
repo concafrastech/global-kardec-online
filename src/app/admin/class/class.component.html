@@ -40,6 +40,7 @@
                             </a>
                         </td>
                         <td class="actionItens">
+                            <a><i class="pi pi-pencil" [routerLink]="['/admin/turmas/atualizar/', class.uuid.toString()]"></i></a>
                             <a (click)="deleteClass(class.uuid)"><i class="pi pi-trash"></i></a>
                         </td>
                     </tr>

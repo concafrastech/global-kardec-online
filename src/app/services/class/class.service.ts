@@ -25,7 +25,7 @@ export class ClassService {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
         return this._http
-            .put<any>(`${this.apiUrl}/gk/turma'`, classInfo, { headers })
+            .put<any>(`${this.apiUrl}/gk/turma`, classInfo, { headers })
             .pipe(catchError(this.handleError));
     }
 
@@ -97,7 +97,7 @@ export class ClassService {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
         return this._http
-            .get<any>(`${this.apiUrl}/gk/turma/${uuid}'`, { headers })
+            .get<any>(`${this.apiUrl}/gk/turma/${uuid}`, { headers })
             .pipe(catchError(this.handleError));
     }
 
