@@ -10,11 +10,12 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { RouterLink } from '@angular/router';
 import { People } from '../../../../models/people';
+import {CardModule} from "primeng/card";
 
 @Component({
     selector: 'app-people-forms',
     standalone: true,
-    imports: [ButtonModule, RippleModule, RouterLink],
+    imports: [ButtonModule, RippleModule, RouterLink, CardModule],
     templateUrl: './people-forms.component.html',
     styleUrl: './people-forms.component.less',
 })
