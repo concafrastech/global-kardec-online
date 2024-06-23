@@ -83,6 +83,7 @@ export class CoursesDashboardComponent implements OnInit {
 
     messages: Message[] = [];
 
+    convertedCourse!: Course | any
 
     /**
      * Método do ciclo de vida do Angular que é chamado após a inicialização do componente.
@@ -133,9 +134,6 @@ export class CoursesDashboardComponent implements OnInit {
      * @param courseName O nome do curso a ser excluído.
      */
     confirmArquive(event: Event, courseName: string, courseUUID: string, course: Course) {
-
-
-
         this.confirmationService.confirm({
             target: event.target as EventTarget,
             message: `Ao arquivar, o curso deixará de ser exibido aos alunos. <br/> <b>Você tem certeza?<b/>`,
@@ -150,9 +148,10 @@ export class CoursesDashboardComponent implements OnInit {
 
             // Arquiva o curso ao confirmar a exclusão
             accept: () => {
-                this.convertParam(course)
                 course.modalidadeEnsino = "ARQUIVADO"
-                console.log(course);
+                this.convertedCourse = course
+                this.convertParam(this.convertedCourse)
+                console.log(this.convertedCourse);
                 this.courseService.updateCourse(course).subscribe({
                     next: (response) => {
                         this.getAllCourses();
@@ -203,15 +202,19 @@ export class CoursesDashboardComponent implements OnInit {
         this.courseSubject.next(objectCourse);
     }
 
-    convertParam(course: Course) {
+    convertParam(course: Course | any) {
         this.courseService.getCourse(course.uuid!).subscribe({
-            next({instituto, idioma}) {
+            next({ instituto, idioma, tipoCurso}) {
                 course.instituto = instituto
                 course.idioma = idioma
+                course.tipoCurso = tipoCurso
+                delete course.nomeIdioma
+                delete course.nomeInstituto
+                delete course.nomeTipoCurso
                 return course
             },
         })
-        
+
     }
 
     checkCourseResources(courseUUID: string): void {
