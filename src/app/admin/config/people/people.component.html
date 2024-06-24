@@ -12,4 +12,37 @@
             routerLink="/admin/configuracao/pessoas/novo"
         ></p-button>
     </div>
+    <p-toast/>
+    <p-table
+        [value]="spiritCenters"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        responsiveLayout="stack"
+        [paginator]="true"
+
+        [rows]="10"
+        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nome</th>
+                <th>Estado</th>
+                <th>Cidade</th>
+                <th>Ver pessoas</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-SpiritCenter let-columns="columns">
+            <tr>
+                <td>
+                    <span class="p-column-title">Nome: </span>{{ SpiritCenter.nome }}
+
+                <td>
+                    <span class="p-column-title">Estado: </span>{{ SpiritCenter.estado }}
+
+                <td>
+                    <span class="p-column-title">Cidade: </span>{{ SpiritCenter.cidade }}
+                </td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
 </p-card>
