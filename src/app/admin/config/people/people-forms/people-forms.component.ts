@@ -11,11 +11,23 @@ import { RippleModule } from 'primeng/ripple';
 import { RouterLink } from '@angular/router';
 import { People } from '../../../../models/people';
 import {CardModule} from "primeng/card";
+import {InputTextModule} from "primeng/inputtext";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CalendarModule} from "primeng/calendar";
 
 @Component({
     selector: 'app-people-forms',
     standalone: true,
-    imports: [ButtonModule, RippleModule, RouterLink, CardModule],
+    imports: [
+        ButtonModule,
+        RippleModule,
+        RouterLink,
+        CardModule,
+        InputTextModule,
+        ReactiveFormsModule,
+        CalendarModule,
+        FormsModule,
+    ],
     templateUrl: './people-forms.component.html',
     styleUrl: './people-forms.component.less',
 })

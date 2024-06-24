@@ -1,8 +1,39 @@
 @import "../../../../../assets/styles/_global.less";
 
-.people-forms{
-    .flex{
+.people-forms {
+    .flex {
         .mixin-flex-justify-content(space-between);
-        .mixin-display-flex-box-align(center);
+        //.mixin-display-flex-box-align(center);
+    }
+
+    &_row {
+        display: flex;
+        width: 100%;
+        margin: 1rem 0;
+        .mixin-gap(@indent__xxs);
+
+        &_flex_100 {
+            flex: 100%;
+        }
+
+        &_flex_50 {
+            flex: 50%;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &_footer {
+            .mixin-flex-justify-content(end);
+        }
+
+        label {
+            font-weight: bold;
+        }
+    }
+
+    &_col_12 {
+        width: 100%;
     }
 }

@@ -12,4 +12,38 @@
             routerLink="/admin/configuracao/pessoas"
         ></p-button>
     </div>
+    <div id="forms">
+        <div class="people-forms_row">
+            <div class="flex flex-column gap-2 people-forms_row_flex_50">
+                <label for="fullnamePeople">Nome completo</label>
+                <input
+                    pInputText
+                    id="fullnamePeople"
+                    placeholder="Digite seu nome completo aqui..."
+                    [(ngModel)]="this.people.nome"
+                />
+            </div>
+            <div class="flex flex-column gap-2 people-forms_row_flex_50">
+                <label>Data de nascimento</label>
+                <p-calendar
+                    class="w-100"
+                    styleClass="w-100"
+                    placeholder="Selecione a data do seu aniversário..."
+                    dateFormat="yy-mm-dd"
+                    [(ngModel)]="this.people.dataNascimento"
+                />
+            </div>
+        </div>
+        <div class="people-forms_row people-forms_row_footer">
+            <div class="flex flex_column">
+                <button
+                    pButton
+                    pRipple
+                    label="Criar"
+                    class="p-button-success"
+                    icon="pi pi-check"
+                ></button>
+            </div>
+        </div>
+    </div>
 </p-card>
