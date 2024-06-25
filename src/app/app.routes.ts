@@ -10,6 +10,7 @@ import { CalendarDashboardComponent } from './admin/calendar/calendar-dashboard/
 import { CalendarNewComponent } from './admin/calendar/calendar-new/calendar-new.component';
 import { PeopleComponent } from './admin/config/people/people.component';
 import { PeopleFormsComponent } from './admin/config/people/people-forms/people-forms.component';
+import {ProfileComponent} from "./admin/config/people/profile/profile.component";
 
 export const routes: Routes = [
     {
@@ -47,6 +48,10 @@ export const routes: Routes = [
                     {
                         path: 'pessoas/novo',
                         component: PeopleFormsComponent,
+                    },
+                    {
+                        path: 'pessoas/perfil/:id',
+                        component: ProfileComponent,
                     },
                 ],
             },
