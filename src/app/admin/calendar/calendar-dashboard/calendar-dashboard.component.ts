@@ -11,6 +11,7 @@ import { CalendarService } from '../../../services/calendar/calendar.service';
 import { SpiritCenter } from '../../../models/spiritCenter';
 import { Calendar } from '../../../models/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CardModule } from 'primeng/card';
 
 @Component({
     selector: 'app-calendar-dashboard',
@@ -24,6 +25,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         KeyValuePipe,
         ToastModule,
         ConfirmDialogModule,
+        CardModule
     ],
     templateUrl: './calendar-dashboard.component.html',
     styleUrl: './calendar-dashboard.component.less',

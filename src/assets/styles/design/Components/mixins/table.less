@@ -1,0 +1,79 @@
+@import '../../../_global.less';
+
+.mixin-table(
+    @_table-width: @table__width,
+    @_cell-padding-vertical: @table-cell__padding-vertical,
+    @_cell-padding-horizontal: @table-cell__padding-horizontal,
+    @_table-margin-bottom: @table__margin-bottom
+    ) {
+
+        .p-datatable {
+            .p-datatable-wrapper {
+                .p-datatable-table {
+                    .p-datatable-thead {
+                        tr {
+                            th {
+                                background-color: @theme__color__primary;
+                                color: @theme__color__primary-alt;
+                                font-weight: @font-weight__bold;
+                                font-size: @font-size__m;
+                                border: 0.05px solid @theme__color__primary-alt;
+                            }
+
+                            .thStyleAction {
+                                width: 5%;
+                            }
+                        }
+                    }
+
+                    .p-datatable-tbody {
+                        .trBody {
+                            td {
+                                font-weight: 600; // 600 é equivalente à semi-bold de acordo com a MDN doc
+                                font-size: 12px;
+                                padding: 13px;
+                                height: min-content;
+                                border: solid @theme__color__primary-alt 1px;
+                            }
+
+                            .actionItens {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+
+
+                                a {
+                                    .pi {
+                                        margin: 12px;
+                                        cursor: pointer;
+                                    }
+
+                                    .pi-trash {
+                                        cursor: pointer;
+                                    }
+
+                                    .pi-pencil:hover {
+                                        transition: 0.2s;
+                                        color: @color-blue-light;
+                                    }
+
+                                    .pi-trash:hover {
+                                        transition: 0.2s;
+                                        color: @color-red;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .p-datatable-footer {
+                background-color: @color-blue-light;
+
+                height: 41px;
+            }
+        }
+    }
+
+;
