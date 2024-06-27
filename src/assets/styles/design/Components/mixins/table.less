@@ -1,25 +1,23 @@
 @import '../../../_global.less';
 
 .mixin-table(
-    @_table-width: @table__width,
-    @_cell-padding-vertical: @table-cell__padding-vertical,
-    @_cell-padding-horizontal: @table-cell__padding-horizontal,
-    @_table-margin-bottom: @table__margin-bottom
+    @_table_header-background-color: @theme__color__primary,
+    @_table_header-color: @theme__color__primary-alt,
+    @_table_header-font-size: @font-size__l,
+    @_table_header-border: 0.05px solid @theme__color__primary-alt
     ) {
-
         .p-datatable {
             .p-datatable-wrapper {
                 .p-datatable-table {
                     .p-datatable-thead {
                         tr {
                             th {
-                                background-color: @theme__color__primary;
-                                color: @theme__color__primary-alt;
+                                background-color: @_table-background-color;
+                                color:  @_table-color;
                                 font-weight: @font-weight__bold;
-                                font-size: @font-size__m;
-                                border: 0.05px solid @theme__color__primary-alt;
+                                font-size: @_table-font-size;
+                                border: @_table_header-border;
                             }
-
                             .thStyleAction {
                                 width: 5%;
                             }
@@ -29,22 +27,22 @@
                     .p-datatable-tbody {
                         .trBody {
                             td {
-                                font-weight: 600; // 600 é equivalente à semi-bold de acordo com a MDN doc
-                                font-size: 12px;
-                                padding: 13px;
+                                font-weight: @font-weight__semibold; // 600 é equivalente à semi-bold de acordo com a MDN doc
+                                font-size: @indent__sx;
+                                padding: @indent__sx + 1;
                                 height: min-content;
                                 border: solid @theme__color__primary-alt 1px;
                             }
 
                             .actionItens {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
+                                .mixin-display(flex);
+                                .mixin-flex-justify-content(center);
+                                .mixin-display-flex-box-align(center);
 
 
                                 a {
                                     .pi {
-                                        margin: 12px;
+                                        margin: @indent__sx;
                                         cursor: pointer;
                                     }
 
