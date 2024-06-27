@@ -1,13 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
-import {Button, ButtonDirective} from "primeng/button";
-import {CalendarModule} from "primeng/calendar";
-import {CardModule} from "primeng/card";
-import {InputTextModule} from "primeng/inputtext";
-import {Ripple} from "primeng/ripple";
-import {RouterLink} from "@angular/router";
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+    FormsModule,
+} from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
+// Services
+import { PeopleService } from '../../../../services/people/people.service';
 
+// Models
+import { People } from '../../../../models/people';
+
+// PrimeNg
+import { Button, ButtonDirective } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { Ripple } from 'primeng/ripple';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import {InputGroupModule} from "primeng/inputgroup";
 
 @Component({
     selector: 'app-profile',
@@ -22,39 +37,94 @@ import {RouterLink} from "@angular/router";
         InputTextModule,
         Ripple,
         RouterLink,
+        InputGroupModule,
     ],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.less',
 })
 export class ProfileComponent implements OnInit {
+    public idPerson = this.route.snapshot.paramMap.get('id');
+
     userForm: FormGroup = new FormGroup({});
 
-    constructor(private fb: FormBuilder) {}
+    constructor(
+        private fb: FormBuilder,
+        private peopleService: PeopleService,
+        private route: ActivatedRoute,
+    ) {}
 
     ngOnInit() {
+        this.initializeForm();
+        this.getPerson();
+    }
+
+    initializeForm(): void {
         this.userForm = this.fb.group({
-            uuid: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-            uuidCentro: ['3fa85f64-5717-4562-b3fc-2c963f66afa6'],
-            nome: ['Nome Exemplo', Validators.required],
-            dataNascimento: ['2024-06-25', Validators.required],
+            uuid: [{ value: '', disabled: true }],
+            uuidCentro: [{ value: '', disabled: true }],
+            nome: [{ value: '', disabled: true }, Validators.required],
+            dataNascimento: [
+                { value: '', disabled: true },
+                Validators.required,
+            ],
             contato: this.fb.group({
-                telefone: ['123456789', Validators.required],
+                telefone: [{ value: '', disabled: true }, Validators.required],
                 email: [
-                    'exemplo@dominio.com',
+                    { value: '', disabled: true },
                     [Validators.required, Validators.email],
                 ],
-                facebook: ['facebook.com/exemplo'],
-                instagram: ['instagram.com/exemplo'],
+                facebook: [{ value: '', disabled: true }],
+                instagram: [{ value: '', disabled: true }],
             }),
             endereco: this.fb.group({
-                logradouro: ['Rua Exemplo', Validators.required],
-                numero: ['123', Validators.required],
-                bairro: ['Bairro Exemplo', Validators.required],
-                codigoPostal: ['12345-678', Validators.required],
-                idCidade: [1, Validators.required],
-                idioma: [ '', Validators.required,],
+                logradouro: [
+                    { value: '', disabled: true },
+                    Validators.required,
+                ],
+                numero: [{ value: '', disabled: true }, Validators.required],
+                bairro: [{ value: '', disabled: true }, Validators.required],
+                codigoPostal: [
+                    { value: '', disabled: true },
+                    Validators.required,
+                ],
+                idCidade: [{ value: '', disabled: true }, Validators.required],
+                idioma: [{ value: '', disabled: true }, Validators.required],
             }),
         });
+    }
+
+    getPerson(): void {
+        if (this.idPerson)
+            this.peopleService
+                .get(this.idPerson)
+                .pipe(
+                    catchError(
+                        this.handleServiceError('buscando pessoas por uuid'),
+                    ),
+                )
+                .subscribe((person: People) => {
+                    this.userForm.patchValue({
+                        uuid: person.uuid,
+                        uuidCentro: person.uuidCentro,
+                        nome: person.nome,
+                        dataNascimento: this.formatDate(person.dataNascimento),
+                        contato: person.contato,
+                        endereco: person.endereco,
+                    });
+                });
+    }
+
+    formatDate(date: string): string {
+        const [year, month, day] = date.split('-');
+        return `${month}/${day}/${year}`;
+    }
+
+    enableField(field: string): void {
+        const control = this.userForm.get(field);
+        if (control) {
+            control.enable();
+            control.updateValueAndValidity();
+        }
     }
 
     onSubmit() {
@@ -64,5 +134,17 @@ export class ProfileComponent implements OnInit {
         } else {
             console.log('Formulário inválido', this.userForm.value);
         }
+    }
+
+    /**
+     * Cria um operador `catchError` reutilizável para o tratamento de erros.
+     * @param context Contexto da operação que está sendo realizada (ex: 'fetching spirit centers')
+     * @returns Um operador `catchError`
+     */
+    private handleServiceError(context: string) {
+        return (error: any) => {
+            console.error(`Error ${context}:`, error);
+            return throwError(() => new Error(`Error ${context}`));
+        };
     }
 }

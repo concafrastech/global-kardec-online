@@ -136,9 +136,6 @@ export class PeopleComponent implements OnInit {
             )
             .subscribe((response: PeopleResponse) => {
                 const people = response.content;
-
-                console.log(people);
-
                 if (people.length > 0) {
                     this.peopleList = people;
                     this.visible = true;

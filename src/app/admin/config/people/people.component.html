@@ -89,7 +89,7 @@
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
-                    <th>Editar</th>
+                    <th>Ver</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-person>
@@ -98,7 +98,7 @@
                     <td>{{ person.contato.email }}</td>
                     <td>{{ person.contato.telefone }}</td>
                     <td>
-                        <p-button icon="pi pi-user-edit"
+                        <p-button icon="pi pi-eye"
                                   [routerLink]="['/admin/configuracao/pessoas/perfil/', person.uuid.toString()]"
                                   [rounded]="true" [text]="true" severity="success"/>
                     </td>

@@ -19,13 +19,25 @@
 
                 <div class="field col">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" pInputText formControlName="nome"
-                           class="w-full"
-                           required/>
+                    <p-inputGroup>
+                        <input type="text" id="nome" pInputText formControlName="nome"
+                               class="w-full"
+                               required/>
+                        <button
+                            type="button"
+                            (click)="enableField('nome')"
+                            severity="success"
+                            pButton icon="pi pi-pencil"
+                            class="button_input"
+                            >
+                        </button>
+                    </p-inputGroup>
                 </div>
 
                 <div class="field col">
                     <label for="dataNascimento">Data de Nascimento:</label>
+                    <p-inputGroup>
+
                     <p-calendar
                         formControlName="dataNascimento"
                         id="dataNascimento"
@@ -33,6 +45,15 @@
                         [iconDisplay]="'input'"
                         [showIcon]="true"
                         inputId="icondisplay"/>
+                        <button
+                            type="button"
+                            (click)="enableField('dataNascimento')"
+                            severity="success"
+                            pButton icon="pi pi-pencil"
+                            class="button_input"
+                        >
+                        </button>
+                    </p-inputGroup>
                 </div>
             </div>
 
@@ -53,7 +74,8 @@
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="instagram">Instagram:</label>
-                        <input type="text" id="instagram" class="w-full" pInputText formControlName="instagram" required>
+                        <input type="text" id="instagram" class="w-full" pInputText formControlName="instagram"
+                               required>
                     </div>
 
                     <div class="field col">
@@ -68,7 +90,8 @@
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="logradouro">Logradouro:</label>
-                        <input type="text" id="logradouro" class="w-full" pInputText formControlName="logradouro" required>
+                        <input type="text" id="logradouro" class="w-full" pInputText formControlName="logradouro"
+                               required>
 
                     </div>
                     <div class="field col">
@@ -83,21 +106,22 @@
                     </div>
                     <div class="field col">
                         <label for="codigoPostal">Código Postal:</label>
-                        <input type="text" id="codigoPostal" class="w-full" pInputText formControlName="codigoPostal" required>
+                        <input type="text" id="codigoPostal" class="w-full" pInputText formControlName="codigoPostal"
+                               required>
                     </div>
                 </div>
-
 
 
                 <div class="formgrid grid">
 
                     <div class="field col">
                         <label for="idCidade">Cidade:</label>
-                        <input type="number" id="idCidade" class="w-full" pInputText  formControlName="idCidade" required>
+                        <input type="number" id="idCidade" class="w-full" pInputText formControlName="idCidade"
+                               required>
                     </div>
                     <div class="field col">
                         <label for="idioma">Idioma:</label>
-                        <input type="number" id="idioma" class="w-full" pInputText  formControlName="idioma"  required>
+                        <input type="number" id="idioma" class="w-full" pInputText formControlName="idioma" required>
                     </div>
                 </div>
 
