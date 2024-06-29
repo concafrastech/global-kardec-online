@@ -1,0 +1,94 @@
+<div class="classTableCard">
+    <div class="flex title-box">
+        <div class="page-title-wrapper">
+            <h1 class="page-title">Cadastro de Turmas</h1>
+        </div>
+    </div>
+    <p-toast/>
+
+    <form [formGroup]="formControl" class="registration_form">
+
+        <div class="formGroup course_info">
+            <div class="flex flex-column gap-2">
+                <label>Curso</label>
+                <p-dropdown
+                    formControlName="course"
+                    [options]="courses"
+                    optionLabel="nome"
+                    optionValue="uuid"
+                    [showClear]="true"
+                    [filter]="true"
+                    filterBy="nome"
+                    placeholder="Selecione um Curso"
+                ></p-dropdown>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label>Centro Espírita</label>
+                <p-dropdown
+                    formControlName="spirit"
+                    [options]="SpiritCenter"
+                    optionLabel="nome"
+                    optionValue="uuid"
+                    placeholder="Selecione o Centro Espírita"
+                    [filter]="true"
+                    filterBy="nome"
+                    [showClear]="true"
+                    (onChange)="onSpiritCenterChange($event)"
+                >
+                </p-dropdown>
+            </div>
+            @if (messageCalendar) {
+                <div class="card">
+                    <p-messages
+                        [(value)]="messages"
+                        [enableService]="false"
+                        [closable]="false"/>
+                </div>
+            }
+
+            @if (calendarVisible) {
+                <div class="flex flex-column gap-2">
+                    <label>Calendário</label>
+                    <p-dropdown
+                        formControlName="calendar"
+                        [options]="calendars"
+                        optionLabel="label"
+                        optionValue="uuid"
+                        [showClear]="true"
+                        placeholder="Selecione um Calendário"
+                    ></p-dropdown>
+                </div>
+            }
+
+            <div class="flex flex-column gap-2">
+                <label for="link">Link da sala</label>
+                <input type="text" id="link" pInputText formControlName="link"/>
+
+            </div>
+        </div>
+        <div class="mt-3">
+            @if (!idClass){
+                <p-button
+                    class="courseCreateButton"
+                    label="Gravar"
+                    icon="pi pi-save"
+                    size="small"
+                    severity="primary"
+                    (onClick)="saveClass()"
+                ></p-button>
+            } @else {
+                <p-button
+                    class="courseCreateButton"
+                    label="Atualizar"
+                    icon="pi pi-save"
+                    size="small"
+                    severity="primary"
+                    (onClick)="updateClass()"
+                ></p-button>
+            }
+
+        </div>
+
+    </form>
+
+</div>

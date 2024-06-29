@@ -11,8 +11,14 @@ import { CalendarNewComponent } from './admin/calendar/calendar-new/calendar-new
 import { PeopleComponent } from './admin/config/people/people.component';
 import { PeopleFormsComponent } from './admin/config/people/people-forms/people-forms.component';
 import {ProfileComponent} from "./admin/config/people/profile/profile.component";
+import {ClassComponent} from "./admin/class/class.component";
+import {ClassNewComponent} from "./admin/class/class-new/class-new.component";
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: AdminHomeComponent,
+    },
     {
         path: 'admin',
         component: AdminHomeComponent,
@@ -37,6 +43,18 @@ export const routes: Routes = [
             {
                 path: 'calendarios/novo',
                 component: CalendarNewComponent,
+            },
+            {
+                path: 'turmas',
+                component: ClassComponent,
+            },
+            {
+                path: 'turmas/novo',
+                component: ClassNewComponent,
+            },
+            {
+                path: 'turmas/atualizar/:id',
+                component: ClassNewComponent,
             },
             {
                 path: 'configuracao',
