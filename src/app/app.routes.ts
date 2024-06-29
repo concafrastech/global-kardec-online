@@ -8,8 +8,14 @@ import { CoursesNewComponent } from './admin/courses/courses-new/courses-new.com
 import { CoursesDashboardComponent } from './admin/courses/courses-dashboard/courses-dashboard.component';
 import { CalendarDashboardComponent } from './admin/calendar/calendar-dashboard/calendar-dashboard.component';
 import { CalendarNewComponent } from './admin/calendar/calendar-new/calendar-new.component';
+import {ClassComponent} from "./admin/class/class.component";
+import {ClassNewComponent} from "./admin/class/class-new/class-new.component";
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: AdminHomeComponent,
+    },
     {
         path: 'admin',
         component: AdminHomeComponent,
@@ -34,6 +40,18 @@ export const routes: Routes = [
             {
                 path: 'calendarios/novo',
                 component: CalendarNewComponent,
+            },
+            {
+                path: 'turmas',
+                component: ClassComponent,
+            },
+            {
+                path: 'turmas/novo',
+                component: ClassNewComponent,
+            },
+            {
+                path: 'turmas/atualizar/:id',
+                component: ClassNewComponent,
             },
         ]
     },
