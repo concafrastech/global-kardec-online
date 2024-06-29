@@ -7,12 +7,16 @@ import {
     FormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { throwError, BehaviorSubject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 // Services
 import { PeopleService } from '../../../../services/people/people.service';
+import { UtilsService } from '../../../../services/utilities/auxiliary/utils.service';
 
 // Models
 import { People } from '../../../../models/people';
+import { Languages } from '../../../../models/languages';
 
 // PrimeNg
 import { Button, ButtonDirective } from 'primeng/button';
@@ -20,9 +24,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { Ripple } from 'primeng/ripple';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import {InputGroupModule} from "primeng/inputgroup";
+import { InputGroupModule } from 'primeng/inputgroup';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
     selector: 'app-profile',
@@ -38,24 +41,44 @@ import {InputGroupModule} from "primeng/inputgroup";
         Ripple,
         RouterLink,
         InputGroupModule,
+        DropdownModule,
     ],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.less',
 })
 export class ProfileComponent implements OnInit {
+    /** @idPerson string **/
     public idPerson = this.route.snapshot.paramMap.get('id');
 
     userForm: FormGroup = new FormGroup({});
+
+    isUpdate: boolean = false;
+
+    public namePerson: string = '';
+
+    // ----------------------------
+    // BehaviorSubject para gerenciar o estado dos institutos
+    private languagesSubject = new BehaviorSubject<any[]>([]);
+
+    // Array para armazenar os Idiomas disponíveis
+    languages: Languages[] | undefined;
+
+    // Observable para os Idiomas
+    languages$ = this.languagesSubject.asObservable();
 
     constructor(
         private fb: FormBuilder,
         private peopleService: PeopleService,
         private route: ActivatedRoute,
+        private utilsService: UtilsService,
     ) {}
 
     ngOnInit() {
         this.initializeForm();
         this.getPerson();
+        this.loadAvailableLanguages();
+
+
     }
 
     initializeForm(): void {
@@ -87,9 +110,13 @@ export class ProfileComponent implements OnInit {
                     { value: '', disabled: true },
                     Validators.required,
                 ],
-                idCidade: [{ value: '', disabled: true }, Validators.required],
-                idioma: [{ value: '', disabled: true }, Validators.required],
+                localidade: this.fb.group({
+                    pais: [{ value: '', disabled: true }, Validators.required],
+                    estado:[{ value: '', disabled: true }, Validators.required],
+                    idCidade: [{ value: '', disabled: true }, Validators.required],
+                })
             }),
+            idioma: [{ value: '', disabled: true }, Validators.required],
         });
     }
 
@@ -103,6 +130,8 @@ export class ProfileComponent implements OnInit {
                     ),
                 )
                 .subscribe((person: People) => {
+                    console.log(person);
+                    this.namePerson = person.nome;
                     this.userForm.patchValue({
                         uuid: person.uuid,
                         uuidCentro: person.uuidCentro,
@@ -110,6 +139,7 @@ export class ProfileComponent implements OnInit {
                         dataNascimento: this.formatDate(person.dataNascimento),
                         contato: person.contato,
                         endereco: person.endereco,
+                        idioma: person.idioma,
                     });
                 });
     }
@@ -119,21 +149,77 @@ export class ProfileComponent implements OnInit {
         return `${month}/${day}/${year}`;
     }
 
-    enableField(field: string): void {
-        const control = this.userForm.get(field);
-        if (control) {
-            control.enable();
-            control.updateValueAndValidity();
-        }
+    enableField(): void {
+        this.userForm.enable();
+        this.isUpdate = true;
+        // const control = this.userForm.get(field);
+        // if (control) {
+        //     control.enable();
+        //     control.updateValueAndValidity();
+        //     this.isUpdate = true;
+        // }
     }
 
     onSubmit() {
+        this.peopleService
+            .update(this.userForm.value)
+            .pipe(
+                catchError(
+                    this.handleServiceError('buscando pessoas por uuid'),
+                ),
+            )
+            .subscribe((response: any) => {
+                console.log('Dados do usuário atualizados:', response);
+                this.isUpdate = false;
+                this.userForm.disable();
+            });
+
         if (this.userForm.valid) {
-            console.log('Dados do usuário atualizados:', this.userForm.value);
+            this.peopleService
+                .update(this.userForm.value)
+                .pipe(
+                    catchError(
+                        this.handleServiceError('buscando pessoas por uuid'),
+                    ),
+                )
+                .subscribe((response: any) => {
+                    this.isUpdate = false;
+                    this.userForm.disable();
+                });
+
             // Aqui você pode chamar um serviço para salvar os dados atualizados
         } else {
-            console.log('Formulário inválido', this.userForm.value);
+            this.isUpdate = false;
+            this.userForm.disable();
         }
+    }
+
+    /**
+     * Carrega os institutos e os idiomas disponíveis.
+     */
+    private loadAvailableLanguages(): void {
+        this.utilsService.getLanguages().subscribe({
+            next: async (languages) => {
+                this.updateLanguages(languages);
+            },
+            error: (error) => console.error(error),
+        });
+
+        // Inscreve-se no Observable institutes$ para monitorar alterações
+        this.languages$.subscribe(languages => {
+            // Atualiza a lista de institutos quando ocorrem alterações
+            this.languages = languages;
+        });
+
+    }
+
+    /**
+     * Atualiza o BehaviorSubject `languagesSubject` com a lista de idiomas recebida.
+     * Isso notifica os observadores que há uma atualização nos idiomas disponíveis.
+     * @param languages A lista de idiomas a ser atualizada.
+     */
+    private updateLanguages(languages: any[]): void {
+        this.languagesSubject.next(languages);
     }
 
     /**
