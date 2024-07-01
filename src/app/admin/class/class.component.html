@@ -1,0 +1,53 @@
+<div class="classTableCard">
+    <div class="flex title-box">
+        <div class="page-title-wrapper">
+            <h1 class="page-title">Turmas</h1>
+        </div>
+        <p-button
+            class="courseCreateButton"
+            label="Nova Turma"
+            icon="pi pi-plus"
+            size="small"
+            severity="primary"
+            routerLink="novo"
+        ></p-button>
+    </div>
+    <p-toast />
+
+    <p-accordion>
+        <p-accordionTab *ngFor="let tab of classList" [header]="tab.nomeCentro">
+            <p-table
+                [paginator]="true"
+                [value]="tab.classes"
+                [rows]="5"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Curso</th>
+                        <th>Ano/Semestre</th>
+                        <th>Link da Sala</th>
+                        <th>Ações</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-class>
+                    <tr>
+                        <td>{{ class.nomeCurso }}</td>
+                        <td>{{ class.anoCalendario }}/{{ class.semestreCalendario }}</td>
+                        <td>
+                            <a href="{{class.linkSala}}"  target="_blank" rel="noopener noreferrer" class="link-external">
+                                Acessar sala
+                            </a>
+                        </td>
+                        <td class="actionItens">
+                            <a><i class="pi pi-pencil" [routerLink]="['/admin/turmas/atualizar/', class.uuid.toString()]"></i></a>
+                            <a (click)="deleteClass(class.uuid)"><i class="pi pi-trash"></i></a>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+    </p-accordion>
+
+</div>
+

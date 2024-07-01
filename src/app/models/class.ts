@@ -6,8 +6,6 @@
  */
 export interface Class {
     uuid?: string;
-    nome: string;
-    ordem: any; // Este tipo pode ser ajustado conforme necessário
     linkSala: string;
     curso: string;
     nomeCurso: string;
