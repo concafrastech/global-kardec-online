@@ -1,94 +1,59 @@
 <p-toast></p-toast>
 @if (showTableMessage) {
-    <p-button
-        class="courseCreateButton"
-        label="Criar Curso"
-        icon="pi pi-plus"
-        size="small"
-        severity="primary"
-        routerLink="/admin/cursos/novo"
-    ></p-button>
-    <div class="card">
-        <p-messages
-            [(value)]="messages"
-            [enableService]="false"
-            [closable]="false"
-        />
-    </div>
+<p-button class="courseCreateButton" label="Criar Curso" icon="pi pi-plus" size="small" severity="primary"
+    routerLink="/admin/cursos/novo"></p-button>
+<div class="card">
+    <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
+</div>
 } @else {
-    <p-card class="coursesTableCard">
-        <div class="flex title-box">
-            <div class="page-title-wrapper">
-                <h1 class="page-title">Conteúdos do curso</h1>
-            </div>
-            <p-button
-                class="courseCreateButton"
-                label="Criar Curso"
-                icon="pi pi-plus"
-                size="small"
-                severity="primary"
-                routerLink="/admin/cursos/novo"
-            ></p-button>
+<p-card class="coursesTableCard">
+    <div class="flex title-box">
+        <div class="page-title-wrapper">
+            <h1 class="page-title">Conteúdos do curso</h1>
         </div>
-        <p-table
-            [value]="coursesList"
-            [rows]="5"
-            [paginator]="true"
-            [showCurrentPageReport]="true"
-            currentPageReportTemplate="{currentPage}ª de {totalPages}"
-            class="tHeader"
-            responsiveLayout="stack"
-            [tableStyle]="{ 'min-width': '5rem' }"
-            sortMode="multiple"
-        >
+        <p-button class="courseCreateButton" label="Criar Curso" icon="pi pi-plus" size="small" severity="primary"
+            routerLink="/admin/cursos/novo"></p-button>
+    </div>
+    <p-table [value]="coursesList" [rows]="5" [paginator]="true" [showCurrentPageReport]="true"
+        currentPageReportTemplate="{currentPage}ª de {totalPages}" class="tHeader" responsiveLayout="stack"
+        [tableStyle]="{ 'min-width': '5rem' }" sortMode="multiple">
 
-            <ng-template pTemplate="header" class="tHeader">
-                <tr>
-                    <th pSortableColumn="nome">Nome do Curso <p-sortIcon field="nome" /></th>
-                    <th pSortableColumn="nomeInstituto">Instituto <p-sortIcon field="nomeInstituto" /></th>
-                    <th pSortableColumn="nomeIdioma">Idioma <p-sortIcon field="nomeIdioma" /></th>
-                    <th class="thStyleAction">Ação</th>
-                </tr>
-                <tr>
-                    <th>
-                        <p-columnFilter
-                        type="text"
-                        field="nome"
-                        placeholder="Pesquisar por Curso"
-                        ariaLabel="Filtro Curso" />
-                    </th>
-                    <th>
-                        <p-columnFilter
-                        type="text"
-                        field="nomeInstituto"
-                        placeholder="Pesquisar por Instituto"
-                        ariaLabel="Filtro Instituto" />
-                    </th>
-                    <th>
-                        <p-columnFilter
-                        type="text"
-                        field="nomeIdioma"
-                        placeholder="Pesquisar por Idioma"
-                        ariaLabel="Filtro Idioma" />
-                    </th>
-                    <th class="thStyleAction"></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-course>
-                <tr class="trBody">
-                    <td class="courseName">{{ course.nome }}</td>
-                    <td class="instituto">{{ course.nomeInstituto }}</td>
-                    <td class="idioma">{{ course.nomeIdioma }}</td>
-                    <td class="actionItens">
-                      <a><i class="pi pi-pencil" [routerLink]="['/admin/cursos/novo/', course.uuid.toString()]"></i></a>
-                      <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome, course.uuid, course)"></i></a>
-                    </td>
-                </tr>
-            </ng-template>
+        <ng-template pTemplate="header" class="tHeader">
+            <tr>
+                <th pSortableColumn="nome">Nome do Curso 
+                    <p-columnFilter type="text" field="nome" placeholder="Pesquisar por Curso" ariaLabel="Filtro Curso"
+                        display="menu" />
+                        <p-sortIcon field="nome" />
+                </th>
+                <th pSortableColumn="nomeInstituto">Instituto
+                    <p-columnFilter type="text" field="nomeInstituto" placeholder="Pesquisar por Instituto"
+                        ariaLabel="Filtro Instituto" display="menu" />
+                    <p-sortIcon field="nomeInstituto" />
+                </th>
+                <th pSortableColumn="nomeIdioma">Idioma
+                    <p-columnFilter type="text" field="nomeIdioma" placeholder="Pesquisar por Idioma"
+                        ariaLabel="Filtro Idioma" display="menu" />
+                    <p-sortIcon field="nomeIdioma" />
+                </th>
+                <th class="thStyleAction">Ação</th>
+            </tr>
 
-            <ng-template pTemplate="summary" class="tFooter"></ng-template>
-        </p-table>
-    </p-card>
+        </ng-template>
+        <ng-template pTemplate="body" let-course>
+            <tr class="trBody">
+                <td class="courseName">{{ course.nome }}</td>
+                <td class="instituto">{{ course.nomeInstituto }}</td>
+                <td class="idioma">{{ course.nomeIdioma }}</td>
+                <td class="actionItens">
+                    <a><i class="pi pi-pencil" [routerLink]="['/admin/cursos/novo/', course.uuid.toString()]"></i></a>
+                    <a><i class="pi pi-trash" (click)="confirmDelete($event, course.nome, course.uuid, course)"></i></a>
+                </td>
+            </tr>
+        </ng-template>
 
-    <p-confirmDialog></p-confirmDialog>
+        <ng-template pTemplate="summary" class="tFooter"></ng-template>
+    </p-table>
+</p-card>
+
+<p-confirmDialog></p-confirmDialog>
 }

@@ -33,38 +33,38 @@
                             border: solid @theme__color__primary-alt 1px;
                         }
 
-                        .actionItens {
-                            .mixin-display(flex);
-                            .mixin-flex-justify-content(center);
-                            .mixin-display-flex-box-align(center);
-
-
-                            a {
-                                .pi {
-                                    margin: @indent__sx;
-                                    cursor: pointer;
-                                }
-
-                                .pi-trash {
-                                    cursor: pointer;
-                                }
-
-                                .pi-pencil:hover {
-                                    transition: 0.2s;
-                                    color: @color-blue-light;
-                                }
-
-                                .pi-trash:hover {
-                                    transition: 0.2s;
-                                    color: @color-red;
-                                }
-                            }
-                        }
                     }
                 }
             }
         }
+        
+        .actionItens {
+            .mixin-display(flex);
+            .mixin-flex-justify-content(center);
+            .mixin-display-flex-box-align(center);
 
+
+            a {
+                .pi {
+                    margin: @indent__sx;
+                    cursor: pointer;
+                }
+
+                .pi-trash {
+                    cursor: pointer;
+                }
+
+                .pi-pencil:hover {
+                    transition: 0.2s;
+                    color: @color-blue-light;
+                }
+
+                .pi-trash:hover {
+                    transition: 0.2s;
+                    color: @color-red;
+                }
+            }
+        }
         .p-datatable-footer {
             background-color: @color-blue-light;
 

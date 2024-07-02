@@ -3,28 +3,16 @@
 <main class="content-main">
     <p-card>
         <div class="flex justify-content-space-between align-items-center">
-            <h2>Calendários</h2>
-            <p-button
-                pRipple
-                label="Novo"
-                icon="pi pi-check"
-                class="p-button-primary p-button-height-default"
-                routerLink="/admin/calendarios/novo"
-                size="small"
-            ></p-button>
+            <h1 class="page-title">Calendários</h1>
+            <p-button pRipple label="Novo" icon="pi pi-check" class="p-button-primary p-button-height-default"
+                routerLink="/admin/calendarios/novo" size="small"></p-button>
         </div>
         <hr />
-        <div
-            *ngFor="
+        <div *ngFor="
                 let calendarsBySpiritCenter of calendarsBySpiritCenter | keyvalue
-            "
-        >
-            <h4>{{ calendarsBySpiritCenter.key }}</h4>
-            <p-table
-                class="w-100"
-                [value]="calendarsBySpiritCenter.value"
-                [tableStyle]="{ 'min-width': '50rem' }"
-            >
+            ">
+            <h4 class="page-subtitle">{{ calendarsBySpiritCenter.key }}</h4>
+            <p-table class="w-100" [value]="calendarsBySpiritCenter.value" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Ano</th>
@@ -37,23 +25,16 @@
                         <td>{{ calendar.ano }}</td>
                         <td>{{ calendar.semestre }}</td>
                         <td>
-                            <div class="flex gap-2">
-                                <p-button
-                                    icon="pi pi-pencil"
-                                    severity="warning"
-                                    [disabled]="true"
-                                />
-                                <p-button
-                                    icon="pi pi-trash"
-                                    severity="danger"
-                                    (click)="
-                                        onConfirmDialog(
-                                            $event,
-                                            index,
-                                            calendarsBySpiritCenter.key
-                                        )
-                                    "
-                                />
+                            <div class="flex gap-2 actionItens">
+                                <i class="pi pi-pencil"></i>
+                                <a><i class="pi pi-trash" (click)="
+                        onConfirmDialog(
+                            $event,
+                            index,
+                            calendarsBySpiritCenter.key
+                        )
+                    "></i></a>
+
                             </div>
                         </td>
                     </tr>
